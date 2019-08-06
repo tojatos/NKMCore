@@ -5,15 +5,15 @@ namespace NKMCore
 {
     public class GamePreparerOptions
     {
-        public int NumberOfPlayers;
-        public int NumberOfCharactersPerPlayer;
-        public bool BansEnabled;
-        public int NumberOfBans;
-        public HexMap HexMap;
-        public PickType PickType;
-		public GameType GameType;
-        public ISelectable Selectable;
-		public IDbConnection Connection;
-		public string LogFilePath; //optional
+        public int NumberOfPlayers { get; set; }
+	    public int NumberOfCharactersPerPlayer { get; set; }
+        public bool BansEnabled { get; set; }
+        public int NumberOfBans { get; set; }
+        public HexMap HexMap { get; set; }
+        public PickType PickType { get; set; }
+		public GameType GameType { get; set; }
+        public ISelectable Selectable { get; set; }
+		public IDbConnection Connection { get; set; }
+		public string LogFilePath { get; set; } //optional
     }
 }

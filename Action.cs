@@ -36,6 +36,9 @@ namespace NKMCore
                     BasicMove(characterToMove, cellsToMove, true);
                     break;
                 case Types.BasicAttack:
+                    Character c1 = _game.Characters.First(c => c.Name == args[0]);
+                    Character c2 = _game.Characters.First(c => c.Name == args[1]);
+                    BasicAttack(c1, c2, true);
                     break;
                 case Types.ClickAbility:
                     break;
@@ -78,8 +81,13 @@ namespace NKMCore
             AfterAction?.Invoke(Types.BasicMove);
         }
 
-        public void BasicAttack(Character character, Character target)
+        public void BasicAttack(Character character, Character target, bool force = false)
         {
+            if (_game.Options.Type == GameType.Multiplayer && !force)
+            {
+                MultiplayerAction?.Invoke($"ACTION {Types.BasicAttack};{character.Name}:{target.Name}");
+                return;
+            }
             character.TryToTakeTurn();
             character.BasicAttack(target);
             AfterAction?.Invoke(Types.BasicAttack);
