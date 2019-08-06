@@ -76,7 +76,7 @@ namespace NKMCore
         {
             if (_game.Options.Type == GameType.Multiplayer && !force)
             {
-                MultiplayerAction?.Invoke($"ACTION {Types.PlaceCharacter};{character.Name};{targetCell.Coordinates.ToString()}");
+                MultiplayerAction?.Invoke($"ACTION {Types.PlaceCharacter}:{character.Name};{targetCell.Coordinates.ToString()}");
                 return;
             }
             _game.HexMap.Place(character, targetCell);
