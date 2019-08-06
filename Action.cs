@@ -60,7 +60,7 @@ namespace NKMCore
                     IEnumerable<HexCell> targetCells = args.Skip(1)
                         .Select(c => _game.HexMap.Cells.First(a => a.Coordinates.ToString() == c));
                     if(targetCells.Count() == 1)
-                        UseAbility(ab as IUseableCell, targetCells[0]);
+                        UseAbility(ab as IUseableCell, targetCells.First());
                     else 
                         UseAbility(ab as IUseableCellList, targetCells);
                     break;
