@@ -74,7 +74,7 @@ namespace NKMCore
 
         public void PlaceCharacter(Character character, HexCell targetCell, bool force = false)
         {
-            if (_game.Options.Type == GameType.Multiplayer && !force)
+            if (_game.Dependencies.Type == GameType.Multiplayer && !force)
             {
                 MultiplayerAction?.Invoke($"ACTION {Types.PlaceCharacter};{character.Name}:{targetCell.Coordinates.ToString()}");
                 return;
@@ -85,7 +85,7 @@ namespace NKMCore
 
         public void FinishTurn(bool force = false)
         {
-            if (_game.Options.Type == GameType.Multiplayer && !force)
+            if (_game.Dependencies.Type == GameType.Multiplayer && !force)
             {
                 MultiplayerAction?.Invoke($"ACTION {Types.FinishTurn}");
                 return;
@@ -96,7 +96,7 @@ namespace NKMCore
 
         public void TakeTurn(Character character, bool force = false)
         {
-            if (_game.Options.Type == GameType.Multiplayer && !force)
+            if (_game.Dependencies.Type == GameType.Multiplayer && !force)
             {
                 MultiplayerAction?.Invoke($"ACTION {Types.TakeAction};{character.Name}");
                 return;
@@ -119,7 +119,7 @@ namespace NKMCore
 
         public void BasicAttack(Character character, Character target, bool force = false)
         {
-            if (_game.Options.Type == GameType.Multiplayer && !force)
+            if (_game.Dependencies.Type == GameType.Multiplayer && !force)
             {
                 MultiplayerAction?.Invoke($"ACTION {Types.BasicAttack};{character.Name}:{target.Name}");
                 return;
@@ -131,7 +131,7 @@ namespace NKMCore
 
         public void ClickAbility(IClickable ability, bool force = false)
         {
-            if (_game.Options.Type == GameType.Multiplayer && !force)
+            if (_game.Dependencies.Type == GameType.Multiplayer && !force)
             {
                 MultiplayerAction?.Invoke($"ACTION {Types.ClickAbility};{ability.GetType().Name}");
                 return;
@@ -142,7 +142,7 @@ namespace NKMCore
 
         public void UseAbility(IUseableCell ability, HexCell cell, bool force = false)
         {
-            if (_game.Options.Type == GameType.Multiplayer && !force)
+            if (_game.Dependencies.Type == GameType.Multiplayer && !force)
             {
                 MultiplayerAction?.Invoke($"ACTION {Types.UseAbility};{ability.GetType().Name}:{cell.Coordinates.ToString()}");
                 return;
@@ -152,7 +152,7 @@ namespace NKMCore
         }
         public void UseAbility(IUseableCellList ability, IEnumerable<HexCell> cells, bool force = false)
         {
-            if (_game.Options.Type == GameType.Multiplayer && !force)
+            if (_game.Dependencies.Type == GameType.Multiplayer && !force)
             {
                 MultiplayerAction?.Invoke($"ACTION {Types.UseAbility};{ability.GetType().Name}:{string.Join(":", cells.Select(c => c.Coordinates.ToString()))}");
                 return;
@@ -163,7 +163,7 @@ namespace NKMCore
 
         public void UseAbility(IUseableCharacter ability, Character character, bool force = false)
         {
-            if (_game.Options.Type == GameType.Multiplayer && !force)
+            if (_game.Dependencies.Type == GameType.Multiplayer && !force)
             {
                 MultiplayerAction?.Invoke($"ACTION {Types.UseAbility};{ability.GetType().Name}:{character.Name}");
                 return;
@@ -174,7 +174,7 @@ namespace NKMCore
 
         public void Cancel(bool force = false)
         {
-            if (_game.Options.Type == GameType.Multiplayer && !force)
+            if (_game.Dependencies.Type == GameType.Multiplayer && !force)
             {
                 MultiplayerAction?.Invoke($"ACTION {Types.CancelAbility}");
                 return;
