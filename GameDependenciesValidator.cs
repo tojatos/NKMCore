@@ -35,6 +35,5 @@ namespace NKMCore
             IsGameTypeSet &&
             IsSelectableSet &&
             IsConnectionSet;
-        
     }
 }

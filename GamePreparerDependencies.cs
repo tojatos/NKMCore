@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System.Collections.Generic;
+using System.Data;
 using NKMCore.Hex;
 
 namespace NKMCore
@@ -6,6 +7,7 @@ namespace NKMCore
     public class GamePreparerDependencies
     {
         public int NumberOfPlayers { get; set; }
+        public List<string> PlayerNames { get; set; }
 	    public int NumberOfCharactersPerPlayer { get; set; }
         public bool BansEnabled { get; set; }
         public int NumberOfBans { get; set; }

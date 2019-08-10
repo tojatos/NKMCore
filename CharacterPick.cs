@@ -23,6 +23,8 @@ namespace NKMCore
 
 	    public static CharacterPick Create(Game game, GamePreparerDependencies preparerDependencies)
 	    {
+		    if (preparerDependencies.GameType == GameType.Multiplayer) 
+			    return new ServerPick(game, preparerDependencies);
 		    switch (preparerDependencies.PickType)
 		    {
 			    case PickType.Blind:
@@ -38,6 +40,7 @@ namespace NKMCore
 
         public virtual async Task BindCharactersToPlayers()
         {
+	        await Task.CompletedTask;
 	        throw new NotImplementedException();
         }
 

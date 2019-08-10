@@ -36,15 +36,7 @@ namespace NKMCore
             );
         }
         
-		private List<GamePlayer> GetPlayers()
-        {
-            if (_preparerDependencies.GameType == GameType.Local)
-            {
-                return Enumerable.Range(0, _preparerDependencies.NumberOfPlayers)
-                    .Select(n => new GamePlayer {Name = $"Player {n}"}).ToList();
-            }
-            return new List<GamePlayer>();
-        }
+		private List<GamePlayer> GetPlayers() => _preparerDependencies.PlayerNames.Select(name => new GamePlayer{ Name = name}).ToList();
 
         public bool AreOptionsValid => _gameDependenciesValidator.AreOptionsValid;
 
