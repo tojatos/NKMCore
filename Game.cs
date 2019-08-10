@@ -11,7 +11,7 @@ namespace NKMCore
 {
 	public class Game
 	{
-		public GameOptions Options { get; private set; }
+		public GameDependencies Dependencies { get; private set; }
 
 		public List<GamePlayer> Players;
 		public List<Character> Characters => Players.SelectMany(p => p.Characters).ToList();
@@ -24,24 +24,24 @@ namespace NKMCore
 		public static IDbConnection Conn;
 		public ISelectable Selectable { get; private set; }
 
-		public bool IsReplay => Options.GameLog != null;
-		public Game(GameOptions gameOptions)
+		public bool IsReplay => Dependencies.GameLog != null;
+		public Game(GameDependencies gameDependencies)
 		{
 			Active = new Active(this);
 			Action = new Action(this);
 			Console = new Console(this);
 			Random = new NKMRandom();
-			Init(gameOptions);
+			Init(gameDependencies);
 		}
 
-		private void Init(GameOptions gameOptions)
+		private void Init(GameDependencies gameDependencies)
 		{
-			Options = gameOptions;
-			Selectable = gameOptions.Selectable;
-			Conn = gameOptions.Connection;
+			Dependencies = gameDependencies;
+			Selectable = gameDependencies.Selectable;
+			Conn = gameDependencies.Connection;
 
-			Players = new List<GamePlayer>(gameOptions.Players);
-			HexMap = gameOptions.HexMap;
+			Players = new List<GamePlayer>(gameDependencies.Players);
+			HexMap = gameDependencies.HexMap;
 			
 			Random.OnValueGet += (name, value) => Console.GameLog($"RNG: {name}; {value}");
 			Action.AfterAction += str =>
@@ -65,7 +65,7 @@ namespace NKMCore
 		
 		public void Start()
 		{
-			if (!Options.PlaceAllCharactersRandomlyAtStart)
+			if (!Dependencies.PlaceAllCharactersRandomlyAtStart)
 			{
 				Active.Turn.TurnStarted += async player =>
 				{
@@ -84,7 +84,7 @@ namespace NKMCore
 			AfterCharacterCreation += Init;
 			
 			TakeTurns();
-			if (Options.PlaceAllCharactersRandomlyAtStart)
+			if (Dependencies.PlaceAllCharactersRandomlyAtStart)
 			{
 				PlaceAllCharactersRandomlyOnSpawns();
 				if (Active.Phase.Number == 0) Active.Phase.Finish();

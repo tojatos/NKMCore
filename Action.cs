@@ -107,7 +107,7 @@ namespace NKMCore
 
         public void BasicMove(Character character, List<HexCell> cellPath, bool force = false)
         {
-            if (_game.Options.Type == GameType.Multiplayer && !force)
+            if (_game.Dependencies.Type == GameType.Multiplayer && !force)
             {
                 MultiplayerAction?.Invoke($"ACTION {Types.BasicMove};{character.Name}:{string.Join(":", cellPath.Select(c => c.Coordinates.ToString()))}");
                 return;

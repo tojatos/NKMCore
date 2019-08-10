@@ -35,7 +35,7 @@ namespace NKMCore
         }
         public void GameLog(string text)
         {
-            string path = _game.Options.LogFilePath;
+            string path = _game.Dependencies.LogFilePath;
             if (path == null) return;
         
             //Make sure target directory exists

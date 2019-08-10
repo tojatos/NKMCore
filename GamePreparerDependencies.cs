@@ -3,7 +3,7 @@ using NKMCore.Hex;
 
 namespace NKMCore
 {
-    public class GamePreparerOptions
+    public class GamePreparerDependencies
     {
         public int NumberOfPlayers { get; set; }
 	    public int NumberOfCharactersPerPlayer { get; set; }

@@ -4,7 +4,7 @@ using NKMCore.Hex;
 
 namespace NKMCore
 {
-	public class GameOptions
+	public class GameDependencies
 	{
 		public List<GamePlayer> Players { get; set; }
 		public HexMap HexMap { get; set; }

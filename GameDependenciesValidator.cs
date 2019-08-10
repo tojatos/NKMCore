@@ -2,31 +2,31 @@
 
 namespace NKMCore
 {
-    public class GameOptionsValidator
+    public class GameDependenciesValidator
     {
-        private readonly GameOptions _gameOptions;
+        private readonly GameDependencies _gameDependencies;
         private readonly int _numberOfPlayers;
         private readonly int _numberOfCharacters;
         
-        public GameOptionsValidator(GameOptions options, int numberOfPlayers, int numberOfCharacters)
+        public GameDependenciesValidator(GameDependencies dependencies, int numberOfPlayers, int numberOfCharacters)
         {
-            _gameOptions = options;
+            _gameDependencies = dependencies;
             _numberOfPlayers = numberOfPlayers;
             _numberOfCharacters = numberOfCharacters;
         }
         
         private bool NumberOfPlayersCorrect => 
-            _gameOptions.Players.Count == _numberOfPlayers;
+            _gameDependencies.Players.Count == _numberOfPlayers;
         private bool NumberOfCharactersPerPlayerCorrect =>
-            _gameOptions.Players.All(p => p.Characters.Count == _numberOfCharacters);
+            _gameDependencies.Players.All(p => p.Characters.Count == _numberOfCharacters);
         private bool IsHexMapSet =>
-            _gameOptions.HexMap != null;
+            _gameDependencies.HexMap != null;
         private bool IsGameTypeSet =>
-            _gameOptions.Type != GameType.Undefined;
+            _gameDependencies.Type != GameType.Undefined;
         private bool IsSelectableSet => 
-            _gameOptions.Selectable != null;
+            _gameDependencies.Selectable != null;
         private bool IsConnectionSet =>
-            _gameOptions.Connection != null;
+            _gameDependencies.Connection != null;
 
         public bool AreOptionsValid =>
             NumberOfPlayersCorrect &&
