@@ -16,6 +16,9 @@ namespace NKMCore
         private readonly Game _game;
         private Active Active => _game.Active;
 
+        public delegate void StringBoolD(string text, bool isDebug);
+        public event StringBoolD AfterAddLog;
+
         public Console(Game game)
         {
             _game = game;
@@ -32,6 +35,7 @@ namespace NKMCore
                 Text = text,
                 IsDebug = isDebug,
             });
+            AfterAddLog?.Invoke(text, isDebug);
         }
         public void GameLog(string text)
         {

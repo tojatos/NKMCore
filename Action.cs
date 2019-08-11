@@ -26,7 +26,7 @@ namespace NKMCore
             switch (actionType)
             {
                 case Types.PlaceCharacter:
-                    Character character = _game.Active.GamePlayer.Characters.First(c => c.Name == args[0]);
+                    Character character = _game.Characters.First(c => c.Name == args[0]);
                     HexCell cell = _game.HexMap.Cells.First(c => c.Coordinates.ToString() == args[1]);
                     PlaceCharacter(character, cell, true);
                     break;
