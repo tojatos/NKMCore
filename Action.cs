@@ -26,47 +26,65 @@ namespace NKMCore
             switch (actionType)
             {
                 case Types.PlaceCharacter:
+                {
                     Character character = _game.Characters.First(c => c.Name == args[0]);
                     HexCell cell = _game.HexMap.Cells.First(c => c.Coordinates.ToString() == args[1]);
                     PlaceCharacter(character, cell, true);
-                    break;
+                } break;
                 case Types.FinishTurn:
+                {
                     FinishTurn(true);
-                    break;
+                } break;
                 case Types.TakeAction:
-                    Character character1 = _game.Active.GamePlayer.Characters.First(c => c.Name == args[0]);
-                    TakeTurn(character1, true);
-                    break;
+                {
+                    Character character = _game.Active.GamePlayer.Characters.First(c => c.Name == args[0]);
+                    TakeTurn(character, true);
+                } break;
                 case Types.BasicMove:
+                {
                     Character characterToMove = _game.Active.GamePlayer.Characters.First(c => c.Name == args[0]);
                     List<HexCell> cellsToMove = args.Skip(1)
                         .Select(coords => _game.HexMap.Cells.First(c => c.Coordinates.ToString() == coords)).ToList();
                     BasicMove(characterToMove, cellsToMove, true);
-                    break;
+                } break;
                 case Types.BasicAttack:
+                {
                     Character c1 = _game.Active.GamePlayer.Characters.First(c => c.Name == args[0]);
                     Character c2 = _game.Characters.First(c => c.Name == args[1] && c1.CanBasicAttack(c));
                     BasicAttack(c1, c2, true);
-                    break;
+                } break;
                 case Types.ClickAbility:
-                    IClickable ability = _game.Active.Character.Abilities.First(a => a.GetType().Name == args[0]) as IClickable;
+                {
+                    var ability = _game.Active.Character.Abilities.First(a => a.GetType().Name == args[0]) as IClickable;
                     ClickAbility(ability, true);
-                    break;
+                } break;
                 case Types.UseAbility:
-                    Ability ab = _game.Active.Character.Abilities.First(a => a.GetType().Name == args[0]);
-                    Character c3 = _game.Characters.First(c => c.Name == args[1]);
+                {
+                    Ability ability = _game.Active.Character.Abilities.First(a => a.GetType().Name == args[0]);
+                    Character character = _game.Characters.First(c => c.Name == args[1]);
                     if (!args[1].EndsWith(")")) 
-                        UseAbility(ab as IUseableCharacter, c3, true);
+                        UseAbility(ability as IUseableCharacter, character, true);
                     IEnumerable<HexCell> targetCells = args.Skip(1)
                         .Select(c => _game.HexMap.Cells.First(a => a.Coordinates.ToString() == c));
                     if(targetCells.Count() == 1)
-                        UseAbility(ab as IUseableCell, targetCells.First());
+                        UseAbility(ability as IUseableCell, targetCells.First());
                     else 
-                        UseAbility(ab as IUseableCellList, targetCells);
-                    break;
+                        UseAbility(ability as IUseableCellList, targetCells);
+                } break;
                 case Types.CancelAbility:
+                {
                     Cancel(true);
-                    break;
+                } break;
+                case Types.Select:
+                {
+                    Character character = _game.Active.GamePlayer.Characters.First(c => c.Name == args[0]);
+                    Select(character, true);
+                } break;
+
+                case Types.Deselect:
+                {
+                    Deselect(true);
+                } break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(actionType), actionType, null);
             }
@@ -150,6 +168,7 @@ namespace NKMCore
             ability.Use(cell);
             AfterAction?.Invoke(Types.UseAbility);
         }
+        
         public void UseAbility(IUseableCellList ability, IEnumerable<HexCell> cells, bool force = false)
         {
             if (_game.Dependencies.Type == GameType.Multiplayer && !force)
@@ -183,18 +202,27 @@ namespace NKMCore
             AfterAction?.Invoke(Types.CancelAbility);
         }
 
-        public void Select(Character character)
+        public void Select(Character character, bool force = false)
         {
+            if (_game.Dependencies.Type == GameType.Multiplayer && !force)
+            {
+                MultiplayerAction?.Invoke($"ACTION {Types.Select};{character.Name}");
+                return;
+            }
             _game.Active.Select(character);
             AfterAction?.Invoke(Types.Select);
         }
 
-        public void Deselect()
+        public void Deselect(bool force = false)
         {
+            if (_game.Dependencies.Type == GameType.Multiplayer && !force)
+            {
+                MultiplayerAction?.Invoke($"ACTION {Types.Deselect}");
+                return;
+            }
             _game.Active.Deselect();
             AfterAction?.Invoke(Types.Deselect);
         }
-        
     
         public static class Types
         {
@@ -208,7 +236,6 @@ namespace NKMCore
             public const string CancelAbility = "CancelAbility";
             public const string Select = "Select";
             public const string Deselect = "Deselect";
-            public const string TouchCell = "TouchCell";
         }
     }
 }
