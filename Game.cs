@@ -65,7 +65,7 @@ namespace NKMCore
 		
 		public void Start()
 		{
-			if (!Dependencies.PlaceAllCharactersRandomlyAtStart)
+			if (!Dependencies.PlaceAllCharactersRandomlyAtStart || Dependencies.Type == GameType.Multiplayer) //TODO: checking for multiplayer is for tests only
 			{
 				Active.Turn.TurnStarted += async player =>
 				{
@@ -84,7 +84,7 @@ namespace NKMCore
 			AfterCharacterCreation += Init;
 			
 			TakeTurns();
-			if (Dependencies.PlaceAllCharactersRandomlyAtStart)
+			if (Dependencies.PlaceAllCharactersRandomlyAtStart && Dependencies.Type != GameType.Multiplayer)
 			{
 				PlaceAllCharactersRandomlyOnSpawns();
 				if (Active.Phase.Number == 0) Active.Phase.Finish();
@@ -95,7 +95,6 @@ namespace NKMCore
 		{
 			AddTriggersToEvents(c);
 			AfterCharacterInit?.Invoke(c);
-			
 		}
 		private void Init(Ability a)
 		{
@@ -227,7 +226,7 @@ namespace NKMCore
 	            if(!Active.GamePlayer.GetSpawnPoints(this).Contains(touchedCell)) return;
                 Action.PlaceCharacter(Active.SelectedCharacterToPlace, touchedCell);
 	            if (Active.Phase.Number != 0) return;
-	            Active.Turn.Finish();
+	            Action.FinishTurn();
             }
             else if (Active.HexCells?.Contains(touchedCell) == true)
             {
