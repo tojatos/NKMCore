@@ -9,13 +9,13 @@ namespace NKMCore
         private readonly GameType _type;
         private readonly ISelectable _selectable;
         public event Delegates.String MultiplayerAction;
-        
+
         public SelectableAction(GameType type, ISelectable selectable)
         {
             _type = type;
             _selectable = selectable;
         }
-        
+
         public void Make(string actionType, string[] args)
         {
             switch (actionType)
@@ -33,7 +33,7 @@ namespace NKMCore
                     throw new ArgumentOutOfRangeException(nameof(actionType), actionType, null);
             }
         }
-        
+
         public void OpenSelectable(int selectableId, bool force = false)
         {
             if (_type == GameType.Multiplayer && !force)
@@ -44,12 +44,12 @@ namespace NKMCore
 
             _selectable.OpenSelectable(selectableId);
         }
-        
+
         public void CloseSelectable(int selectableId, List<int> selectedIds, bool force = false)
         {
             if (_type == GameType.Multiplayer && !force)
             {
-                MultiplayerAction?.Invoke($"ACTION {Action.Types.OpenSelectable};{selectableId}:{string.Join(":", selectedIds)}");
+                MultiplayerAction?.Invoke($"ACTION {Action.Types.CloseSelectable};{selectableId}:{string.Join(":", selectedIds)}");
                 return;
             }
 

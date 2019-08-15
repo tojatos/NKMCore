@@ -44,7 +44,7 @@ namespace NKMCore
 
 			Players = new List<GamePlayer>(gameDependencies.Players);
 			HexMap = gameDependencies.HexMap;
-			
+
 			Random.OnValueGet += (name, value) => Console.GameLog($"RNG: {name}; {value}");
 			Action.AfterAction += str =>
 			{
@@ -74,10 +74,10 @@ namespace NKMCore
 		public event Delegates.CharacterD AfterCharacterInit;
 		public void InvokeAfterCharacterCreation(Character c) => AfterCharacterCreation?.Invoke(c);
 		public void InvokeAfterAbilityCreation(Ability a) => AfterAbilityCreation?.Invoke(a);
-		
+
 		public void Start()
 		{
-			if (!Dependencies.PlaceAllCharactersRandomlyAtStart || Dependencies.Type == GameType.Multiplayer) //TODO: checking for multiplayer is for tests only
+			if (!Dependencies.PlaceAllCharactersRandomlyAtStart || true) //TODO: checking for multiplayer is for tests only
 			{
 				Active.Turn.TurnStarted += async player =>
 				{
@@ -88,15 +88,15 @@ namespace NKMCore
 					if (!IsEveryCharacterPlacedInTheFirstPhase) await TryToPlaceCharacter();
 				};
 			}
-			
+
 			Abilities.ForEach(Init);
 			AfterAbilityCreation += Init;
 
 			Characters.ForEach(Init);
 			AfterCharacterCreation += Init;
-			
+
 			TakeTurns();
-			if (Dependencies.PlaceAllCharactersRandomlyAtStart && Dependencies.Type != GameType.Multiplayer)
+			if (Dependencies.PlaceAllCharactersRandomlyAtStart && false)
 			{
 				PlaceAllCharactersRandomlyOnSpawns();
 				if (Active.Phase.Number == 0) Active.Phase.Finish();
@@ -190,7 +190,7 @@ namespace NKMCore
 		private void AddTriggersToEvents(Character character)
 		{
 			Console.AddTriggersToEvents(character);
-		
+
 			character.JustBeforeFirstAction += () => Active.Turn.CharacterThatTookActionInTurn = character;
 			character.OnDeath += () =>
 			{
@@ -204,7 +204,7 @@ namespace NKMCore
 				character.InvokeOnDeath();
 			};
 			character.OnDeath += () => character.Effects.Clear();
-		
+
 			Active.Turn.TurnFinished += other =>
 			{
 				if (other != character) return;
@@ -269,7 +269,7 @@ namespace NKMCore
 
                 if (!touchedCell.IsEmpty)
                     Action.Select(touchedCell.FirstCharacter);
-	            else 
+	            else
 	                Action.Deselect();
             }
         }

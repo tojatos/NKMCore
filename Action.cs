@@ -19,7 +19,7 @@ namespace NKMCore
 
         public event Delegates.String AfterAction;
         public event Delegates.String MultiplayerAction;
-        
+
         //Make action from server
         public void Make(string actionType, string[] args)
         {
@@ -27,7 +27,7 @@ namespace NKMCore
             {
                 case Types.PlaceCharacter:
                 {
-                    Character character = _game.Characters.First(c => c.Name == args[0]);
+                    Character character = _game.Characters.First(c => c.ID == int.Parse(args[0]));
                     HexCell cell = _game.HexMap.Cells.First(c => c.Coordinates.ToString() == args[1]);
                     PlaceCharacter(character, cell, true);
                 } break;
@@ -37,20 +37,20 @@ namespace NKMCore
                 } break;
                 case Types.TakeAction:
                 {
-                    Character character = _game.Active.GamePlayer.Characters.First(c => c.Name == args[0]);
+                    Character character = _game.Characters.First(c => c.ID == int.Parse(args[0]));
                     TakeTurn(character, true);
                 } break;
                 case Types.BasicMove:
                 {
-                    Character characterToMove = _game.Active.GamePlayer.Characters.First(c => c.Name == args[0]);
+                    Character characterToMove = _game.Characters.First(c => c.ID == int.Parse(args[0]));
                     List<HexCell> cellsToMove = args.Skip(1)
                         .Select(coords => _game.HexMap.Cells.First(c => c.Coordinates.ToString() == coords)).ToList();
                     BasicMove(characterToMove, cellsToMove, true);
                 } break;
                 case Types.BasicAttack:
                 {
-                    Character c1 = _game.Active.GamePlayer.Characters.First(c => c.Name == args[0]);
-                    Character c2 = _game.Characters.First(c => c.Name == args[1] && c1.CanBasicAttack(c));
+                    Character c1 = _game.Characters.First(c => c.ID == int.Parse(args[0]));
+                    Character c2 = _game.Characters.First(c => c.ID == int.Parse(args[1]) && c1.CanBasicAttack(c));
                     BasicAttack(c1, c2, true);
                 } break;
                 case Types.ClickAbility:
@@ -61,14 +61,14 @@ namespace NKMCore
                 case Types.UseAbility:
                 {
                     Ability ability = _game.Active.Character.Abilities.First(a => a.GetType().Name == args[0]);
-                    Character character = _game.Characters.First(c => c.Name == args[1]);
-                    if (!args[1].EndsWith(")")) 
+                    Character character = _game.Characters.First(c => c.ID == int.Parse(args[1]));
+                    if (!args[1].EndsWith(")"))
                         UseAbility(ability as IUseableCharacter, character, true);
                     IEnumerable<HexCell> targetCells = args.Skip(1)
                         .Select(c => _game.HexMap.Cells.First(a => a.Coordinates.ToString() == c));
                     if(targetCells.Count() == 1)
                         UseAbility(ability as IUseableCell, targetCells.First());
-                    else 
+                    else
                         UseAbility(ability as IUseableCellList, targetCells);
                 } break;
                 case Types.CancelAbility:
@@ -77,7 +77,7 @@ namespace NKMCore
                 } break;
                 case Types.Select:
                 {
-                    Character character = _game.Active.GamePlayer.Characters.First(c => c.Name == args[0]);
+                    Character character = _game.Characters.First(c => c.ID == int.Parse(args[0]));
                     Select(character, true);
                 } break;
 
@@ -94,7 +94,7 @@ namespace NKMCore
         {
             if (_game.Dependencies.Type == GameType.Multiplayer && !force)
             {
-                MultiplayerAction?.Invoke($"ACTION {Types.PlaceCharacter};{character.Name}:{targetCell.Coordinates.ToString()}");
+                MultiplayerAction?.Invoke($"ACTION {Types.PlaceCharacter};{character.ID}:{targetCell.Coordinates.ToString()}");
                 return;
             }
             _game.HexMap.Place(character, targetCell);
@@ -116,7 +116,7 @@ namespace NKMCore
         {
             if (_game.Dependencies.Type == GameType.Multiplayer && !force)
             {
-                MultiplayerAction?.Invoke($"ACTION {Types.TakeAction};{character.Name}");
+                MultiplayerAction?.Invoke($"ACTION {Types.TakeAction};{character.ID}");
                 return;
             }
             character.TryToTakeTurn();
@@ -127,7 +127,7 @@ namespace NKMCore
         {
             if (_game.Dependencies.Type == GameType.Multiplayer && !force)
             {
-                MultiplayerAction?.Invoke($"ACTION {Types.BasicMove};{character.Name}:{string.Join(":", cellPath.Select(c => c.Coordinates.ToString()))}");
+                MultiplayerAction?.Invoke($"ACTION {Types.BasicMove};{character.ID}:{string.Join(":", cellPath.Select(c => c.Coordinates.ToString()))}");
                 return;
             }
             character.TryToTakeTurn();
@@ -139,7 +139,7 @@ namespace NKMCore
         {
             if (_game.Dependencies.Type == GameType.Multiplayer && !force)
             {
-                MultiplayerAction?.Invoke($"ACTION {Types.BasicAttack};{character.Name}:{target.Name}");
+                MultiplayerAction?.Invoke($"ACTION {Types.BasicAttack};{character.ID}:{target.Name}");
                 return;
             }
             character.TryToTakeTurn();
@@ -168,7 +168,7 @@ namespace NKMCore
             ability.Use(cell);
             AfterAction?.Invoke(Types.UseAbility);
         }
-        
+
         public void UseAbility(IUseableCellList ability, IEnumerable<HexCell> cells, bool force = false)
         {
             if (_game.Dependencies.Type == GameType.Multiplayer && !force)
@@ -184,7 +184,7 @@ namespace NKMCore
         {
             if (_game.Dependencies.Type == GameType.Multiplayer && !force)
             {
-                MultiplayerAction?.Invoke($"ACTION {Types.UseAbility};{ability.GetType().Name}:{character.Name}");
+                MultiplayerAction?.Invoke($"ACTION {Types.UseAbility};{ability.GetType().Name}:{character.ID}");
                 return;
             }
             ability.Use(character);
@@ -206,7 +206,7 @@ namespace NKMCore
         {
             if (_game.Dependencies.Type == GameType.Multiplayer && !force)
             {
-                MultiplayerAction?.Invoke($"ACTION {Types.Select};{character.Name}");
+                MultiplayerAction?.Invoke($"ACTION {Types.Select};{character.ID}");
                 return;
             }
             _game.Active.Select(character);
@@ -223,7 +223,7 @@ namespace NKMCore
             _game.Active.Deselect();
             AfterAction?.Invoke(Types.Deselect);
         }
-    
+
         public static class Types
         {
             public const string PlaceCharacter = "PlaceCharacter";
