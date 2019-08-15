@@ -4,9 +4,9 @@ namespace NKMCore
 {
     public static class NKMID
     {
-        private static readonly Dictionary<string, uint> IdsTaken = new Dictionary<string, uint>();
+        private static readonly Dictionary<string, int> IdsTaken = new Dictionary<string, int>();
 
-        public static uint GetNext(string from)
+        public static int GetNext(string from)
         {
             if (IdsTaken.ContainsKey(from))
             {

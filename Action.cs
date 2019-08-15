@@ -236,6 +236,8 @@ namespace NKMCore
             public const string CancelAbility = "CancelAbility";
             public const string Select = "Select";
             public const string Deselect = "Deselect";
+            public const string OpenSelectable = "OpenSelectable";
+            public const string CloseSelectable = "CloseSelectable";
         }
     }
 }

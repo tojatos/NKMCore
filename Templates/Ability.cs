@@ -10,13 +10,16 @@ namespace NKMCore.Templates
 {
 	public abstract class Ability
 	{
+		public readonly string Name;
+		public readonly int ID;
+
 		protected readonly Game Game;
 		public Active Active => Game.Active;
 		protected NKMRandom Random => Game.Random;
 		protected HexMap HexMap => Game.HexMap;
 		protected GamePlayer Owner => Game.Players.FirstOrDefault(p => p.Characters.Contains(ParentCharacter));
 		protected Ability(Game game, AbilityType type, string name, int cooldown = 0) : this(game, type, name, cooldown, NKMID.GetNext("Ability")){}
-		protected Ability(Game game, AbilityType type, string name, int cooldown, uint id)
+		protected Ability(Game game, AbilityType type, string name, int cooldown, int id)
 		{
 			Game = game;
 			ID = id;
@@ -38,8 +41,6 @@ namespace NKMCore.Templates
 
 		protected List<HexCell> GetNeighboursOfOwner(int depth, SearchFlags searchFlags = SearchFlags.None, Predicate<HexCell> stopAt = null) =>
 			ParentCharacter.ParentCell.GetNeighbors(Owner, depth, searchFlags, stopAt);
-		public readonly string Name;
-		public readonly uint ID;
 		public bool CanUseOnGround { get; protected set; } = true;
 		protected AbilityUseValidator Validator;
 		public AbilityType Type { get; }

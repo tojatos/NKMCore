@@ -159,7 +159,6 @@ namespace NKMCore
 		public bool CanWait(Character character) => !(character.Owner != GamePlayer || character.TookActionInPhaseBefore ||
 		                         Turn.CharacterThatTookActionInTurn != null);
 
-		public void Select<T>(SelectableProperties<T> props) => _game.Selectable.Select(props);
 		public bool CanSpawn(Character character, HexCell cell) => cell.IsFreeToStand && cell.IsSpawnFor(character.Owner, _game);
 	}
 }

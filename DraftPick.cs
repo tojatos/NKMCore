@@ -44,25 +44,28 @@ namespace NKMCore
 		
 		private async Task DraftPickOneCharacter(GamePlayer player)
 		{
-			await SelectAndWait(new SelectableProperties<Character>
+			await SelectAndWait(new SelectableProperties
 			{
-				ToSelect = _charactersToPick,
+				WhatIsSelected = SelectableProperties.Type.Character,
+				IdsToSelect = _charactersToPick.Select(c => c.ID).ToList(),
 				ConstraintOfSelection = list => list.Count == 1,
 				OnSelectFinish = list =>
 				{
-					player.Characters.Add(CharacterFactory.Create(_game, list[0].Name));
-					_charactersToPick.Remove(list[0]);
+					Character picked = _charactersToPick.Single(c => c.ID == list[0]);
+					player.Characters.Add(CharacterFactory.Create(_game, picked.Name));
+					_charactersToPick.Remove(picked);
 				},
 				SelectionTitle = $"Wybór postaci - {player.Name}",
 			});
 		}
 		private async Task BanOneCharacter(GamePlayer player)
 		{
-			await SelectAndWait(new SelectableProperties<Character>
+			await SelectAndWait(new SelectableProperties
 			{
-				ToSelect = _charactersToPick,
+				WhatIsSelected = SelectableProperties.Type.Character,
+				IdsToSelect = _charactersToPick.Select(c => c.ID).ToList(),
 				ConstraintOfSelection = list => list.Count == 1,
-				OnSelectFinish = list => _charactersToPick.Remove(list[0]),
+				OnSelectFinish = list => _charactersToPick.RemoveAll(c => c.ID == list[0]),
 				SelectionTitle = $"Banowanie postaci - {player.Name}",
 			});
 		}

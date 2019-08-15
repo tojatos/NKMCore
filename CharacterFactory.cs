@@ -5,10 +5,12 @@ namespace NKMCore
 {
     public static class CharacterFactory
     {
-		public static Character Create(Game game, string name) => 
+		public static Character Create(Game game, string name) =>
 			CreateCharacterFromDatabase(game, name, NKMID.GetNext("Character"));
+		public static Character Create(Game game, string name, int id) =>
+			CreateCharacterFromDatabase(game, name, id);
 
-		private static Character CreateCharacterFromDatabase(Game game, string name, uint id)
+		private static Character CreateCharacterFromDatabase(Game game, string name, int id)
 		{
 			SqliteRow characterData = Game.Conn.GetCharacterData(name);
 			Character.Properties properties = GetCharacterDbProperties(characterData);

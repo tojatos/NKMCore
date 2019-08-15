@@ -1,7 +1,10 @@
-﻿namespace NKMCore
+﻿using System.Collections.Generic;
+
+namespace NKMCore
 {
     public interface ISelectable
     {
-        void Select<T>(SelectableProperties<T> props);
+        void OpenSelectable(int selectableId);
+        void CloseSelectable(int selectableId, List<int> selectedIds);
     }
 }

@@ -23,6 +23,7 @@ namespace NKMCore
 		public readonly NKMRandom Random;
 		public static IDbConnection Conn;
 		public ISelectable Selectable { get; private set; }
+		public SelectableAction SelectableAction;
 
 		public bool IsReplay => Dependencies.GameLog != null;
 		public Game(GameDependencies gameDependencies)
@@ -38,6 +39,7 @@ namespace NKMCore
 		{
 			Dependencies = gameDependencies;
 			Selectable = gameDependencies.Selectable;
+			SelectableAction = gameDependencies.SelectableAction;
 			Conn = gameDependencies.Connection;
 
 			Players = new List<GamePlayer>(gameDependencies.Players);
@@ -53,8 +55,18 @@ namespace NKMCore
 		/// <summary>
 		/// Get a copy of every character in the game
 		/// </summary>
-		public static List<Character> GetMockCharacters() =>
-			Conn.GetCharacterNames().Select(n => CharacterFactory.Create(null, n)).ToList();
+		public static List<Character> GetMockCharacters()
+		{
+			List<string> names = Conn.GetCharacterNames();
+			var toReturn = new List<Character>();
+			int len = names.Count;
+			for (var i = 1; i <= len; ++i)
+			{
+				toReturn.Add(CharacterFactory.Create(null, names[i-1], -i));
+			}
+
+			return toReturn;
+		}
 
 		public event Delegates.AbilityD AfterAbilityCreation;
 		public event Delegates.CharacterD AfterCharacterCreation;
@@ -108,18 +120,21 @@ namespace NKMCore
 			List<Character> charactersToPlace = Active.GamePlayer.Characters.Where(c => !c.IsOnMap && c.IsAlive).ToList();
 			if (!charactersToPlace.Any() || Active.SelectedCharacterToPlace != null) return;
 			Character pickedCharacter = null;
-            Selectable.Select(new SelectableProperties<Character>
-            {
-                ToSelect = charactersToPlace,
-                ConstraintOfSelection = list => list.Count == 1,
-                OnSelectFinish = list =>
-                {
-                    Active.PrepareToPlaceCharacter(Active.GamePlayer.GetSpawnPoints(this).FindAll(c => c.IsFreeToStand));
-                    Active.SelectedCharacterToPlace = Active.GamePlayer.Characters.Single(c => c.Name == list[0].Name);
-	                pickedCharacter = Active.SelectedCharacterToPlace;
-                },
-                SelectionTitle = "Wystaw postać",
-            });
+			int id = Dependencies.SelectableManager.Register(new SelectableProperties
+			{
+				WhatIsSelected = SelectableProperties.Type.Character,
+				IdsToSelect = charactersToPlace.Select(c => c.ID).ToList(),
+				ConstraintOfSelection = list => list.Count == 1,
+				OnSelectFinish = list =>
+				{
+					Active.PrepareToPlaceCharacter(Active.GamePlayer.GetSpawnPoints(this)
+						.FindAll(c => c.IsFreeToStand));
+					Active.SelectedCharacterToPlace = Active.GamePlayer.Characters.Single(c => c.ID == list[0]);
+					pickedCharacter = Active.SelectedCharacterToPlace;
+				},
+				SelectionTitle = "Wystaw postać",
+			});
+			SelectableAction.OpenSelectable(id);
 			Func<bool> placed = () => pickedCharacter?.IsOnMap == true;
 			await placed.WaitToBeTrue();
 		}

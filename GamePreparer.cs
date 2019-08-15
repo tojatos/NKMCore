@@ -25,8 +25,10 @@ namespace NKMCore
                 HexMap = dependencies.HexMap,
                 Type = dependencies.GameType,
                 Selectable = dependencies.Selectable,
+                SelectableAction = dependencies.SelectableAction,
                 Connection = dependencies.Connection,
                 LogFilePath = dependencies.LogFilePath,
+                SelectableManager = dependencies.SelectableManager,
                 PlaceAllCharactersRandomlyAtStart = dependencies.PickType == PickType.AllRandom,
             };
             _gameDependenciesValidator = new GameDependenciesValidator(

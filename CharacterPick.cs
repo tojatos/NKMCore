@@ -46,27 +46,25 @@ namespace NKMCore
 
         protected async Task PickCharacters(List<Character> charactersToPick, int numberOfCharactersToPick, GamePlayer player, Game game)
 		{
-			await SelectAndWait(new SelectableProperties<Character>
-			{
-				ToSelect = charactersToPick,
+            var s = new SelectableProperties
+            {
+	            WhatIsSelected = SelectableProperties.Type.Character,
+	            IdsToSelect = charactersToPick.Select(c => c.ID).ToList(),
 				ConstraintOfSelection = list => list.Count == numberOfCharactersToPick,
-				OnSelectFinish = list => player.Characters.AddRange(list.Select(c => CharacterFactory.Create(game, c.Name))),
+				OnSelectFinish = list => player.Characters.AddRange(list.Select(id => CharacterFactory.Create(game, charactersToPick.Single(c => c.ID == id).Name))),
 				SelectionTitle = $"Wybór postaci - {player.Name}",
-			});
-		}
-		
-		private void AllRandom(Game game)
-		{
+            };
+			await SelectAndWait(s);
 		}
 
-		protected async Task SelectAndWait(SelectableProperties<Character> props)
+        protected async Task SelectAndWait(SelectableProperties props)
 		{
 			bool isSelected= false;
 			props.OnSelectFinish += list => isSelected = true;
-			_preparerDependencies.Selectable.Select(props);
+            int selectableIndex = _game.Dependencies.SelectableManager.Register(props);
+			_game.SelectableAction.OpenSelectable(selectableIndex);
 			Func<bool> picked = () => isSelected;
 			await picked.WaitToBeTrue();
 		}
-        
     }
 }

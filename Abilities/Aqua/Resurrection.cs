@@ -31,17 +31,19 @@ Czas odnowienia: {Cooldown}";
 
 		public void Click()
 		{
-			Active.Select(new SelectableProperties<Character>()
-			{
-				ToSelect = Active.GamePlayer.Characters.FindAll(_isResurrectable.Invoke),
+            var s = new SelectableProperties
+            {
+	            IdsToSelect = Active.GamePlayer.Characters.FindAll(_isResurrectable.Invoke).Select(c => c.ID).ToList(),
 				ConstraintOfSelection = list => list.Count == 1,
 				OnSelectFinish = list =>
 				{
-					_characterToResurrect = list[0];
+					_characterToResurrect = Active.GamePlayer.Characters.Single(c => c.ID == list[0]);
                     Active.Prepare(this, GetRangeCells());
 				},
 				SelectionTitle = "Postać do ożywienia",
-			});
+            };
+            int selectableIndex = Game.Dependencies.SelectableManager.Register(s);
+			Game.SelectableAction.OpenSelectable(selectableIndex);
 		}
 
 		public void Use(HexCell cell)

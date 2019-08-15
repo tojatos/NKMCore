@@ -20,7 +20,7 @@ namespace NKMCore.Templates
 		public Func<List<HexCell>> GetBasicAttackCells;
 		
 		#region Readonly Properties
-		public readonly uint ID;
+		public readonly int ID;
 		public readonly Stat HealthPoints;
 		public readonly Stat AttackPoints;
 		public readonly Stat BasicAttackRange;
@@ -312,7 +312,7 @@ namespace NKMCore.Templates
         {
 	        public Game Game;
 	        
-	        public uint Id;
+	        public int Id;
 	        public string Name;
 	        
             public Stat HealthPoints;
