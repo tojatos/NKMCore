@@ -182,10 +182,10 @@ namespace NKMCore
 
 		private void TryPlacingOnRandomSpawnCell(GamePlayer p, Character c)
 		{
-			HexCell spawnPoint = p.GetSpawnPoints(this).FindAll(cell => Active.CanPlace(c, cell)).GetRandom();
+			HexCell spawnPoint = p.GetSpawnPoints(this).FindAll(cell => Active.CanPlace(c, cell)).GetNKMRandom(Random);
 			if (spawnPoint == null) return;
 
-			Action.PlaceCharacter(c, spawnPoint);
+			HexMap.Place(c, spawnPoint);
 		}
 
 		private void AddTriggersToEvents(Character character)
