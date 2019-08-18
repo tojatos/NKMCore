@@ -77,7 +77,7 @@ namespace NKMCore
 
 		public void Start()
 		{
-			if (!Dependencies.PlaceAllCharactersRandomlyAtStart || true) //TODO: checking for multiplayer is for tests only
+			if (!Dependencies.PlaceAllCharactersRandomlyAtStart) //TODO: checking for multiplayer is for tests only
 			{
 				Active.Turn.TurnStarted += async player =>
 				{
@@ -96,7 +96,7 @@ namespace NKMCore
 			AfterCharacterCreation += Init;
 
 			TakeTurns();
-			if (Dependencies.PlaceAllCharactersRandomlyAtStart && false)
+			if (Dependencies.PlaceAllCharactersRandomlyAtStart)
 			{
 				PlaceAllCharactersRandomlyOnSpawns();
 				if (Active.Phase.Number == 0) Active.Phase.Finish();

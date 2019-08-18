@@ -34,7 +34,11 @@ namespace NKMCore.Extensions
 			conn.Close();
 			return rows;
 		}
-		public static List<string> GetCharacterNames(this IDbConnection conn) => Select(conn, "SELECT Name FROM Character").SelectMany(row => row.Data.Values).ToList();
+		private static readonly List<string> DisabledCharacters = new List<string>
+		{
+			"Yoshino",
+		};
+		public static List<string> GetCharacterNames(this IDbConnection conn) => Select(conn, "SELECT Name FROM Character").SelectMany(row => row.Data.Values).Except(DisabledCharacters).ToList();
 		public static IEnumerable<string> GetAbilityClassNames(this IDbConnection conn, string characterName) => Select(conn, $"SELECT Ability.ClassName AS AbilityName FROM Character INNER JOIN Character_Ability ON Character.ID = Character_Ability.CharacterID INNER JOIN Ability ON Ability.ID = Character_Ability.AbilityID WHERE Character.Name = '{characterName}';").SelectMany(row => row.Data.Values).ToList();
 		public static SqliteRow GetCharacterData(this IDbConnection conn, string characterName) => Select(conn, $"SELECT AttackPoints, HealthPoints, BasicAttackRange, Speed, PhysicalDefense, MagicalDefense, FightType, Description, Quote, Author.Name FROM Character INNER JOIN Author ON Character.AuthorID = Author.ID WHERE Character.Name = '{characterName}';")[0];
 	}

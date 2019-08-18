@@ -12,7 +12,7 @@ namespace NKMCore
     {
         public readonly List<ConsoleLine> LoggedLines = new List<ConsoleLine>();
         public List<ConsoleLine> NonDebugLines => LoggedLines.FindAll(t => t.IsDebug == false);
-    
+
         private readonly Game _game;
         private Active Active => _game.Active;
 
@@ -23,8 +23,6 @@ namespace NKMCore
         {
             _game = game;
         }
-
-        private bool _isDebug = true;
 
         public void Log(string text) => AddLog(text);
         public void DebugLog(string text) => AddLog(text, true);
@@ -41,11 +39,11 @@ namespace NKMCore
         {
             string path = _game.Dependencies.LogFilePath;
             if (path == null) return;
-        
+
             //Make sure target directory exists
             string directoryName = Path.GetDirectoryName(path);
             if(directoryName != null) Directory.CreateDirectory(directoryName);
-        
+
             File.AppendAllText(path, text + '\n');
         }
         public void ExecuteCommand(string text)
@@ -56,7 +54,7 @@ namespace NKMCore
             if ((new[] { "set", "s" }).Contains(arguments[0]))
             {
                 if ((new[] { "phase", "p" }).Contains(arguments[1])) Active.Phase.Number = int.Parse(arguments[2]);
-                if ((new[] { "debug", "d" }).Contains(arguments[1])) bool.TryParse(arguments[2], out _isDebug);
+//                if ((new[] { "debug", "d" }).Contains(arguments[1])) bool.TryParse(arguments[2], out bool _);
                 if ((new[] { "abilities", "ab" }).Contains(arguments[1]))
                 {
                     if ((new[] { "free", "f" }).Contains(arguments[2])) _game.Characters.FindAll(c => c.IsOnMap)
@@ -74,12 +72,12 @@ namespace NKMCore
             {
                 if ((new[] {"character", "c"}).Contains(arguments[1]))
                 {
-                    if((new[] {"names", "n"}).Contains(arguments[2])) 
+                    if((new[] {"names", "n"}).Contains(arguments[2]))
                         _game.Characters.Select(c => c.ToString()).ToList().ForEach(Log);
-                    if((new[] {"actionstate", "a"}).Contains(arguments[2])) 
+                    if((new[] {"actionstate", "a"}).Contains(arguments[2]))
                         _game.Characters.Select(c => c.ToString() + " " + c.TookActionInPhaseBefore.ToString()).ToList().ForEach(Log);
                 }
-            
+
             }
             else Log("Nieznana komenda: " + text);
         }
@@ -97,18 +95,18 @@ namespace NKMCore
                 Log(targetCharacter != character
                     ? $"{character.FormattedFirstName()} ulecza {targetCharacter.FormattedFirstName()} o <color=blue><b>{value}</b></color> punktów życia!"
                     : $"{character.FormattedFirstName()} ulecza się o <color=blue><b>{value}</b></color> punktów życia!");
-        
+
             character.OnDeath += () => Log($"{character.FormattedFirstName()} umiera!");
-            character.AfterBasicMove += moveCells => 
+            character.AfterBasicMove += moveCells =>
                 GameLog($"MOVE: {string.Join("; ", moveCells.Select(p => p.Coordinates))}"); //logging after action to make reading rng work
         }
 
         public void AddTriggersToEvents(Ability ability)
         {
             if(ability is SwordDance)
-                ((SwordDance) ability).OnBlock += attackingCharacter => 
+                ((SwordDance) ability).OnBlock += attackingCharacter =>
 					Log($"{ability.ParentCharacter.FormattedFirstName()} blokuje atak {attackingCharacter.FormattedFirstName()}!");
-            
+
             if(ability is LackOfOrientation)
                 ((LackOfOrientation) ability).AfterGettingLost += () =>
                     Log($"{ability.ParentCharacter.FormattedFirstName()}: Cholera, znowu się zgubili?");
