@@ -21,7 +21,7 @@ namespace NKMCore.Abilities.Aqua
                 Validator.ToCheck.Add(() => IsAnyFreeCellToPlaceACharacter);
 			};
 		}
-		public override string GetDescription() => 
+		public override string GetDescription() =>
 $@"{ParentCharacter.Name} wskrzesza sojuszniczą postać, która zginęła maksymalnie fazę wcześniej.
 Postać odradza się z połową maksymalnego HP, na wybranym spawnie.
 Czas odnowienia: {Cooldown}";
@@ -34,7 +34,7 @@ Czas odnowienia: {Cooldown}";
             var s = new SelectableProperties
             {
 	            IdsToSelect = Active.GamePlayer.Characters.FindAll(_isResurrectable.Invoke).Select(c => c.ID).ToList(),
-				ConstraintOfSelection = list => list.Count == 1,
+				ConstraintOfSelection = SelectionConstraint.Single,
 				OnSelectFinish = list =>
 				{
 					_characterToResurrect = Active.GamePlayer.Characters.Single(c => c.ID == list[0]);

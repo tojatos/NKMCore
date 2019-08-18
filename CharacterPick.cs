@@ -23,7 +23,7 @@ namespace NKMCore
 
 	    public static CharacterPick Create(Game game, GamePreparerDependencies preparerDependencies)
 	    {
-		    if (preparerDependencies.GameType == GameType.Multiplayer) 
+		    if (preparerDependencies.GameType == GameType.Multiplayer)
 			    return new ServerPick(game, preparerDependencies);
 		    switch (preparerDependencies.PickType)
 		    {

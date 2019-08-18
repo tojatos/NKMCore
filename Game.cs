@@ -124,7 +124,7 @@ namespace NKMCore
 			{
 				WhatIsSelected = SelectableProperties.Type.Character,
 				IdsToSelect = charactersToPlace.Select(c => c.ID).ToList(),
-				ConstraintOfSelection = list => list.Count == 1,
+				ConstraintOfSelection = SelectionConstraint.Single,
 				OnSelectFinish = list =>
 				{
 					Active.PrepareToPlaceCharacter(Active.GamePlayer.GetSpawnPoints(this)
@@ -133,12 +133,13 @@ namespace NKMCore
 					pickedCharacter = Active.SelectedCharacterToPlace;
 				},
 				SelectionTitle = "Wystaw postać",
+				Instant = true,
 			});
 			SelectableAction.OpenSelectable(id);
 			Func<bool> placed = () => pickedCharacter?.IsOnMap == true;
 			await placed.WaitToBeTrue();
 		}
-		private void PlaceAllCharactersRandomlyOnSpawns() => Players.ForEach(p => p.Characters.ForEach(c => TrySpawningOnRandomCell(p, c)));
+		private void PlaceAllCharactersRandomlyOnSpawns() => Players.ForEach(p => p.Characters.ForEach(c => TryPlacingOnRandomSpawnCell(p, c)));
 		/// <summary>
 		/// Infinite loop that manages Turns and Phases
 		/// </summary>
@@ -178,12 +179,11 @@ namespace NKMCore
 			await isTurnDone.WaitToBeTrue();
 		}
 
-		private void TrySpawningOnRandomCell(GamePlayer p, Character c)
+		private void TryPlacingOnRandomSpawnCell(GamePlayer p, Character c)
 		{
-			HexCell spawnPoint = p.GetSpawnPoints(this).FindAll(cell => Active.CanSpawn(c, cell)).GetRandom();
+			HexCell spawnPoint = p.GetSpawnPoints(this).FindAll(cell => Active.CanPlace(c, cell)).GetRandom();
 			if (spawnPoint == null) return;
 
-			//Spawner.Instance.Spawn(HexMapDrawer.Instance.SelectDrawnCell(spawnPoint), c);
 			Action.PlaceCharacter(c, spawnPoint);
 		}
 
@@ -238,7 +238,7 @@ namespace NKMCore
 	        AfterCellSelect?.Invoke(touchedCell);
             if (Active.SelectedCharacterToPlace != null)
             {
-	            if(!Active.GamePlayer.GetSpawnPoints(this).Contains(touchedCell)) return;
+	            if(!Active.CanPlace(Active.SelectedCharacterToPlace, touchedCell)) return;
                 Action.PlaceCharacter(Active.SelectedCharacterToPlace, touchedCell);
 	            if (Active.Phase.Number != 0) return;
 	            Action.FinishTurn();

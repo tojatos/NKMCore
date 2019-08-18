@@ -19,36 +19,36 @@ namespace NKMCore
             bool AllCharactersPicked() => _game.Players.All(p => p.Characters.Count == _preparerDependencies.NumberOfCharactersPerPlayer);
             while (!AllCharactersPicked())
 			{
-				foreach (GamePlayer player in _game.Players) 
+				foreach (GamePlayer player in _game.Players)
 					await DraftPickOneCharacter(player);
 				if(AllCharactersPicked()) break;
-				foreach (GamePlayer player in _game.Players.AsEnumerable().Reverse()) 
+				foreach (GamePlayer player in _game.Players.AsEnumerable().Reverse())
 					await DraftPickOneCharacter(player);
 			}
         }
-        
+
 		private async Task Bans()
 		{
 			int bansLeft = _preparerDependencies.NumberOfBans;
 			while(bansLeft != 0)
 			{
-				foreach (GamePlayer player in _game.Players) 
+				foreach (GamePlayer player in _game.Players)
 					await BanOneCharacter(player);
 				bansLeft--;
 				if(bansLeft==0) break;
-				foreach (GamePlayer player in _game.Players.AsEnumerable().Reverse()) 
+				foreach (GamePlayer player in _game.Players.AsEnumerable().Reverse())
 					await BanOneCharacter(player);
 				bansLeft--;
 			}
 		}
-		
+
 		private async Task DraftPickOneCharacter(GamePlayer player)
 		{
 			await SelectAndWait(new SelectableProperties
 			{
 				WhatIsSelected = SelectableProperties.Type.Character,
 				IdsToSelect = _charactersToPick.Select(c => c.ID).ToList(),
-				ConstraintOfSelection = list => list.Count == 1,
+				ConstraintOfSelection = SelectionConstraint.Single,
 				OnSelectFinish = list =>
 				{
 					Character picked = _charactersToPick.Single(c => c.ID == list[0]);
@@ -64,7 +64,7 @@ namespace NKMCore
 			{
 				WhatIsSelected = SelectableProperties.Type.Character,
 				IdsToSelect = _charactersToPick.Select(c => c.ID).ToList(),
-				ConstraintOfSelection = list => list.Count == 1,
+				ConstraintOfSelection = SelectionConstraint.Single,
 				OnSelectFinish = list => _charactersToPick.RemoveAll(c => c.ID == list[0]),
 				SelectionTitle = $"Banowanie postaci - {player.Name}",
 			});

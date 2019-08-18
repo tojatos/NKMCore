@@ -28,7 +28,7 @@ namespace NKMCore
 		public Character SelectedCharacterToPlace;
 		public Character Character;
 		public HexCell SelectedCell;
-	
+
 		public readonly List<HexCell> MoveCells = new List<HexCell>();
 		public event Delegates.CharacterD AfterCharacterSelect;
 		public event Delegates.Void AfterDeselect;
@@ -39,7 +39,7 @@ namespace NKMCore
 		public event Delegates.CharacterCellHashSet AfterCharacterSelectPrepare;
 		public event Delegates.CellHashSet AfterCharacterPlacePrepare;
 		public event Delegates.AbilityHashSet AfterAbilityPrepare;
-	
+
 		public HashSet<HexCell> HexCells { get; private set; }
 
 		public bool IsActiveUse => !(AbilityToUse == null && SelectedCharacterToPlace == null);
@@ -49,12 +49,12 @@ namespace NKMCore
 			Clean();
 			Character = character;
 			AfterCharacterSelect?.Invoke(character);
-		
+
 			if (!CanTakeAction(character)) return;
-		
+
 			Prepare(character.GetPrepareBasicAttackCells());
 			AdditionalPrepare(character.GetPrepareBasicMoveCells());
-			
+
 			AfterCharacterSelectPrepare?.Invoke(character, HexCells);
 			RemoveMoveCells();
 			MoveCells.Add(character.ParentCell);
@@ -113,7 +113,7 @@ namespace NKMCore
 		public void RemoveMoveCells()
 		{
 			if(MoveCells==null || MoveCells.Count==0) return;
-		
+
 			BeforeMoveCellsRemoved?.Invoke(MoveCells);
 			MoveCells.Clear();
 		}
@@ -121,10 +121,10 @@ namespace NKMCore
 		public void AddMoveCell(HexCell c)
 		{
 			if(MoveCells==null||MoveCells.Count<1) throw new Exception("Unable to add move cell!");
-		
+
 			_game.Active.MoveCells.Add(c);
 			AfterMoveCellAdded?.Invoke(c);
-		
+
 		}
 
 		public void Reset()
@@ -146,20 +146,20 @@ namespace NKMCore
 		}
 		public void CleanAndTrySelecting()
 		{
-			Clean();	
+			Clean();
 			Select(Character);
 		}
-		
-		public bool CanTakeAction(Character character) => 
+
+		public bool CanTakeAction(Character character) =>
 			!(character.TookActionInPhaseBefore || !character.IsAlive ||
            Turn.CharacterThatTookActionInTurn != null &&
            Turn.CharacterThatTookActionInTurn != character || character.IsStunned ||
            GamePlayer != character.Owner);
-		
+
 		public bool CanWait(Character character) => !(character.Owner != GamePlayer || character.TookActionInPhaseBefore ||
 		                         Turn.CharacterThatTookActionInTurn != null);
 
-		public bool CanSpawn(Character character, HexCell cell) => cell.IsFreeToStand && cell.IsSpawnFor(character.Owner, _game);
+		public bool CanPlace(Character character, HexCell cell) => cell.IsFreeToStand && cell.IsSpawnFor(character.Owner, _game);
 	}
 }
 
