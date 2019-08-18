@@ -65,13 +65,14 @@ namespace NKMCore
                     {
                         Character character = _game.Characters.First(c => c.ID == int.Parse(args[1]));
                         UseAbility(ability as IUseableCharacter, character, true);
+                        return;
                     }
                     IEnumerable<HexCell> targetCells = args.Skip(1)
                         .Select(c => _game.HexMap.Cells.First(a => a.Coordinates.ToString() == c));
                     if(targetCells.Count() == 1)
-                        UseAbility(ability as IUseableCell, targetCells.First());
+                        UseAbility(ability as IUseableCell, targetCells.First(), true);
                     else
-                        UseAbility(ability as IUseableCellList, targetCells);
+                        UseAbility(ability as IUseableCellList, targetCells, true);
                 } break;
                 case Types.Cancel:
                 {
