@@ -17,10 +17,10 @@ namespace NKMCore
             _game = game;
         }
 
-        public event Delegates.String AfterAction;
+        public event Delegates.StringString AfterAction;
         public event Delegates.String MultiplayerAction;
 
-        //Make action from server
+        //Make serialized action
         public void Make(string actionType, string[] args)
         {
             switch (actionType)
@@ -71,7 +71,7 @@ namespace NKMCore
                     else
                         UseAbility(ability as IUseableCellList, targetCells);
                 } break;
-                case Types.CancelAbility:
+                case Types.Cancel:
                 {
                     Cancel(true);
                 } break;
@@ -91,138 +91,70 @@ namespace NKMCore
         }
 
         public void PlaceCharacter(Character character, HexCell targetCell, bool force = false)
-        {
-            if (_game.Dependencies.Type == GameType.Multiplayer && !force)
-            {
-                MultiplayerAction?.Invoke($"ACTION {Types.PlaceCharacter};{character.ID}:{targetCell.Coordinates.ToString()}");
-                return;
-            }
-            _game.HexMap.Place(character, targetCell);
-            AfterAction?.Invoke(Types.PlaceCharacter);
-        }
+            => Act(Types.PlaceCharacter, $"{character.ID}:{targetCell.Coordinates.ToString()}",
+                () => _game.HexMap.Place(character, targetCell), force);
 
         public void FinishTurn(bool force = false)
-        {
-            if (_game.Dependencies.Type == GameType.Multiplayer && !force)
-            {
-                MultiplayerAction?.Invoke($"ACTION {Types.FinishTurn}");
-                return;
-            }
-            _game.Active.Turn.Finish();
-            AfterAction?.Invoke(Types.FinishTurn);
-        }
+            => Act(Types.FinishTurn, () => _game.Active.Turn.Finish(), force);
 
         public void TakeTurn(Character character, bool force = false)
-        {
-            if (_game.Dependencies.Type == GameType.Multiplayer && !force)
-            {
-                MultiplayerAction?.Invoke($"ACTION {Types.TakeAction};{character.ID}");
-                return;
-            }
-            character.TryToTakeTurn();
-            AfterAction?.Invoke(Types.TakeAction);
-        }
+            => Act(Types.TakeAction, character.ID.ToString(), character.TryToTakeTurn, force);
 
         public void BasicMove(Character character, List<HexCell> cellPath, bool force = false)
-        {
-            if (_game.Dependencies.Type == GameType.Multiplayer && !force)
-            {
-                MultiplayerAction?.Invoke($"ACTION {Types.BasicMove};{character.ID}:{string.Join(":", cellPath.Select(c => c.Coordinates.ToString()))}");
-                return;
-            }
-            character.TryToTakeTurn();
-            character.BasicMove(cellPath);
-            AfterAction?.Invoke(Types.BasicMove);
-        }
+            => Act(Types.BasicMove,
+                $"{character.ID}:{string.Join(":", cellPath.Select(c => c.Coordinates.ToString()))}",
+                () =>
+                {
+                    character.TryToTakeTurn();
+                    character.BasicMove(cellPath);
+                }, force);
 
         public void BasicAttack(Character character, Character target, bool force = false)
-        {
-            if (_game.Dependencies.Type == GameType.Multiplayer && !force)
+            => Act(Types.BasicAttack, $"{character.ID}:{target.ID}", () =>
             {
-                MultiplayerAction?.Invoke($"ACTION {Types.BasicAttack};{character.ID}:{target.Name}");
-                return;
-            }
-            character.TryToTakeTurn();
-            character.BasicAttack(target);
-            AfterAction?.Invoke(Types.BasicAttack);
-        }
+                character.TryToTakeTurn();
+                character.BasicAttack(target);
+            }, force);
 
         public void ClickAbility(IClickable ability, bool force = false)
-        {
-            if (_game.Dependencies.Type == GameType.Multiplayer && !force)
-            {
-                MultiplayerAction?.Invoke($"ACTION {Types.ClickAbility};{ability.GetType().Name}");
-                return;
-            }
-            ability.Click();
-            AfterAction?.Invoke(Types.ClickAbility);
-        }
+            => Act(Types.ClickAbility, ability.GetType().Name, ability.Click, force);
 
         public void UseAbility(IUseableCell ability, HexCell cell, bool force = false)
-        {
-            if (_game.Dependencies.Type == GameType.Multiplayer && !force)
-            {
-                MultiplayerAction?.Invoke($"ACTION {Types.UseAbility};{ability.GetType().Name}:{cell.Coordinates.ToString()}");
-                return;
-            }
-            ability.Use(cell);
-            AfterAction?.Invoke(Types.UseAbility);
-        }
+            => Act(Types.UseAbility, $"{ability.GetType().Name}:{cell.Coordinates.ToString()}", () => ability.Use(cell), force);
 
         public void UseAbility(IUseableCellList ability, IEnumerable<HexCell> cells, bool force = false)
-        {
-            if (_game.Dependencies.Type == GameType.Multiplayer && !force)
-            {
-                MultiplayerAction?.Invoke($"ACTION {Types.UseAbility};{ability.GetType().Name}:{string.Join(":", cells.Select(c => c.Coordinates.ToString()))}");
-                return;
-            }
-            ability.Use(cells.ToList());
-            AfterAction?.Invoke(Types.UseAbility);
-        }
+            => Act(Types.UseAbility,
+                $"{ability.GetType().Name}:{string.Join(":", cells.Select(c => c.Coordinates.ToString()))}",
+                () => ability.Use(cells.ToList()), force);
 
         public void UseAbility(IUseableCharacter ability, Character character, bool force = false)
-        {
-            if (_game.Dependencies.Type == GameType.Multiplayer && !force)
-            {
-                MultiplayerAction?.Invoke($"ACTION {Types.UseAbility};{ability.GetType().Name}:{character.ID}");
-                return;
-            }
-            ability.Use(character);
-            AfterAction?.Invoke(Types.UseAbility);
-        }
+            => Act(Types.UseAbility, $"{ability.GetType().Name}:{character.ID}", () => ability.Use(character), force);
 
         public void Cancel(bool force = false)
-        {
-            if (_game.Dependencies.Type == GameType.Multiplayer && !force)
-            {
-                MultiplayerAction?.Invoke($"ACTION {Types.CancelAbility}");
-                return;
-            }
-            _game.Active.Cancel();
-            AfterAction?.Invoke(Types.CancelAbility);
-        }
+            => Act(Types.Cancel,  () => _game.Active.Cancel(), force);
 
         public void Select(Character character, bool force = false)
-        {
-            if (_game.Dependencies.Type == GameType.Multiplayer && !force)
-            {
-                MultiplayerAction?.Invoke($"ACTION {Types.Select};{character.ID}");
-                return;
-            }
-            _game.Active.Select(character);
-            AfterAction?.Invoke(Types.Select);
-        }
+            => Act(Types.Select, character.ID.ToString(), () => _game.Active.Select(character), force);
 
         public void Deselect(bool force = false)
+            => Act(Types.Deselect,  () => _game.Active.Deselect(), force);
+
+        private void Act(string actionType, System.Action action, bool force)
+            => Act(actionType, "", action, force);
+        private void Act(string actionType, string serializedContent, System.Action action, bool force)
         {
+            string serializedMessage = Serialize(actionType, serializedContent);
             if (_game.Dependencies.Type == GameType.Multiplayer && !force)
+                MultiplayerAction?.Invoke(serializedMessage);
+            else
             {
-                MultiplayerAction?.Invoke($"ACTION {Types.Deselect}");
-                return;
+                action();
+                AfterAction?.Invoke(actionType, serializedContent);
             }
-            _game.Active.Deselect();
-            AfterAction?.Invoke(Types.Deselect);
         }
+
+        private static string Serialize(string actionType, string serializedContent)
+            => string.Join(";", $"ACTION {actionType}", serializedContent);
 
         public static class Types
         {
@@ -233,7 +165,7 @@ namespace NKMCore
             public const string BasicAttack = "BasicAttack";
             public const string ClickAbility = "ClickAbility";
             public const string UseAbility = "UseAbility";
-            public const string CancelAbility = "CancelAbility";
+            public const string Cancel = "Cancel";
             public const string Select = "Select";
             public const string Deselect = "Deselect";
             public const string OpenSelectable = "OpenSelectable";

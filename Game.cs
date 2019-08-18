@@ -46,9 +46,10 @@ namespace NKMCore
 			HexMap = gameDependencies.HexMap;
 
 			Random.OnValueGet += (name, value) => Console.GameLog($"RNG: {name}; {value}");
-			Action.AfterAction += str =>
+			Action.AfterAction += (type, _) =>
 			{
-				if (str == Action.Types.BasicAttack || str == Action.Types.BasicMove) Active.Select(Active.Character);
+				if (type == Action.Types.BasicAttack || type == Action.Types.BasicMove)
+					Active.Select(Active.Character);
 			};
 			Console.AddTriggersToEvents(Active.Turn);
 		}
@@ -60,7 +61,7 @@ namespace NKMCore
 			List<string> names = Conn.GetCharacterNames();
 			var toReturn = new List<Character>();
 			int len = names.Count;
-			for (var i = 1; i <= len; ++i)
+			for (int i = 1; i <= len; ++i)
 			{
 				toReturn.Add(CharacterFactory.Create(null, names[i-1], -i));
 			}
