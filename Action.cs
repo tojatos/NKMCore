@@ -61,9 +61,11 @@ namespace NKMCore
                 case Types.UseAbility:
                 {
                     Ability ability = _game.Active.Character.Abilities.First(a => a.GetType().Name == args[0]);
-                    Character character = _game.Characters.First(c => c.ID == int.Parse(args[1]));
                     if (!args[1].EndsWith(")"))
+                    {
+                        Character character = _game.Characters.First(c => c.ID == int.Parse(args[1]));
                         UseAbility(ability as IUseableCharacter, character, true);
+                    }
                     IEnumerable<HexCell> targetCells = args.Skip(1)
                         .Select(c => _game.HexMap.Cells.First(a => a.Coordinates.ToString() == c));
                     if(targetCells.Count() == 1)
