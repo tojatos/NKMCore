@@ -156,7 +156,7 @@ namespace NKMCore
             }
         }
 
-        private static string Serialize(string actionType, string serializedContent)
+        public static string Serialize(string actionType, string serializedContent)
             => string.Join(";", $"ACTION {actionType}", serializedContent);
 
         public static class Types
