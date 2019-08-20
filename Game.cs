@@ -73,6 +73,7 @@ namespace NKMCore
 		public event Delegates.CharacterD AfterCharacterCreation;
 		public event Delegates.AbilityD AfterAbilityInit;
 		public event Delegates.CharacterD AfterCharacterInit;
+		public event Delegates.Void OnFinish;
 		public void InvokeAfterCharacterCreation(Character c) => AfterCharacterCreation?.Invoke(c);
 		public void InvokeAfterAbilityCreation(Ability a) => AfterAbilityCreation?.Invoke(a);
 
@@ -164,10 +165,7 @@ namespace NKMCore
 				if(EveryCharacterTookActionInPhase) Active.Phase.Finish();
 			}
 		}
-		private static void FinishGame()
-		{
-			//TODO
-		}
+		private void FinishGame() => OnFinish?.Invoke();
 		private bool EveryCharacterTookActionInPhase => Players.All(p => p.Characters.Where(c => c.IsAlive).All(c => c.TookActionInPhaseBefore));
 		private bool IsEveryCharacterPlacedInTheFirstPhase => !(Active.Phase.Number == 0 && Players.Any(p => p.Characters.Any(c => !c.IsOnMap && c.IsAlive)));
 		/// <summary>
