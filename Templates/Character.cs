@@ -10,15 +10,15 @@ namespace NKMCore.Templates
 	public class Character
 	{
 		public readonly Game _game;
-		
+
 		public string Name;
 		public override string ToString() => Name + $" ({ID})";
-		
+
 		public Action<Character> BasicAttack { get; set; }
 		public Action<List<HexCell>> BasicMove { get; set; }
 		public Func<List<HexCell>> GetBasicMoveCells { get; }
 		public Func<List<HexCell>> GetBasicAttackCells;
-		
+
 		#region Readonly Properties
 		public readonly int ID;
 		public readonly Stat HealthPoints;
@@ -36,7 +36,7 @@ namespace NKMCore.Templates
 		public GamePlayer Owner => _game.Players.First(p => p.Characters.Contains(this));
 		public HexCell ParentCell => _game.HexMap.GetCell(this);
 		public bool IsAlive => HealthPoints.Value > 0;
-		
+
         public  bool  IsStunned                      =>  Effects.ContainsType<Stun>();
         public  bool  IsGrounded                     =>  Effects.ContainsType<Ground>();
         public  bool  IsSnared                       =>  Effects.ContainsType<Snare>();
@@ -69,7 +69,7 @@ namespace NKMCore.Templates
 
 
 		#endregion
-		
+
 		#region Other Properties
 		public bool CanAttackAllies { get; set; }
 		public bool IsOnMap => _game.HexMap.GetCell(this) != null;
@@ -78,12 +78,12 @@ namespace NKMCore.Templates
 		public bool HasUsedBasicAttackInPhaseBefore { private get; set; }
 		public bool HasUsedNormalAbilityInPhaseBefore { get; set; }
 		public bool HasUsedUltimatumAbilityInPhaseBefore { private get; set; }
-		
+
 		public bool HasFreeAttackUntilEndOfTheTurn { get; set; }
 		public bool HasFreeUltimatumAbilityUseUntilEndOfTheTurn { get; set; }
 		public bool HasFreeMoveUntilEndOfTheTurn { get; set; }
 		public bool TookActionInPhaseBefore { get; set; }
-		
+
 		public int DeathTimer { get; set; }
 		#endregion
 
@@ -91,6 +91,7 @@ namespace NKMCore.Templates
 		public event Delegates.Void JustBeforeFirstAction;
 		public event Delegates.Void OnKill;
 		public event Delegates.Void OnDeath;
+		public event Delegates.Void AfterRefresh;
 		public event Delegates.Void BeforeMove;
 		public event Delegates.Void AfterMove;
 		public event Delegates.CellList AfterBasicMove;
@@ -107,18 +108,19 @@ namespace NKMCore.Templates
 		public event Delegates.CharacterDamage AfterAttack;
 		public event Delegates.CharacterInt AfterHeal;
 		public event Delegates.CharacterRefInt BeforeHeal;
-		
+
 		public void InvokeAfterAbilityUse(Ability a) => AfterAbilityUse?.Invoke(a);
 		public void InvokeOnDeath() => OnDeath?.Invoke();
 		#endregion
 		public Character(Properties properties)
 		{
 			_game = properties.Game;
-				
+
 			ID = properties.Id;
 			Name = properties.Name;
-			
+
             TookActionInPhaseBefore               =  true;
+
             HasUsedBasicAttackInPhaseBefore       =  false;
             HasUsedBasicMoveInPhaseBefore         =  false;
             HasUsedNormalAbilityInPhaseBefore     =  false;
@@ -140,6 +142,16 @@ namespace NKMCore.Templates
             Type              =  properties.Type;
 
 			Abilities = properties.Abilities;
+		}
+
+		public void Refresh()
+		{
+            HasUsedBasicAttackInPhaseBefore = false;
+            HasUsedBasicMoveInPhaseBefore = false;
+            HasUsedNormalAbilityInPhaseBefore = false;
+            HasUsedUltimatumAbilityInPhaseBefore = false;
+            TookActionInPhaseBefore = false;
+            AfterRefresh?.Invoke();
 		}
 
 		public void MoveTo(HexCell targetCell)
@@ -236,7 +248,7 @@ namespace NKMCore.Templates
 
 			AfterBeingDamaged?.Invoke(damage);
 		}
-		
+
 		public void Heal(Character targetCharacter, int amount)
 		{
 			if(!targetCharacter.IsAlive) return;
@@ -290,7 +302,7 @@ namespace NKMCore.Templates
                         line = line.GetRange(0, removeAfterIndex);
                         cellRange.AddRange(line);
 					}
-					
+
 
 					break;
 				default:
@@ -299,22 +311,22 @@ namespace NKMCore.Templates
 
 			return cellRange;
 		}
-		private List<HexCell> DefaultGetBasicMoveCells() => 
-			IsFlying 
+		private List<HexCell> DefaultGetBasicMoveCells() =>
+			IsFlying
 				? ParentCell.GetNeighbors(Owner, Speed.Value, SearchFlags.StopAtEnemyCharacters)
 				: ParentCell.GetNeighbors(Owner, Speed.Value, SearchFlags.StopAtEnemyCharacters | SearchFlags.StopAtWalls);
 		public void TryToTakeTurn()
 		{
 			if(_game.Active.Turn.CharacterThatTookActionInTurn==null) JustBeforeFirstAction?.Invoke();
 		}
-		
+
         public class Properties
         {
 	        public Game Game;
-	        
+
 	        public int Id;
 	        public string Name;
-	        
+
             public Stat HealthPoints;
             public Stat AttackPoints;
             public Stat BasicAttackRange;
@@ -322,7 +334,7 @@ namespace NKMCore.Templates
             public Stat PhysicalDefense;
             public Stat MagicalDefense;
             public Stat Shield;
-            
+
             public FightType Type;
 
 	        public List<Ability> Abilities;

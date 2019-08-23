@@ -13,7 +13,7 @@ namespace NKMCore.Abilities.Rem
 		{
 			OnAwake += () => Validator.ToCheck.Add(Validator.AreAnyTargetsInRange);
 		}
-		
+
 		public override List<HexCell> GetRangeCells() => GetNeighboursOfOwner(Range);
 		public override List<HexCell> GetTargetsInRange() => GetRangeCells().WhereFriendsOf(Owner).FindAll(c => c.FirstCharacter.TookActionInPhaseBefore);
 
@@ -27,11 +27,7 @@ Zasięg: {Range}	Czas odnowienia: {Cooldown}";
 		public void Use(Character character)
 		{
 			ParentCharacter.TryToTakeTurn();
-			character.TookActionInPhaseBefore = false;
-			character.HasUsedBasicAttackInPhaseBefore = false;
-			character.HasUsedBasicMoveInPhaseBefore = false;
-			character.HasUsedNormalAbilityInPhaseBefore = false;
-			character.HasUsedUltimatumAbilityInPhaseBefore = false;
+			character.Refresh();
 			Finish();
 		}
 	}

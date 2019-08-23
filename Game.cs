@@ -79,7 +79,7 @@ namespace NKMCore
 
 		public void Start()
 		{
-			if (!Dependencies.PlaceAllCharactersRandomlyAtStart) //TODO: checking for multiplayer is for tests only
+			if (!Dependencies.PlaceAllCharactersRandomlyAtStart)
 			{
 				Active.Turn.TurnStarted += async player =>
 				{
@@ -216,11 +216,7 @@ namespace NKMCore
 			{
 				if (character.IsOnMap)
 				{
-					character.HasUsedBasicAttackInPhaseBefore = false;
-					character.HasUsedBasicMoveInPhaseBefore = false;
-					character.HasUsedNormalAbilityInPhaseBefore = false;
-					character.HasUsedUltimatumAbilityInPhaseBefore = false;
-					character.TookActionInPhaseBefore = false;
+					character.Refresh();
 				}
 
 				if (!character.IsAlive)
