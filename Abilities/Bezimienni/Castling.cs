@@ -16,7 +16,10 @@ namespace NKMCore.Abilities.Bezimienni
         }
 	    public override List<HexCell> GetRangeCells() => new List<HexCell>(HexMap.Cells);
 	    public override List<HexCell> GetTargetsInRange() => GetRangeCells().WhereCharacters();
-        public override string GetDescription() => "Bezimienni zamieniają pozycjami na mapie 2 jednostki.";
+        public override string GetDescription() =>
+$@"Bezimienni zamieniają pozycjami na mapie 2 jednostki.
+
+Czas odnowienia: {Cooldown}";
 
 	    public void Click() => PrepareCharacterSelection();
 
@@ -46,9 +49,9 @@ namespace NKMCore.Abilities.Bezimienni
 	    private void Cleanup()
 	    {
 		  _firstCharacterToSwap = null;
-		  _secondCharacterToSwap = null;   
+		  _secondCharacterToSwap = null;
 	    }
-	    
+
 	    public override void Cancel()
 	    {
 		    base.Cancel();

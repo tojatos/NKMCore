@@ -14,12 +14,13 @@ namespace NKMCore.Abilities.Crona
 	    {
 		    OnAwake += () => Validator.ToCheck.Add(Validator.AreAnyTargetsInRange);
 	    }
-	    
-        public override string GetDescription() => 
+
+        public override string GetDescription() =>
 $@"{ParentCharacter.Name} infekuje cel Czarną Krwią (nakłada efekt Black Blood) na {EffectCooldown} tury.
 Zainfekowany wróg również otrzymuje obrażenia przy zdetonowaniu Black Blood.
+
 Zasięg: {Range}	Czas odnowienia: {Cooldown}";
-	    
+
 	    public override List<HexCell> GetRangeCells() => GetNeighboursOfOwner(Range);
 	    public override List<HexCell> GetTargetsInRange() => GetRangeCells().WhereEnemiesOf(Owner);
 

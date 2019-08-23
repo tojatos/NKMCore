@@ -20,7 +20,8 @@ namespace NKMCore.Abilities.Carmel_Wilhelmina
         public override string GetDescription() =>
 $@"{ParentCharacter.Name} przyciąga do siebie jednostkę znajdującą się w promieniu {Range} w miejsce oddalone maksymalnie {MoveTargetRange} pola od niej.
 Dodatkowo, jeśli jest to sojusznik, to daje mu {Shield} tarczy,
-a jeśli przeciwnik, ogłusza go na {StunDuration} fazę.";
+a jeśli przeciwnik, ogłusza go na {StunDuration} fazę.
+Czas odnowienia: {Cooldown}";
 
         public override List<HexCell> GetRangeCells() => GetNeighboursOfOwner(Range);
         public override List<HexCell> GetTargetsInRange() => GetRangeCells().WhereCharacters();
@@ -45,7 +46,7 @@ a jeśli przeciwnik, ogłusza go na {StunDuration} fazę.";
             if (_selectedCharacter.IsEnemyFor(Owner)) _selectedCharacter.Effects.Add(new Stun(Game, StunDuration, _selectedCharacter, Name));
             else _selectedCharacter.Shield.Value += Shield;
 
-            Finish(); 
+            Finish();
         }
     }
 }

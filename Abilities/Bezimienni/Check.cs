@@ -13,7 +13,10 @@ namespace NKMCore.Abilities.Bezimienni
         {
 	        OnAwake += () => Validator.ToCheck.Add(Validator.AreAnyTargetsInRange);
         }
-        public override string GetDescription() => "Bezimienni szachują wybranego przeciwnika, wymuszając jego ruch.\nSzachowany wróg nie może użyć podstawowego ataku.";
+        public override string GetDescription() =>
+$@"Bezimienni szachują wybranego przeciwnika, wymuszając jego ruch.\nSzachowany wróg nie może użyć podstawowego ataku.
+
+Czas odnowienia: {Cooldown}";
 
 	    public override List<HexCell> GetRangeCells() => new List<HexCell>(HexMap.Cells);
 	    public override List<HexCell> GetTargetsInRange() => GetRangeCells().WhereEnemiesOf(Owner).Where(c => c.FirstCharacter.TookActionInPhaseBefore == false).ToList();
@@ -22,14 +25,15 @@ namespace NKMCore.Abilities.Bezimienni
 	    public void Use(Character character)
 		{
 			ParentCharacter.TryToTakeTurn();
-			Turn.PlayerDelegate forceAction = null;
-			forceAction = (player) =>
+
+			void ForceAction(GamePlayer player)
 			{
 				if (player != character.Owner) return;
 				Active.Turn.CharacterThatTookActionInTurn = character;
-				Active.Turn.TurnStarted -= forceAction;
-			};
-			Active.Turn.TurnStarted += forceAction;
+				Active.Turn.TurnStarted -= ForceAction;
+			}
+
+			Active.Turn.TurnStarted += ForceAction;
               character.Effects.Add(new Disarm(Game, 1, character, Name));
 			Finish();
 		}
