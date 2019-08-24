@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using NKMCore.Extensions;
 using NKMCore.Templates;
 
 namespace NKMCore.Hex
@@ -28,7 +29,7 @@ namespace NKMCore.Hex
 		    Move(firstCharacterToSwap, c2);
 		    Move(secondCharacterToSwap, c1);
 	    }
-		    
+
 	    public Delegates.CharacterCell AfterMove;
 	    public Delegates.CharacterCell AfterCharacterPlace;
 	    public Delegates.HexCellEffectD AfterCellEffectCreate;
@@ -40,17 +41,12 @@ namespace NKMCore.Hex
 	    /// Removes character from map or does nothing
 	    /// </summary>
 	    public void RemoveFromMap(Character character) => _charactersOnCells.Remove(character);
-	    
-	    public HexCell GetCell(Character character)
-	    {
-		    HexCell value;
-		    _charactersOnCells.TryGetValue(character, out value);
-		    return value;
-	    }
+
+	    public HexCell GetCell(Character character) => _charactersOnCells.GetValueOrDefault(character);
 
 	    public List<Character> GetCharacters(HexCell cell) =>
 		    _charactersOnCells.Where(pair => pair.Value == cell).Select(pair => pair.Key).ToList();
-	    
+
 		public HexMap (List<HexCell> cells, List<HexCell.TileType> spawnPoints)
 		{
 			Cells = cells;

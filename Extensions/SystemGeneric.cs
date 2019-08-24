@@ -30,6 +30,11 @@ namespace NKMCore.Extensions
 		public static T ToEnum<T>(this string value)
 		{
 			return (T) Enum.Parse(typeof(T), value, true);
-		}	
+		}
+
+        public static TV GetValueOrDefault<TK, TV>(this IDictionary<TK, TV> dict, TK key, TV defaultValue = default)
+        {
+            return dict.TryGetValue(key, out TV value) ? value : defaultValue;
+        }
 	}
 }
