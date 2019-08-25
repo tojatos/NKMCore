@@ -9,12 +9,13 @@ namespace NKMCore.Extensions
     public static class NKMObject
     {
         public static List<HexCell> WhereEnemiesOf(this List<HexCell> cells, Character character) => cells.WhereEnemiesOf(character.Owner);
-        public static List<HexCell> WhereEnemiesOf(this List<HexCell> cells, GamePlayer player) => 
+        public static List<HexCell> WhereEnemiesOf(this List<HexCell> cells, GamePlayer player) =>
             cells.FindAll(c => c.CharactersOnCell.Any(a => a.IsEnemyFor(player)));
         public static List<HexCell> WhereFriendsOf(this List<HexCell> cells, Character character) => cells.WhereFriendsOf(character.Owner);
         public static List<HexCell> WhereFriendsOf(this List<HexCell> cells, GamePlayer player) =>
             cells.FindAll(c => c.CharactersOnCell.Any(a => !a.IsEnemyFor(player)));
         public static List<HexCell> WhereCharacters(this List<HexCell> cells) => cells.FindAll(c => c.CharactersOnCell.Count > 0);
+        public static T FirstOfID<T>(this IEnumerable<T> entities, int id) where T : NKMEntity => entities.First(e => e.ID == id);
 
         public static Stat GetStat(this Character character, StatType type)
         {

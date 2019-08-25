@@ -19,7 +19,7 @@ namespace NKMCore.Extensions
         }
         public static T GetNKMRandom<T>(this List<T> list, NKMRandom random)
         {
-            if (list.Count == 0) return default(T);
+            if (list.Count == 0) return default;
             return list[random.Get("System Generic Random" + NKMID.GetNext("System Generic Random"), 0, list.Count)];
         }
         public static T SecondLast<T>(this List<T> list)

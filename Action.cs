@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NKMCore.Extensions;
 using NKMCore.Hex;
 using NKMCore.Templates;
 
@@ -27,7 +28,7 @@ namespace NKMCore
             {
                 case Types.PlaceCharacter:
                 {
-                    Character character = _game.Characters.First(c => c.ID == int.Parse(args[0]));
+                    Character character = _game.Characters.FirstOfID(int.Parse(args[0]));
                     HexCell cell = _game.HexMap.Cells.First(c => c.Coordinates.ToString() == args[1]);
                     PlaceCharacter(character, cell, true);
                 } break;
@@ -37,39 +38,39 @@ namespace NKMCore
                 } break;
                 case Types.TakeAction:
                 {
-                    Character character = _game.Characters.First(c => c.ID == int.Parse(args[0]));
+                    Character character = _game.Characters.FirstOfID(int.Parse(args[0]));
                     TakeTurn(character, true);
                 } break;
                 case Types.BasicMove:
                 {
-                    Character characterToMove = _game.Characters.First(c => c.ID == int.Parse(args[0]));
+                    Character characterToMove = _game.Characters.FirstOfID(int.Parse(args[0]));
                     List<HexCell> cellsToMove = args.Skip(1)
                         .Select(coords => _game.HexMap.Cells.First(c => c.Coordinates.ToString() == coords)).ToList();
                     BasicMove(characterToMove, cellsToMove, true);
                 } break;
                 case Types.BasicAttack:
                 {
-                    Character c1 = _game.Characters.First(c => c.ID == int.Parse(args[0]));
-                    Character c2 = _game.Characters.First(c => c.ID == int.Parse(args[1]) && c1.CanBasicAttack(c));
+                    Character c1 = _game.Characters.FirstOfID(int.Parse(args[0]));
+                    Character c2 = _game.Characters.FirstOfID(int.Parse(args[1]));
                     BasicAttack(c1, c2, true);
                 } break;
                 case Types.ClickAbility:
                 {
-                    var ability = _game.Active.Character.Abilities.First(a => a.GetType().Name == args[0]) as IClickable;
+                    var ability = _game.Active.Character.Abilities.FirstOfID(int.Parse(args[0])) as IClickable;
                     ClickAbility(ability, true);
                 } break;
                 case Types.UseAbility:
                 {
-                    Ability ability = _game.Active.Character.Abilities.First(a => a.GetType().Name == args[0]);
+                    Ability ability = _game.Active.Character.Abilities.FirstOfID(int.Parse(args[0]));
                     if (!args[1].EndsWith(")"))
                     {
-                        Character character = _game.Characters.First(c => c.ID == int.Parse(args[1]));
+                        Character character = _game.Characters.FirstOfID(int.Parse(args[1]));
                         UseAbility(ability as IUseableCharacter, character, true);
                         return;
                     }
                     List<HexCell> targetCells = args.Skip(1)
                         .Select(c => _game.HexMap.Cells.First(a => a.Coordinates.ToString() == c)).ToList();
-                    if(targetCells.Count() == 1)
+                    if(targetCells.Count == 1)
                         UseAbility(ability as IUseableCell, targetCells.First(), true);
                     else
                         UseAbility(ability as IUseableCellList, targetCells, true);
@@ -80,7 +81,7 @@ namespace NKMCore
                 } break;
                 case Types.Select:
                 {
-                    Character character = _game.Characters.First(c => c.ID == int.Parse(args[0]));
+                    Character character = _game.Characters.FirstOfID(int.Parse(args[0]));
                     Select(character, true);
                 } break;
 
@@ -120,21 +121,21 @@ namespace NKMCore
             }, force);
 
         public void ClickAbility(IClickable ability, bool force = false)
-            => Act(Types.ClickAbility, ability.GetType().Name, ability.Click, force);
+            => Act(Types.ClickAbility, ((NKMEntity) ability).ID.ToString(), ability.Click, force);
 
         public void UseAbility(IUseableCell ability, HexCell cell, bool force = false)
-            => Act(Types.UseAbility, $"{ability.GetType().Name}:{cell.Coordinates.ToString()}", () => ability.Use(cell), force);
+            => Act(Types.UseAbility, $"{((NKMEntity) ability).ID.ToString()}:{cell.Coordinates.ToString()}", () => ability.Use(cell), force);
 
         public void UseAbility(IUseableCellList ability, IEnumerable<HexCell> cells, bool force = false)
         {
             IEnumerable<HexCell> hexCells = cells.ToList();
             Act(Types.UseAbility,
-                $"{ability.GetType().Name}:{string.Join(":", hexCells.Select(c => c.Coordinates.ToString()))}",
+                $"{((NKMEntity) ability).ID.ToString()}:{string.Join(":", hexCells.Select(c => c.Coordinates.ToString()))}",
                 () => ability.Use(hexCells.ToList()), force);
         }
 
         public void UseAbility(IUseableCharacter ability, Character character, bool force = false)
-            => Act(Types.UseAbility, $"{ability.GetType().Name}:{character.ID}", () => ability.Use(character), force);
+            => Act(Types.UseAbility, $"{((NKMEntity) ability).ID.ToString()}:{character.ID}", () => ability.Use(character), force);
 
         public void Cancel(bool force = false)
             => Act(Types.Cancel, () => _game.Active.Cancel(), force);
