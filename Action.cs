@@ -89,6 +89,10 @@ namespace NKMCore
                 {
                     Deselect(true);
                 } break;
+                case Types.ExecuteCommand:
+                {
+                    ExecuteCommand(args[0], true);
+                } break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(actionType), actionType, null);
             }
@@ -146,8 +150,8 @@ namespace NKMCore
         public void Deselect(bool force = false)
             => Act(Types.Deselect, () => _game.Active.Deselect(), force);
 
-        public void ExecuteCommand(string command)
-            => Act(Types.ExecuteCommand, () => _game.Console.ExecuteCommand(command), true);
+        public void ExecuteCommand(string command, bool force = false)
+            => Act(Types.ExecuteCommand, () => _game.Console.ExecuteCommand(command), force);
 
         private void Act(string actionType, System.Action action, bool force)
             => Act(actionType, "", action, force);
