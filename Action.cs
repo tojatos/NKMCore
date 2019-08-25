@@ -146,6 +146,9 @@ namespace NKMCore
         public void Deselect(bool force = false)
             => Act(Types.Deselect, () => _game.Active.Deselect(), force);
 
+        public void ExecuteCommand(string command)
+            => Act(Types.ExecuteCommand, () => _game.Console.ExecuteCommand(command), true);
+
         private void Act(string actionType, System.Action action, bool force)
             => Act(actionType, "", action, force);
         private void Act(string actionType, string serializedContent, System.Action action, bool force)
@@ -177,6 +180,7 @@ namespace NKMCore
             public const string Deselect = "Deselect";
             public const string OpenSelectable = "OpenSelectable";
             public const string CloseSelectable = "CloseSelectable";
+            public const string ExecuteCommand = "ExecuteCommand";
         }
     }
 }

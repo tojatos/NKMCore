@@ -19,6 +19,7 @@ namespace NKMCore
         public readonly Active Active;
         public HexMap HexMap;
         public readonly Action Action;
+        public readonly Logger Logger;
         public readonly Console Console;
         public readonly NKMRandom Random;
         public static IDbConnection Conn;
@@ -32,6 +33,7 @@ namespace NKMCore
             Action = new Action(this);
             Console = new Console(this);
             Random = new NKMRandom();
+            Logger = new Logger(gameDependencies.LogFilePath);
             Init(gameDependencies);
         }
 
@@ -45,13 +47,13 @@ namespace NKMCore
             Players = new List<GamePlayer>(gameDependencies.Players);
             HexMap = gameDependencies.HexMap;
 
-            Random.OnValueGet += (name, value) => Console.GameLog($"RNG: {name}; {value}");
             Action.AfterAction += (type, _) =>
             {
                 if (type == Action.Types.BasicAttack || type == Action.Types.BasicMove)
                     Active.Select(Active.Character);
             };
-            Console.AddTriggersToEvents(Active.Turn);
+            Action.AfterAction += (actionType, serializedContent) =>
+                Logger.Log(Action.Serialize(actionType, serializedContent));
         }
         /// <summary>
         /// Get a copy of every character in the game
