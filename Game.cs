@@ -15,7 +15,7 @@ namespace NKMCore
 
         public List<GamePlayer> Players;
         public List<Character> Characters => Players.SelectMany(p => p.Characters).ToList();
-        private List<Ability> Abilities => Characters.SelectMany(c => c.Abilities).ToList();
+        public List<Ability> Abilities => Characters.SelectMany(c => c.Abilities).ToList();
         public readonly Active Active;
         public HexMap HexMap;
         public readonly Action Action;

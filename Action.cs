@@ -56,12 +56,12 @@ namespace NKMCore
                 } break;
                 case Types.ClickAbility:
                 {
-                    var ability = _game.Active.Character.Abilities.FirstOfID(int.Parse(args[0])) as IClickable;
+                    var ability = _game.Abilities.FirstOfID(int.Parse(args[0])) as IClickable;
                     ClickAbility(ability, true);
                 } break;
                 case Types.UseAbility:
                 {
-                    Ability ability = _game.Active.Character.Abilities.FirstOfID(int.Parse(args[0]));
+                    Ability ability = _game.Abilities.FirstOfID(int.Parse(args[0]));
                     if (!args[1].EndsWith(")"))
                     {
                         Character character = _game.Characters.FirstOfID(int.Parse(args[1]));
@@ -151,7 +151,7 @@ namespace NKMCore
             => Act(Types.Deselect, () => _game.Active.Deselect(), force);
 
         public void ExecuteCommand(string command, bool force = false)
-            => Act(Types.ExecuteCommand, () => _game.Console.ExecuteCommand(command), force);
+            => Act(Types.ExecuteCommand, command, () => _game.Console.ExecuteCommand(command), force);
 
         private void Act(string actionType, System.Action action, bool force)
             => Act(actionType, "", action, force);
