@@ -8,18 +8,15 @@ using NKMCore.Hex;
 
 namespace NKMCore.Templates
 {
-    public abstract class Ability
+    public abstract class Ability : NKMEntity
     {
-        public readonly string Name;
-        public readonly int ID;
-
         protected readonly Game Game;
         public Active Active => Game.Active;
         protected NKMRandom Random => Game.Random;
         protected HexMap HexMap => Game.HexMap;
         protected GamePlayer Owner => Game.Players.FirstOrDefault(p => p.Characters.Contains(ParentCharacter));
         protected Ability(Game game, AbilityType type, string name, int cooldown = 0) : this(game, type, name, cooldown, NKMID.GetNext("Ability")){}
-        protected Ability(Game game, AbilityType type, string name, int cooldown, int id)
+        private Ability(Game game, AbilityType type, string name, int cooldown, int id)
         {
             Game = game;
             ID = id;
@@ -72,7 +69,6 @@ namespace NKMCore.Templates
             {
                 case AbilityType.Normal:
                     ParentCharacter.HasUsedNormalAbilityInPhaseBefore = true;
-                    //ParentCharacter.HasUsedBasicAttackInPhaseBefore = true;
                     break;
                 case AbilityType.Ultimatum:
                     ParentCharacter.HasUsedUltimatumAbilityInPhaseBefore = true;
@@ -87,7 +83,7 @@ namespace NKMCore.Templates
             AfterUseFinish?.Invoke();
         }
         protected void OnFailedUseFinish() => Active.CleanAndTrySelecting();
-        
+
         protected event Delegates.Void OnAwake;
         public event Delegates.Void AfterUseFinish;
         public void Awake() => OnAwake?.Invoke();

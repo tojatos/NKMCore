@@ -79,8 +79,10 @@ namespace NKMCore
 
         public void Start()
         {
+            //This needs to be checked before TakeTurns(), because we attach to TurnStarted event
             if (!Dependencies.PlaceAllCharactersRandomlyAtStart)
             {
+                //TODO: maybe remove these triggers after first phase? Because this if will be checked every time turn is started
                 Active.Turn.TurnStarted += async player =>
                 {
                     if (!IsEveryCharacterPlacedInTheFirstPhase) await TryToPlaceCharacter();
@@ -224,49 +226,6 @@ namespace NKMCore
                     character.DeathTimer++;
                 }
             };
-        }
-
-        public event Delegates.Cell AfterCellSelect;
-        public void TouchCell(HexCell touchedCell)
-        {
-            Active.SelectedCell = touchedCell;
-            AfterCellSelect?.Invoke(touchedCell);
-            if (Active.SelectedCharacterToPlace != null)
-            {
-                if(!Active.CanPlace(Active.SelectedCharacterToPlace, touchedCell)) return;
-                Action.PlaceCharacter(Active.SelectedCharacterToPlace, touchedCell);
-                if (Active.Phase.Number != 0) return;
-                Action.FinishTurn();
-            }
-            else if (Active.HexCells?.Contains(touchedCell) == true)
-            {
-                if (Active.AbilityToUse != null)
-                {
-                    //It is important to check in that order, in case ability uses multiple interfaces!
-                    if(Active.AbilityToUse is IUseableCharacter && !touchedCell.IsEmpty)
-                        Action.UseAbility((IUseableCharacter) Active.AbilityToUse, touchedCell.FirstCharacter);
-                    else if(Active.AbilityToUse is IUseableCell)
-                        Action.UseAbility((IUseableCell) Active.AbilityToUse, touchedCell);
-                    else if(Active.AbilityToUse is IUseableCellList)
-                        Action.UseAbility((IUseableCellList) Active.AbilityToUse, Active.AirSelection.IsEnabled ? Active.AirSelection.HexCells : Active.HexCells);
-                }
-                else if (Active.Character != null)
-                {
-                    if(!touchedCell.IsEmpty && Active.Character.CanBasicAttack(touchedCell.FirstCharacter))
-                        Action.BasicAttack(Active.Character, touchedCell.FirstCharacter);
-                    else if(touchedCell.IsFreeToStand && Active.Character.CanBasicMove(touchedCell) && Active.MoveCells.Last() == touchedCell)
-                        Action.BasicMove(Active.Character, Active.MoveCells);
-                }
-            }
-            else
-            {
-                if (Active.AbilityToUse != null) return;
-
-                if (!touchedCell.IsEmpty)
-                    Action.Select(touchedCell.FirstCharacter);
-                else
-                    Action.Deselect();
-            }
         }
     }
 }

@@ -41,6 +41,7 @@ Czas odnowienia: {Cooldown}";
                     Active.Prepare(this, GetRangeCells());
                 },
                 SelectionTitle = "Postać do ożywienia",
+                Instant = true,
             };
             int selectableIndex = Game.Dependencies.SelectableManager.Register(s);
             Game.SelectableAction.OpenSelectable(selectableIndex);

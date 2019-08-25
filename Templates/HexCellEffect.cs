@@ -7,10 +7,10 @@ namespace NKMCore.Templates
         public readonly string Name;
         protected readonly Game Game;
         private Active Active => Game.Active;
-        
+
         protected int CurrentCooldown { get; private set; }
         public HexCell ParentCell { get; }
-        
+
         public event Delegates.Void OnRemove;
 
         public abstract string GetDescription();
@@ -35,7 +35,7 @@ namespace NKMCore.Templates
             OnRemove?.Invoke();
             Game.HexMap.InvokeAfterCellEffectRemove(this);
         }
-        
+
     }
 
 }

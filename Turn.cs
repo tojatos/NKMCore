@@ -21,7 +21,6 @@ namespace NKMCore
                 }
                 IsDone = true;
                 CharacterThatTookActionInTurn = null;
-                _game.Active.Reset();
             };
         }
         public void Start(GamePlayer gamePlayer)

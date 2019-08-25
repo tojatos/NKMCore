@@ -67,8 +67,8 @@ namespace NKMCore
                         UseAbility(ability as IUseableCharacter, character, true);
                         return;
                     }
-                    IEnumerable<HexCell> targetCells = args.Skip(1)
-                        .Select(c => _game.HexMap.Cells.First(a => a.Coordinates.ToString() == c));
+                    List<HexCell> targetCells = args.Skip(1)
+                        .Select(c => _game.HexMap.Cells.First(a => a.Coordinates.ToString() == c)).ToList();
                     if(targetCells.Count() == 1)
                         UseAbility(ability as IUseableCell, targetCells.First(), true);
                     else
@@ -126,9 +126,12 @@ namespace NKMCore
             => Act(Types.UseAbility, $"{ability.GetType().Name}:{cell.Coordinates.ToString()}", () => ability.Use(cell), force);
 
         public void UseAbility(IUseableCellList ability, IEnumerable<HexCell> cells, bool force = false)
-            => Act(Types.UseAbility,
-                $"{ability.GetType().Name}:{string.Join(":", cells.Select(c => c.Coordinates.ToString()))}",
-                () => ability.Use(cells.ToList()), force);
+        {
+            IEnumerable<HexCell> hexCells = cells.ToList();
+            Act(Types.UseAbility,
+                $"{ability.GetType().Name}:{string.Join(":", hexCells.Select(c => c.Coordinates.ToString()))}",
+                () => ability.Use(hexCells.ToList()), force);
+        }
 
         public void UseAbility(IUseableCharacter ability, Character character, bool force = false)
             => Act(Types.UseAbility, $"{ability.GetType().Name}:{character.ID}", () => ability.Use(character), force);

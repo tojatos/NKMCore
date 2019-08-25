@@ -27,7 +27,6 @@ namespace NKMCore
         public Ability AbilityToUse;
         public Character SelectedCharacterToPlace;
         public Character Character;
-        public HexCell SelectedCell;
 
         public readonly List<HexCell> MoveCells = new List<HexCell>();
         public event Delegates.CharacterD AfterCharacterSelect;
@@ -68,13 +67,12 @@ namespace NKMCore
         }
         public void Cancel()
         {
-            if (AbilityToUse != null) AbilityToUse.Cancel();
-            else if (SelectedCharacterToPlace != null) CancelPlacingCharacter();
+            if (AbilityToUse != null)
+                AbilityToUse.Cancel();
+            else if (SelectedCharacterToPlace != null)
+                CancelPlacingCharacter();
             else
-            {
                 Deselect();
-                SelectedCell = null;
-            }
 
         }
 
@@ -131,7 +129,6 @@ namespace NKMCore
         {
             if (IsActiveUse || Turn.IsDone) Deselect();
             SelectedCharacterToPlace = null;
-            SelectedCell = null;
             if (AirSelection.IsEnabled) AirSelection.Disable();
             Clean();
         }

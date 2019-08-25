@@ -10,7 +10,7 @@ namespace NKMCore
 
         public event Delegates.CellHashSet AfterEnable;
         public event Delegates.CellHashSet AfterCellsSet;
-        
+
         public bool IsEnabled { get; private set; }
         public enum SelectionShape
         {
@@ -32,7 +32,7 @@ namespace NKMCore
         private HashSet<HexCell> _hexCells;
         public HashSet<HexCell> HexCells
         {
-            get { return _hexCells; }
+            get => _hexCells;
             set
             {
                 _hexCells = value;

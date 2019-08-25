@@ -7,12 +7,9 @@ using NKMCore.Hex;
 
 namespace NKMCore.Templates
 {
-    public class Character
+    public class Character : NKMEntity
     {
-        public readonly Game _game;
-
-        public string Name;
-        public override string ToString() => Name + $" ({ID})";
+        public readonly Game Game;
 
         public Action<Character> BasicAttack { get; set; }
         public Action<List<HexCell>> BasicMove { get; set; }
@@ -20,7 +17,6 @@ namespace NKMCore.Templates
         public Func<List<HexCell>> GetBasicAttackCells;
 
         #region Readonly Properties
-        public readonly int ID;
         public readonly Stat HealthPoints;
         public readonly Stat AttackPoints;
         public readonly Stat BasicAttackRange;
@@ -33,8 +29,8 @@ namespace NKMCore.Templates
         public List<Ability> Abilities { get; }
         public List<Effect> Effects { get; } = new List<Effect>();
 
-        public GamePlayer Owner => _game.Players.First(p => p.Characters.Contains(this));
-        public HexCell ParentCell => _game.HexMap.GetCell(this);
+        public GamePlayer Owner => Game.Players.First(p => p.Characters.Contains(this));
+        public HexCell ParentCell => Game.HexMap.GetCell(this);
         public bool IsAlive => HealthPoints.Value > 0;
 
         public  bool  IsStunned                      =>  Effects.ContainsType<Stun>();
@@ -65,14 +61,11 @@ namespace NKMCore.Templates
             GetBasicAttackCells().Contains(targetCharacter.ParentCell);
 
         public bool CanBasicMove(HexCell targetCell) => targetCell.IsFreeToStand && CanUseBasicMove;
-
-
-
         #endregion
 
         #region Other Properties
         public bool CanAttackAllies { get; set; }
-        public bool IsOnMap => _game.HexMap.GetCell(this) != null;
+        public bool IsOnMap => Game.HexMap.GetCell(this) != null;
 
         public bool HasUsedBasicMoveInPhaseBefore { get; set; }
         public bool HasUsedBasicAttackInPhaseBefore { private get; set; }
@@ -114,7 +107,7 @@ namespace NKMCore.Templates
         #endregion
         public Character(Properties properties)
         {
-            _game = properties.Game;
+            Game = properties.Game;
 
             ID = properties.Id;
             Name = properties.Name;
@@ -157,7 +150,7 @@ namespace NKMCore.Templates
         public void MoveTo(HexCell targetCell)
         {
             BeforeMove?.Invoke();
-            _game.HexMap.Move(this, targetCell);
+            Game.HexMap.Move(this, targetCell);
             AfterMove?.Invoke();
         }
 
@@ -260,10 +253,10 @@ namespace NKMCore.Templates
             AfterHeal?.Invoke(targetCharacter, diff);
         }
 
-        public List<HexCell> GetPrepareBasicMoveCells()
+        public IEnumerable<HexCell> GetPrepareBasicMoveCells()
             => CanUseBasicMove ? GetBasicMoveCells() : new List<HexCell>();
 
-        public List<HexCell> GetPrepareBasicAttackCells() => CanUseBasicAttack ? CanAttackAllies
+        public IEnumerable<HexCell> GetPrepareBasicAttackCells() => CanUseBasicAttack ? CanAttackAllies
             ? GetBasicAttackCells().WhereCharacters()
             : GetBasicAttackCells().WhereEnemiesOf(Owner) : new List<HexCell>();
 
@@ -317,7 +310,7 @@ namespace NKMCore.Templates
                 : ParentCell.GetNeighbors(Owner, Speed.Value, SearchFlags.StopAtEnemyCharacters | SearchFlags.StopAtWalls);
         public void TryToTakeTurn()
         {
-            if(_game.Active.Turn.CharacterThatTookActionInTurn==null) JustBeforeFirstAction?.Invoke();
+            if(Game.Active.Turn.CharacterThatTookActionInTurn==null) JustBeforeFirstAction?.Invoke();
         }
 
         public class Properties
