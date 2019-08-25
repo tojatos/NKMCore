@@ -6,26 +6,26 @@ using NKMCore.Templates;
 
 namespace NKMCore.Abilities.Hecate
 {
-	public class SonzaiNoChikara : Ability, IClickable, IUseableCellList
-	{
-		public SonzaiNoChikara(Game game) : base(game, AbilityType.Ultimatum, "Sonzai no Chikara", 8){}
+    public class SonzaiNoChikara : Ability, IClickable, IUseableCellList
+    {
+        public SonzaiNoChikara(Game game) : base(game, AbilityType.Ultimatum, "Sonzai no Chikara", 8){}
 
-		public override List<HexCell> GetRangeCells() => HexMap.Cells;
-		public override List<HexCell> GetTargetsInRange() => GetRangeCells().WhereEnemiesOf(Owner);
+        public override List<HexCell> GetRangeCells() => HexMap.Cells;
+        public override List<HexCell> GetTargetsInRange() => GetRangeCells().WhereEnemiesOf(Owner);
 
-		public override string GetDescription() => 
+        public override string GetDescription() => 
 $@"{ParentCharacter.Name} uwalnia zgromadzoną Energię Życiową, raniąc każdego wroga na mapie.
 Ilość HP, jakie zgromadziła w postaci Energii Życiowej jest równo rozdzielana pomiędzy wszystkich przeciwników w postaci obrażeń magicznych.";
 
-		public void Click()
-		{
-			Active.Prepare(this, GetTargetsInRange());
-			//Active.MakeAction(Active.HexCells);
-			ParentCharacter.TryToTakeTurn();
-		}
+        public void Click()
+        {
+            Active.Prepare(this, GetTargetsInRange());
+            //Active.MakeAction(Active.HexCells);
+            ParentCharacter.TryToTakeTurn();
+        }
 
-		public void Use(List<HexCell> cells)
-		{
+        public void Use(List<HexCell> cells)
+        {
             ItadakiNoKura passiveAbility = ParentCharacter.Abilities.OfType<ItadakiNoKura>().SingleOrDefault();
 
             if (passiveAbility != null)
@@ -42,6 +42,6 @@ Ilość HP, jakie zgromadziła w postaci Energii Życiowej jest równo rozdziela
             }
 
             Finish();
-		}
-	}
+        }
+    }
 }

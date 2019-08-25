@@ -38,7 +38,7 @@ Czas odnowienia: {Cooldown}";
 
         public void Click()
         {
-			ParentCharacter.TryToTakeTurn();
+            ParentCharacter.TryToTakeTurn();
             IsEnabled = true;
             ParentCharacter.HasFreeMoveUntilEndOfTheTurn = true;
             Finish();

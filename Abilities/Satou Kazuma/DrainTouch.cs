@@ -28,7 +28,7 @@ Zasięg: {Range}    Czas odnowienia: {Cooldown}";
 
         public void Use(Character character)
         {
-			ParentCharacter.TryToTakeTurn();
+            ParentCharacter.TryToTakeTurn();
             var dmg = new Damage(Damage, DamageType.Magical);
             ParentCharacter.Attack(this, character, dmg);
             ParentCharacter.Heal(ParentCharacter, dmg.Value);

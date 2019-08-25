@@ -12,7 +12,7 @@ namespace NKMCore.Abilities.Sakai_Yuuji
 
         public event Delegates.CharacterCharacter BeforeGrammatica;
         public event Delegates.CharacterCharacterCell AfterGrammatica;
-        
+
         public Grammatica(Game game) : base(game, AbilityType.Ultimatum, "Grammatica", 5)
         {
             OnAwake += () => Validator.ToCheck.Add(Validator.AreAnyTargetsInRange);
@@ -35,14 +35,14 @@ Zasięg: {Range}    Czas odnowienia: {Cooldown}";
         private Character _target;
         public void Use(HexCell targetCell)
         {
-            BeforeGrammatica?.Invoke(ParentCharacter, _target); 
+            BeforeGrammatica?.Invoke(ParentCharacter, _target);
             ParentCharacter.TryToTakeTurn();
             if (_target.IsEnemyFor(Owner))
             {
-                int dmg = (int)(_target.HealthPoints.BaseValue * HealthPercentDamage / 100f);
+                int dmg = (int) (_target.HealthPoints.BaseValue * HealthPercentDamage / 100f);
                 ParentCharacter.Attack(this, _target, new Damage(dmg, DamageType.True));
             }
-            AfterGrammatica?.Invoke(ParentCharacter, _target, targetCell); 
+            AfterGrammatica?.Invoke(ParentCharacter, _target, targetCell);
             _target.MoveTo(targetCell);
             Finish();
         }

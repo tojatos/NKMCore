@@ -84,7 +84,7 @@ namespace NKMCore
 
         public void AddTriggersToEvents(Turn turn)
         {
-			turn.TurnFinished += c => GameLog("TURN FINISHED");
+            turn.TurnFinished += c => GameLog("TURN FINISHED");
         }
         public void AddTriggersToEvents(Character character)
         {
@@ -105,7 +105,7 @@ namespace NKMCore
         {
             if(ability is SwordDance)
                 ((SwordDance) ability).OnBlock += attackingCharacter =>
-					Log($"{ability.ParentCharacter.FormattedFirstName()} blokuje atak {attackingCharacter.FormattedFirstName()}!");
+                    Log($"{ability.ParentCharacter.FormattedFirstName()} blokuje atak {attackingCharacter.FormattedFirstName()}!");
 
             if(ability is LackOfOrientation)
                 ((LackOfOrientation) ability).AfterGettingLost += () =>

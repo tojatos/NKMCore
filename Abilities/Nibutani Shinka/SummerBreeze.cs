@@ -30,7 +30,7 @@ Czas odnowienia: {Cooldown}";
         public void Click() => Active.Prepare(this, GetTargetsInRange());
         public void Use(Character target)
         {
-			ParentCharacter.TryToTakeTurn();
+            ParentCharacter.TryToTakeTurn();
             HexDirection direction = ParentCharacter.ParentCell.GetDirection(target.ParentCell);
             Knockback(target, direction);
             Finish();

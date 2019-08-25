@@ -134,13 +134,13 @@ namespace NKMCore
             => Act(Types.UseAbility, $"{ability.GetType().Name}:{character.ID}", () => ability.Use(character), force);
 
         public void Cancel(bool force = false)
-            => Act(Types.Cancel,  () => _game.Active.Cancel(), force);
+            => Act(Types.Cancel, () => _game.Active.Cancel(), force);
 
         public void Select(Character character, bool force = false)
             => Act(Types.Select, character.ID.ToString(), () => _game.Active.Select(character), force);
 
         public void Deselect(bool force = false)
-            => Act(Types.Deselect,  () => _game.Active.Deselect(), force);
+            => Act(Types.Deselect, () => _game.Active.Deselect(), force);
 
         private void Act(string actionType, System.Action action, bool force)
             => Act(actionType, "", action, force);

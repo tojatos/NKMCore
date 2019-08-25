@@ -44,7 +44,7 @@ Umiejętność jest włączona od {_currentDuration} faz.";
         
         public void Use(Character character)
         {
-			ParentCharacter.TryToTakeTurn();
+            ParentCharacter.TryToTakeTurn();
             _lastTargetCharacter = character;
             _currentDuration = 1;
 

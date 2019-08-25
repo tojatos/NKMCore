@@ -38,11 +38,11 @@ namespace NKMCore.Abilities.Itsuka_Kotori
 @"{0} wywołuje Pożar na wskazanym obszarze o promieniu {3}.
 {0} może atakować wrogów znajdujących się na terenie Pożaru podstawowymi atakami, zadając 50% zwykłych obrażeń, niezależnie od tego gdzie sama się znajduje.
 
-Zasięg: {1}	Czas odnowienia: {2}",
+Zasięg: {1}    Czas odnowienia: {2}",
             ParentCharacter.Name, Range, Cooldown, Radius);
 
         public override List<HexCell> GetRangeCells() => GetNeighboursOfOwner(Range);
-		public void Click() => Active.PrepareAirSelection(this, GetRangeCells(), AirSelection.SelectionShape.Circle, Radius);
+        public void Click() => Active.PrepareAirSelection(this, GetRangeCells(), AirSelection.SelectionShape.Circle, Radius);
         public void Use(List<HexCell> cells)
         {
             ParentCharacter.TryToTakeTurn();

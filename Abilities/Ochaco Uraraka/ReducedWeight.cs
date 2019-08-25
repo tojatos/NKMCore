@@ -28,7 +28,7 @@ Czas odnowienia: {Cooldown}";
 
         public void Use(Character character)
         {
-			ParentCharacter.TryToTakeTurn();
+            ParentCharacter.TryToTakeTurn();
             ParentCharacter.Abilities.OfType<ZeroGravity>().First().AddEffect(character);
             character.Effects.Add(new StatModifier(Game, 1, character.Speed.RealValue, character, StatType.Speed, Name));
             Finish();

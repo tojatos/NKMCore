@@ -30,7 +30,7 @@ namespace NKMCore.Abilities.Nibutani_Shinka
         public override List<HexCell> GetRangeCells() => GetNeighboursOfOwner(Radius).AddOne(ParentCharacter.ParentCell);
         public override List<HexCell> GetTargetsInRange() => IsEnchanted ? GetRangeCells().WhereFriendsOf(Owner) : GetRangeCells().WhereCharacters();
 
-        public override string GetDescription() => 
+        public override string GetDescription() =>
 $@"{ParentCharacter.Name} leczy wszystkie postacie w promieniu {Radius} za {HealAmount} HP na końcu swojego ruchu.
 Dodatkowo, sojusznicy otrzymuję {ShieldAmount} tarczy, która odnawia się co użycie.
 
@@ -48,7 +48,7 @@ Dodatkowo, daje wszystkim sojusznikom w zasięgu {EnchantedSpeedAmount} szybkoś
             friendsInRange.ForEach(TryAddingShield);
             if(IsEnchanted) friendsInRange.ForEach(f =>
             {
-               if(f.Effects.Any(e => e.Name == Name))  return; // prevent speed stacking
+               if(f.Effects.Any(e => e.Name == Name)) return; // prevent speed stacking
                 f.Effects.Add(new StatModifier(Game, 1, EnchantedSpeedAmount, f, StatType.Speed, Name));
             });
         }

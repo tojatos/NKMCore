@@ -64,7 +64,7 @@
 //
 //        private void Enable()
 //        {
-//			ParentCharacter.TryToTakeTurn();
+//          ParentCharacter.TryToTakeTurn();
 //            IsEnabled = true;
 //            _currentDuration = 1;
 //            AddHexEffectsInRange();

@@ -12,17 +12,17 @@ namespace NKMCore
 
         public override Task BindCharactersToPlayers()
         {
-			List<string> allCharacterNames = _preparerDependencies.Connection.GetCharacterNames();
-			_game.Players.ForEach(p=>
-			{
-				while (p.Characters.Count != _preparerDependencies.NumberOfCharactersPerPlayer)
-				{
+            List<string> allCharacterNames = _preparerDependencies.Connection.GetCharacterNames();
+            _game.Players.ForEach(p=>
+            {
+                while (p.Characters.Count != _preparerDependencies.NumberOfCharactersPerPlayer)
+                {
                     string randomCharacterName = allCharacterNames.GetRandom();
                     allCharacterNames.Remove(randomCharacterName);
                     p.Characters.Add(CharacterFactory.Create(_game, randomCharacterName));
-				}
-			});
-			return Task.CompletedTask;
+                }
+            });
+            return Task.CompletedTask;
         }
     }
 }

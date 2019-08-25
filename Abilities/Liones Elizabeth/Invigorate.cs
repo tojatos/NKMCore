@@ -28,7 +28,7 @@ Zasięg: {Range}    Czas odnowienia: {Cooldown}";
 
         public void Use(Character character)
         {
-			ParentCharacter.TryToTakeTurn();
+            ParentCharacter.TryToTakeTurn();
             character.Effects.Add(new HealOverTime(Game, ParentCharacter, Heal, Duration, character, Name));
             Finish();
         }

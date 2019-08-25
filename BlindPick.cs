@@ -12,11 +12,11 @@ namespace NKMCore
 
         public override async Task BindCharactersToPlayers()
         {
-			foreach (GamePlayer p in _game.Players)
-			{
-				List<Character> allCharacters = Game.GetMockCharacters();
-				await PickCharacters(allCharacters, _preparerDependencies.NumberOfCharactersPerPlayer, p, _game);
-			}
+            foreach (GamePlayer p in _game.Players)
+            {
+                List<Character> allCharacters = Game.GetMockCharacters();
+                await PickCharacters(allCharacters, _preparerDependencies.NumberOfCharactersPerPlayer, p, _game);
+            }
         }
     }
 }

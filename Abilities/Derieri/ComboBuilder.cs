@@ -29,7 +29,7 @@ Zasięg liniowy: {Range}    Czas odnowienia: {Cooldown}";
         public void Use(Character target)
         {
             ParentCharacter.TryToTakeTurn();
-			ComboStar passiveAbility = ParentCharacter.Abilities.OfType<ComboStar>().SingleOrDefault();
+            ComboStar passiveAbility = ParentCharacter.Abilities.OfType<ComboStar>().SingleOrDefault();
             if (passiveAbility != null)
             {
                 if (target != passiveAbility.ComboCharacter) passiveAbility.SetNewComboCharacter(target);

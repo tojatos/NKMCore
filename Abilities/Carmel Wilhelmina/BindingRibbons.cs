@@ -26,14 +26,14 @@ Gdy trafi co najmniej {EnemiesToHitToActivateSnare} wrogów unieruchamia ich dod
 
         public void Use(List<HexCell> cells)
         {
-			ParentCharacter.TryToTakeTurn();
+            ParentCharacter.TryToTakeTurn();
             List<Character> enemiesInRange = cells.WhereEnemiesOf(Owner).GetCharacters();
             enemiesInRange.ForEach(c =>
             {
                 c.Effects.Add(new Silent(Game, SilentDuration, c, Name));
-                if(enemiesInRange.Count >= EnemiesToHitToActivateSnare) 
+                if(enemiesInRange.Count >= EnemiesToHitToActivateSnare)
                     c.Effects.Add(new Snare(Game, RootDuration, c, Name));
-                
+
             });
             Finish();
         }

@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 
 namespace NKMCore
 {
-	/// <summary>
-	/// This class is responsible for creation and validation of dependencies of the Game.
-	/// </summary>
+    /// <summary>
+    /// This class is responsible for creation and validation of dependencies of the Game.
+    /// </summary>
     public class GamePreparer
     {
         private readonly GamePreparerDependencies _preparerDependencies;
@@ -35,13 +35,13 @@ namespace NKMCore
             );
         }
         
-		private List<GamePlayer> GetPlayers() => _preparerDependencies.PlayerNames.Select(name => new GamePlayer{ Name = name}).ToList();
+        private List<GamePlayer> GetPlayers() => _preparerDependencies.PlayerNames.Select(name => new GamePlayer{ Name = name}).ToList();
 
         public bool AreOptionsValid => _gameDependenciesValidator.AreOptionsValid;
 
         public async Task<Game> CreateGame()
         {
-	        var game = new Game(_gameDependencies);
+            var game = new Game(_gameDependencies);
             CharacterPick characterPick = CharacterPick.Create(game, _preparerDependencies);
             await characterPick.BindCharactersToPlayers();
             return game;

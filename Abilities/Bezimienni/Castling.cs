@@ -7,55 +7,55 @@ namespace NKMCore.Abilities.Bezimienni
 {
     public class Castling : Ability, IClickable, IUseableCharacter
     {
-	    private Character _firstCharacterToSwap;
-	    private Character _secondCharacterToSwap;
+        private Character _firstCharacterToSwap;
+        private Character _secondCharacterToSwap;
         public Castling(Game game) : base(game, AbilityType.Ultimatum, "Castling", 6)
         {
-	        OnAwake += () => Validator.ToCheck.Add(() => GetRangeCells().GetCharacters().Count >= 2);
-	        AfterUseFinish += Cleanup;
+            OnAwake += () => Validator.ToCheck.Add(() => GetRangeCells().GetCharacters().Count >= 2);
+            AfterUseFinish += Cleanup;
         }
-	    public override List<HexCell> GetRangeCells() => new List<HexCell>(HexMap.Cells);
-	    public override List<HexCell> GetTargetsInRange() => GetRangeCells().WhereCharacters();
+        public override List<HexCell> GetRangeCells() => new List<HexCell>(HexMap.Cells);
+        public override List<HexCell> GetTargetsInRange() => GetRangeCells().WhereCharacters();
         public override string GetDescription() =>
-$@"Bezimienni zamieniają pozycjami na mapie 2 jednostki.
+            $@"Bezimienni zamieniają pozycjami na mapie 2 jednostki.
 
 Czas odnowienia: {Cooldown}";
 
-	    public void Click() => PrepareCharacterSelection();
+        public void Click() => PrepareCharacterSelection();
 
-	    private void PrepareCharacterSelection()
-	    {
-		    List<HexCell> cellRange = GetTargetsInRange();
-		    if (_firstCharacterToSwap != null) cellRange.RemoveAll(c => c.FirstCharacter == _firstCharacterToSwap);
-		    Active.Prepare(this, cellRange);
-	    }
+        private void PrepareCharacterSelection()
+        {
+            List<HexCell> cellRange = GetTargetsInRange();
+            if (_firstCharacterToSwap != null) cellRange.RemoveAll(c => c.FirstCharacter == _firstCharacterToSwap);
+            Active.Prepare(this, cellRange);
+        }
 
-	    public void Use(Character character)
-		{
-			if (_firstCharacterToSwap == null)
-			{
-				_firstCharacterToSwap = character;
-				PrepareCharacterSelection();
-			}
-			else
-			{
-				_secondCharacterToSwap = character;
+        public void Use(Character character)
+        {
+            if (_firstCharacterToSwap == null)
+            {
+                _firstCharacterToSwap = character;
+                PrepareCharacterSelection();
+            }
+            else
+            {
+                _secondCharacterToSwap = character;
                 ParentCharacter.TryToTakeTurn();
-				HexMap.Swap(_firstCharacterToSwap, _secondCharacterToSwap);
-				Finish();
-			}
-		}
+                HexMap.Swap(_firstCharacterToSwap, _secondCharacterToSwap);
+                Finish();
+            }
+        }
 
-	    private void Cleanup()
-	    {
-		  _firstCharacterToSwap = null;
-		  _secondCharacterToSwap = null;
-	    }
+        private void Cleanup()
+        {
+            _firstCharacterToSwap = null;
+            _secondCharacterToSwap = null;
+        }
 
-	    public override void Cancel()
-	    {
-		    base.Cancel();
-		    Cleanup();
-	    }
+        public override void Cancel()
+        {
+            base.Cancel();
+            Cleanup();
+        }
     }
 }

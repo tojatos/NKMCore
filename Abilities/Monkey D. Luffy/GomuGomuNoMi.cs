@@ -68,7 +68,7 @@ Zasięg: {Range}    Czas odnowienia: {Cooldown} ({BazookaCooldown}, jeżeli uży
 
         public void Use(HexCell cell)
         {
-			ParentCharacter.TryToTakeTurn();
+            ParentCharacter.TryToTakeTurn();
             if (cell.Type == HexCell.TileType.Wall) Rocket(cell);
             else
             {

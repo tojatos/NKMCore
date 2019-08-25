@@ -22,7 +22,7 @@ Czas odnowienia: {Cooldown}";
 
         public void Click()
         {
-			ParentCharacter.TryToTakeTurn();
+            ParentCharacter.TryToTakeTurn();
             GetTargetsInRange().GetCharacters().ForEach(c => ParentCharacter.Heal(c, Heal));
             Finish();
         }

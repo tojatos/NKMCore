@@ -15,11 +15,11 @@ namespace NKMCore.Effects
         {
             _characterThatAttacks = characterThatAttacks;
             Type = effectTarget.Owner == characterThatAttacks.Owner ? EffectType.Positive : EffectType.Negative;
-            Delegates.DamageD tryToActivateEffect = d => 
+            Delegates.DamageD tryToActivateEffect = d =>
             {
                 if(d.Value==0) return;
-                if(_wasActivatedOnce) return;//prevent infinite loop
-                _wasActivatedOnce = true; 
+                if(_wasActivatedOnce) return; //prevent infinite loop
+                _wasActivatedOnce = true;
                 List<Character> enemiesInRange =
                     GetNeighboursOfOwner(range).SelectMany(c => c.CharactersOnCell).Where(c => c.IsEnemyFor(_characterThatAttacks.Owner)).ToList();
                 if(effectTarget.Owner != characterThatAttacks.Owner) enemiesInRange.Add(effectTarget);

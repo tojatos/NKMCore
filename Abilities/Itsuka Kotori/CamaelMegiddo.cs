@@ -73,16 +73,16 @@ Czas odnowienia: {Cooldown}";
         {
             List<HexCell> cells = GetDirectionRangeCells(direction);
             IGrouping<bool, HexCell>[] cellsByConflargation = cells.GroupBy(c => c.Effects.ContainsType<HexCellEffects.Conflagration>()).ToArray();
-			List<HexCell> lineCells = cellsByConflargation.Where(k => k.Key == false).SelectMany(x => x).ToList();
-			List<HexCell> conflargationCells = cellsByConflargation.Where(k => k.Key).SelectMany(x => x).ToList();
+            List<HexCell> lineCells = cellsByConflargation.Where(k => k.Key == false).SelectMany(x => x).ToList();
+            List<HexCell> conflargationCells = cellsByConflargation.Where(k => k.Key).SelectMany(x => x).ToList();
             BeforeFlamewave?.Invoke(lineCells, conflargationCells);
 
-			//deal damages
-			lineCells.WhereEnemiesOf(Owner).GetCharacters().ForEach(c => ParentCharacter.Attack(this, c, new Damage(LineDamage, DamageType.Magical)));
-			conflargationCells.WhereEnemiesOf(Owner).GetCharacters().ForEach(c => ParentCharacter.Attack(this, c, new Damage(ConflargationDamage, DamageType.Magical)));
+            //deal damages
+            lineCells.WhereEnemiesOf(Owner).GetCharacters().ForEach(c => ParentCharacter.Attack(this, c, new Damage(LineDamage, DamageType.Magical)));
+            conflargationCells.WhereEnemiesOf(Owner).GetCharacters().ForEach(c => ParentCharacter.Attack(this, c, new Damage(ConflargationDamage, DamageType.Magical)));
 
-			//remove conflargation effects
-			conflargationCells.ForEach(c => c.Effects.FindAll(e => e.GetType() == typeof(HexCellEffects.Conflagration)).ForEach(e => e.Remove()));
+            //remove conflargation effects
+            conflargationCells.ForEach(c => c.Effects.FindAll(e => e.GetType() == typeof(HexCellEffects.Conflagration)).ForEach(e => e.Remove()));
 
         }
 

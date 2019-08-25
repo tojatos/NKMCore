@@ -11,22 +11,22 @@ namespace NKMCore.Abilities.Ryuko_Matoi
         private const int Damage = 5;
         public KamuiSenketsu(Game game) : base(game, AbilityType.Ultimatum, "Kamui Senketsu", 5)
         {
-	        OnAwake += () =>
-	        {
-		        Validator.ToCheck.Remove(Validator.IsNotOnCooldown);
-		        Validator.ToCheck.Remove(Validator.IsCharacterNotSilenced);
-		        Validator.ToCheck.Add(() => Validator.IsNotOnCooldown() || IsEnabled);
-		        Validator.ToCheck.Add(() => Validator.IsCharacterNotSilenced() || IsEnabled);
-		        Active.Turn.TurnFinished += (character) =>
-		        {
-			        if(character!=ParentCharacter) return;
-			        if(!IsEnabled) return;
-			        ParentCharacter.Attack(this, ParentCharacter, new Damage(Damage, DamageType.True));
-			        var effect = ParentCharacter.Effects.SingleOrDefault(e => e.Name == Name && e.GetType() == typeof(StatModifier)) as StatModifier;
-			        if(effect==null) return;
-			        effect.Modifier.Value += 2;
-		        };
-	        };
+            OnAwake += () =>
+            {
+                Validator.ToCheck.Remove(Validator.IsNotOnCooldown);
+                Validator.ToCheck.Remove(Validator.IsCharacterNotSilenced);
+                Validator.ToCheck.Add(() => Validator.IsNotOnCooldown() || IsEnabled);
+                Validator.ToCheck.Add(() => Validator.IsCharacterNotSilenced() || IsEnabled);
+                Active.Turn.TurnFinished += (character) =>
+                {
+                    if(character!=ParentCharacter) return;
+                    if(!IsEnabled) return;
+                    ParentCharacter.Attack(this, ParentCharacter, new Damage(Damage, DamageType.True));
+                    var effect = ParentCharacter.Effects.SingleOrDefault(e => e.Name == Name && e.GetType() == typeof(StatModifier)) as StatModifier;
+                    if(effect==null) return;
+                    effect.Modifier.Value += 2;
+                };
+            };
         }
 
         public override string GetDescription() =>
@@ -37,23 +37,23 @@ Po użyciu tej umiejętności {ParentCharacter.Name} może się poruszyć.";
 
         public void Click()
         {
-	        if (!IsEnabled)
-	        {
+            if (!IsEnabled)
+            {
                 ParentCharacter.TryToTakeTurn();
-		        IsEnabled = true;
+                IsEnabled = true;
                 ParentCharacter.Effects.Add(new Flying(Game, -1, ParentCharacter, Name));
-		        ParentCharacter.Effects.Add(new StatModifier(Game, -1, InitialADBonus, ParentCharacter, StatType.AttackPoints, Name));
-		        ParentCharacter.HasFreeMoveUntilEndOfTheTurn = true;
-		        Finish();
-	        }
-	        else
-	        {
-		        IsEnabled = false;
-		        ParentCharacter.Effects.RemoveAll(e => e.Name == Name);
-//		        ParentCharacter.Select();
-		        Active.Select(ParentCharacter);
-	        }
-	        
+                ParentCharacter.Effects.Add(new StatModifier(Game, -1, InitialADBonus, ParentCharacter, StatType.AttackPoints, Name));
+                ParentCharacter.HasFreeMoveUntilEndOfTheTurn = true;
+                Finish();
+            }
+            else
+            {
+                IsEnabled = false;
+                ParentCharacter.Effects.RemoveAll(e => e.Name == Name);
+//              ParentCharacter.Select();
+                Active.Select(ParentCharacter);
+            }
+            
         }
 
         public bool IsEnabled { get; private set; }
