@@ -8,6 +8,7 @@ namespace NKMCore
     {
         private readonly GameType _type;
         private readonly ISelectable _selectable;
+        public event Delegates.StringString AfterAction;
         public event Delegates.String MultiplayerAction;
 
         public SelectableAction(GameType type, ISelectable selectable)
@@ -34,26 +35,30 @@ namespace NKMCore
             }
         }
 
-        public void OpenSelectable(int selectableId, bool force = false)
+        public void OpenSelectable(int selectableId, bool force = false) =>
+                Act(Action.Types.OpenSelectable,
+                    $"{selectableId}",
+                    () => _selectable.OpenSelectable(selectableId),
+                    force);
+
+        public void CloseSelectable(int selectableId, List<int> selectedIds, bool force = false) =>
+                Act(Action.Types.CloseSelectable,
+                    $"{selectableId}:{string.Join(":", selectedIds)}",
+                    () => _selectable.CloseSelectable(selectableId, selectedIds),
+                    force);
+
+        public static string Serialize(string actionType, string serializedContent)
+            => string.Join(";", $"ACTION {actionType}", serializedContent);
+        private void Act(string actionType, string serializedContent, System.Action action, bool force)
         {
+            string serializedMessage = Serialize(actionType, serializedContent);
             if (_type == GameType.Multiplayer && !force)
+                MultiplayerAction?.Invoke(serializedMessage);
+            else
             {
-                MultiplayerAction?.Invoke($"ACTION {Action.Types.OpenSelectable};{selectableId}");
-                return;
+                action();
+                AfterAction?.Invoke(actionType, serializedContent);
             }
-
-            _selectable.OpenSelectable(selectableId);
-        }
-
-        public void CloseSelectable(int selectableId, List<int> selectedIds, bool force = false)
-        {
-            if (_type == GameType.Multiplayer && !force)
-            {
-                MultiplayerAction?.Invoke($"ACTION {Action.Types.CloseSelectable};{selectableId}:{string.Join(":", selectedIds)}");
-                return;
-            }
-
-            _selectable.CloseSelectable(selectableId, selectedIds);
         }
     }
 }
