@@ -9,6 +9,7 @@ namespace NKMCore.Abilities.Bezimienni
 {
     public class Check : Ability, IClickable, IUseableCharacter
     {
+        public event Delegates.CharacterD AfterCheck;
         public Check(Game game) : base(game, AbilityType.Normal, "Check", 2)
         {
             OnAwake += () => Validator.ToCheck.Add(Validator.AreAnyTargetsInRange);
@@ -35,6 +36,7 @@ Czas odnowienia: {Cooldown}";
 
             Active.Turn.TurnStarted += ForceAction;
             character.Effects.Add(new Disarm(Game, 1, character, Name));
+            AfterCheck?.Invoke(character);
             Finish();
         }
 
