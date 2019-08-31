@@ -13,7 +13,7 @@ namespace NKMCore.Abilities.Levi
             OnAwake += () =>
             {
                 ParentCharacter.OnKill += TryEnabling;
-                ParentCharacter.HealthPoints.StatChanged += () =>
+                ParentCharacter.HealthPoints.StatChanged += (int1, int2) =>
                 {
                     if (ParentCharacter.HealthPoints.Value <
                         ParentCharacter.HealthPoints.BaseValue * HealthTresholdPercent / 100f)

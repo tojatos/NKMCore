@@ -12,7 +12,7 @@ namespace NKMCore.Abilities.Rem
 
         public DemonicForm(Game game) : base(game, AbilityType.Passive, "Demonic Form")
         {
-            OnAwake += () => ParentCharacter.HealthPoints.StatChanged += TryToActivateDemonicForm;
+            OnAwake += () => ParentCharacter.HealthPoints.StatChanged += (int1, int2) => TryToActivateDemonicForm();
         }
 
         public override string GetDescription() =>

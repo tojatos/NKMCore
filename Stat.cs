@@ -8,8 +8,7 @@ namespace NKMCore
         public readonly List<Modifier> Modifiers = new List<Modifier>();
         public readonly int BaseValue;
 
-        public delegate void OnStatChange();
-        public event OnStatChange StatChanged;
+        public event Delegates.IntInt StatChanged;
 
         public int RealValue { get; private set; }
         public int Value
@@ -22,9 +21,10 @@ namespace NKMCore
             }
             set
             {
+                int oldValue = RealValue;
                 RealValue = value;
                 if (_type == StatType.HealthPoints && Value > BaseValue) Value = BaseValue;
-                StatChanged?.Invoke();
+                StatChanged?.Invoke(oldValue, RealValue);
             }
         }
 

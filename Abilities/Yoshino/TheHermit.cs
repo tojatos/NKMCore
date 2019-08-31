@@ -19,7 +19,7 @@ namespace NKMCore.Abilities.Yoshino
             {
                 Stat hp = ParentCharacter.GetStat(StatType.HealthPoints);
                 _lastTreshold = hp.BaseValue;
-                hp.StatChanged += () =>
+                hp.StatChanged += (o, n) =>
                 {
                     while (hp.Value < _lastTreshold - 15)
                     {
@@ -31,7 +31,7 @@ namespace NKMCore.Abilities.Yoshino
         }
 
         public override List<HexCell> GetRangeCells() => GetNeighboursOfOwner(Range);
-        public override string GetDescription() => 
+        public override string GetDescription() =>
 $@"{ParentCharacter.Name} ogłusza wrogów w promieniu {Range} pól na {EffectDuration} tury co każde {AfterLosingHP} HP, które straci.
 Następna aktywacja umiejętności po przekroczeniu <color=red>{_lastTreshold - 15}</color> HP";
 

@@ -201,9 +201,10 @@ namespace NKMCore
                 character.DeathTimer = 0;
                 if (Active.Character == character) Active.Deselect();
             };
-            character.HealthPoints.StatChanged += () =>
+            character.HealthPoints.StatChanged += (o, n) =>
             {
                 if (character.IsAlive) return;
+                if(o <= 0) return; // you can only die once!
                 character.InvokeOnDeath();
             };
             character.OnDeath += () => character.Effects.Clear();
