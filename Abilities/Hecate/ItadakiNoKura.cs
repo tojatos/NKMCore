@@ -7,6 +7,7 @@ namespace NKMCore.Abilities.Hecate
     {
         private const int HealthPercent = 40;
         public List<Character> CollectedEnergyCharacters { get; } = new List<Character>();
+        public event Delegates.CharacterCharacter AfterCollectingEnergy;
         public int CollectedEnergy { get {
             float energy = 0;
             CollectedEnergyCharacters.ForEach(c => energy += c.HealthPoints.BaseValue * ((float) HealthPercent /100));
@@ -28,7 +29,7 @@ Aktualna wartość zebranej energii: {CollectedEnergy}";
             if (CollectedEnergyCharacters.Contains(targetCharacter)) return;
 
             CollectedEnergyCharacters.Add(targetCharacter);
-//          AnimationPlayer.Add(new Animations.ItadakiNoKura(ParentCharacter.CharacterObject.transform, targetCharacter.CharacterObject.transform));TODO
+            AfterCollectingEnergy?.Invoke(ParentCharacter, targetCharacter);
         }
     }
 }
