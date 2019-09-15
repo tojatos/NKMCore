@@ -6,7 +6,7 @@ using NKMCore.Templates;
 
 namespace NKMCore.Abilities.Rem
 {
-    public class AlHuma : Ability, IClickable, IUseableCellList
+    public class AlHuma : Ability, IClickable, IUseableCharacter
     {
         private const int Damage = 10;
         private const int Range = 7;
@@ -15,19 +15,18 @@ namespace NKMCore.Abilities.Rem
         {
             OnAwake += () => Validator.ToCheck.Add(Validator.AreAnyTargetsInRange);
         }
-        
+
         public override List<HexCell> GetRangeCells() => GetNeighboursOfOwner(Range);
         public override List<HexCell> GetTargetsInRange() => GetRangeCells().WhereEnemiesOf(Owner);
-        
-        public override string GetDescription() => 
+
+        public override string GetDescription() =>
 $@"{ParentCharacter.Name} zamraża jednego wroga w zasięgu {Range} na jedną turę,
 ogłuszając go i zadając {Damage} obrażeń magicznych.
 
 Czas odnowiania: {Cooldown}";
 
         public void Click() => Active.Prepare(this, GetTargetsInRange());
-        public void Use(List<HexCell> cells) => Use(cells[0].FirstCharacter);
-        private void Use(Character targetCharacter)
+        public void Use(Character targetCharacter)
         {
             ParentCharacter.TryToTakeTurn();
             var damage = new Damage(Damage, DamageType.Magical);
