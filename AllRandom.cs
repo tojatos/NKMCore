@@ -12,7 +12,7 @@ namespace NKMCore
 
         public override Task BindCharactersToPlayers()
         {
-            List<string> allCharacterNames = _preparerDependencies.Connection.GetCharacterNames();
+            List<string> allCharacterNames = NKMData.GetCharacterNames();
             _game.Players.ForEach(p=>
             {
                 while (p.Characters.Count != _preparerDependencies.NumberOfCharactersPerPlayer)

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NKMCore.Extensions;
 using NKMCore.Templates;
 
 namespace NKMCore
@@ -10,7 +9,7 @@ namespace NKMCore
     {
         public static List<Ability> CreateAndInitiateAbilitiesFromDatabase(string name, Game game)
         {
-            IEnumerable<string> abilityClassNames = Game.Conn.GetAbilityClassNames(name);
+            IEnumerable<string> abilityClassNames = NKMData.GetAbilityClassNames(name);
             List<Ability> abilities = SpawnAbilities(name, abilityClassNames, game);
             abilities = abilities.OrderBy(a => a.Type).ToList();
             abilities.ForEach(a => game?.InvokeAfterAbilityCreation(a));

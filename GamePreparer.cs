@@ -23,7 +23,6 @@ namespace NKMCore
                 Type = dependencies.GameType,
                 Selectable = dependencies.Selectable,
                 SelectableAction = dependencies.SelectableAction,
-                Connection = dependencies.Connection,
                 LogFilePath = dependencies.LogFilePath,
                 SelectableManager = dependencies.SelectableManager,
                 PlaceAllCharactersRandomlyAtStart = dependencies.PickType == PickType.AllRandom,
@@ -34,7 +33,7 @@ namespace NKMCore
                 dependencies.NumberOfCharactersPerPlayer
             );
         }
-        
+
         private List<GamePlayer> GetPlayers() => _preparerDependencies.PlayerNames.Select(name => new GamePlayer{ Name = name}).ToList();
 
         public bool AreOptionsValid => _gameDependenciesValidator.AreOptionsValid;

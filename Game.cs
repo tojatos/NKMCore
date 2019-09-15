@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using NKMCore.Extensions;
@@ -22,7 +21,6 @@ namespace NKMCore
         public readonly Logger Logger;
         public readonly Console Console;
         public readonly NKMRandom Random;
-        public static IDbConnection Conn;
         public ISelectable Selectable { get; private set; }
         public SelectableAction SelectableAction;
 
@@ -42,7 +40,6 @@ namespace NKMCore
             Dependencies = gameDependencies;
             Selectable = gameDependencies.Selectable;
             SelectableAction = gameDependencies.SelectableAction;
-            Conn = gameDependencies.Connection;
 
             Players = new List<GamePlayer>(gameDependencies.Players);
             HexMap = gameDependencies.HexMap;
@@ -60,7 +57,7 @@ namespace NKMCore
         /// </summary>
         public static List<Character> GetMockCharacters()
         {
-            List<string> names = Conn.GetCharacterNames();
+            List<string> names = NKMData.GetCharacterNames();
             var toReturn = new List<Character>();
             int len = names.Count;
             for (int i = 1; i <= len; ++i)
