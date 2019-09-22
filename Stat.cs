@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace NKMCore
 {
@@ -13,12 +14,7 @@ namespace NKMCore
         public int RealValue { get; private set; }
         public int Value
         {
-            get
-            {
-                int modifier = 0;
-                Modifiers.ForEach(m => modifier += m.Value);
-                return RealValue + modifier;
-            }
+            get => RealValue + Modifiers.Sum(m => m.Value);
             set
             {
                 int oldValue = RealValue;
@@ -35,10 +31,7 @@ namespace NKMCore
             Value = BaseValue;
         }
 
-        public override string ToString()
-        {
-            return Value.ToString();
-        }
+        public override string ToString() => Value.ToString();
     }
 
     public class Modifier
