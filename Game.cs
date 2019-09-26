@@ -24,7 +24,6 @@ namespace NKMCore
         public ISelectable Selectable { get; private set; }
         public SelectableAction SelectableAction;
 
-        public bool IsReplay => Dependencies.GameLog != null;
         public Game(GameDependencies gameDependencies)
         {
             Active = new Active(this);

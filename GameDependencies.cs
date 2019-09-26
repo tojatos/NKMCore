@@ -13,7 +13,6 @@ namespace NKMCore
         public SelectableManager SelectableManager { get; set; }
         public SelectableAction SelectableAction { get; set; }
         public string LogFilePath { get; set; } //optional
-        public GameLog GameLog { get; set; } //optional
     }
 
     public enum GameType
