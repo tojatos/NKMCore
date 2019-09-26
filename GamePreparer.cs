@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using NKMCore.Extensions;
 
 namespace NKMCore
 {
@@ -40,6 +41,7 @@ namespace NKMCore
 
         public async Task<Game> CreateGame()
         {
+            _gameDependencies.Logger.Log(_preparerDependencies.Serialize());
             var game = new Game(_gameDependencies);
             CharacterPick characterPick = CharacterPick.Create(game, _preparerDependencies);
             await characterPick.BindCharactersToPlayers();
