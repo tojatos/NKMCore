@@ -18,11 +18,10 @@ namespace NKMCore
         public readonly Active Active;
         public HexMap HexMap;
         public readonly Action Action;
-        public readonly Logger Logger;
         public readonly Console Console;
         public readonly NKMRandom Random;
-        public ISelectable Selectable { get; private set; }
         public SelectableAction SelectableAction;
+        private Logger Logger;
 
         public Game(GameDependencies gameDependencies)
         {
@@ -30,15 +29,14 @@ namespace NKMCore
             Action = new Action(this);
             Console = new Console(this);
             Random = new NKMRandom();
-            Logger = new Logger(gameDependencies.LogFilePath);
             Init(gameDependencies);
         }
 
         private void Init(GameDependencies gameDependencies)
         {
             Dependencies = gameDependencies;
-            Selectable = gameDependencies.Selectable;
             SelectableAction = gameDependencies.SelectableAction;
+            Logger = gameDependencies.Logger;
 
             Players = new List<GamePlayer>(gameDependencies.Players);
             HexMap = gameDependencies.HexMap;

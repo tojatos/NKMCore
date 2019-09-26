@@ -16,6 +16,6 @@ namespace NKMCore
         public ISelectable Selectable { get; set; }
         public SelectableManager SelectableManager { get; set; }
         public SelectableAction SelectableAction { get; set; }
-        public string LogFilePath { get; set; } //optional
+        public Logger Logger { get; set; }
     }
 }

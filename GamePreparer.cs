@@ -23,8 +23,8 @@ namespace NKMCore
                 Type = dependencies.GameType,
                 Selectable = dependencies.Selectable,
                 SelectableAction = dependencies.SelectableAction,
-                LogFilePath = dependencies.LogFilePath,
                 SelectableManager = dependencies.SelectableManager,
+                Logger = dependencies.Logger,
                 PlaceAllCharactersRandomlyAtStart = dependencies.PickType == PickType.AllRandom,
             };
             _gameDependenciesValidator = new GameDependenciesValidator(
