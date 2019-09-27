@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NKMCore.Templates;
 
 namespace NKMCore.Extensions
 {
@@ -49,6 +50,26 @@ namespace NKMCore.Extensions
             };
 
             return string.Join(Marker, parts);
+        }
+
+        public static string SerializeCharacters(this IEnumerable<GamePlayer> players) =>
+            string.Join("\n\n", players.Select(p => string.Join("\n", p.Characters.Select(c => c.Name + '|' + c.ID))));
+
+        public static void DeserializeCharactersAndInsertIntoGame(this string str, Game game)
+        {
+            Character[][] characterList = str.Split(new[] {"\n\n"}, StringSplitOptions.None).Select(s => s.Split('\n').Select(c =>
+            {
+                string[] data = c.Split('|');
+                string characterName = data[0];
+                int characterID = int.Parse(data[1]);
+                return CharacterFactory.Create(game, characterName, characterID);
+            }).ToArray()).ToArray();
+            int playersCount = game.Players.Count;
+
+            for (int i = 0; i < playersCount; ++i)
+            {
+                game.Players[i].Characters.AddRange(characterList[i]);
+            }
         }
     }
 }
