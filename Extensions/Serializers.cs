@@ -14,7 +14,7 @@ namespace NKMCore.Extensions
         /// <summary>
         /// Used to split GamePreparerDependencies
         /// </summary>
-        private const string Marker = "|MARKER|";
+        private const string Marker = "\n|MARKER|\n";
 
         public static GamePreparerDependencies DeserializeGamePreparerDependencies(this string str)
         {
