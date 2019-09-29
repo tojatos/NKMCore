@@ -11,10 +11,9 @@ namespace NKMCore
         public static string Serialize(HexMap map)
         {
             string coords = string.Join("\n",
-                map.Cells.Select(c =>
-                    c.Coordinates.X.ToString() + ':' + c.Coordinates.Z.ToString() + ';' + c.Type.ToString()));
+                map.Cells.Select(c => $"{c.Coordinates.X}:{c.Coordinates.Z};{c.Type}"));
             string spawnPoints = string.Join(";", map.SpawnPoints.Select(s => s.ToString()));
-            
+
             return string.Join("\n\n", coords, spawnPoints);
         }
 
@@ -35,17 +34,17 @@ namespace NKMCore
                 var cell = new HexCell(map, coordinates, tileType);
                 map.Cells.Add(cell);
             });
-            
+
             map.Cells.ForEach(c =>
             {
                 map.Cells.FindAll(w =>
                         Math.Abs(w.Coordinates.X - c.Coordinates.X) <= 1 &&
                         Math.Abs(w.Coordinates.Y - c.Coordinates.Y) <= 1 &&
                         Math.Abs(w.Coordinates.Z - c.Coordinates.Z) <= 1 &&
-                        w != c) 
+                        w != c)
                     .ForEach(w => c.SetNeighbor(c.GetDirection(w), w));
             });
-            
+
             return map;
         }
     }
