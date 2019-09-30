@@ -15,23 +15,24 @@ namespace NKMCore.Effects
         {
             _characterThatAttacks = characterThatAttacks;
             Type = effectTarget.Owner == characterThatAttacks.Owner ? EffectType.Positive : EffectType.Negative;
-            Delegates.DamageD tryToActivateEffect = d =>
+
+            void TryToActivateEffect(Damage d)
             {
-                if(d.Value==0) return;
-                if(_wasActivatedOnce) return; //prevent infinite loop
+                if (d.Value == 0) return;
+                if (_wasActivatedOnce) return; //prevent infinite loop
                 _wasActivatedOnce = true;
-                List<Character> enemiesInRange =
-                    GetNeighboursOfOwner(range).SelectMany(c => c.CharactersOnCell).Where(c => c.IsEnemyFor(_characterThatAttacks.Owner)).ToList();
-                if(effectTarget.Owner != characterThatAttacks.Owner) enemiesInRange.Add(effectTarget);
+                List<Character> enemiesInRange = GetNeighboursOfOwner(range).SelectMany(c => c.CharactersOnCell).Where(c => c.IsEnemyFor(_characterThatAttacks.Owner)).ToList();
+                if (effectTarget.Owner != characterThatAttacks.Owner) enemiesInRange.Add(effectTarget);
                 enemiesInRange.ForEach(enemy =>
                 {
                     var dmg = new Damage(damage, DamageType.Magical);
                     characterThatAttacks.Attack(this, enemy, dmg);
                 });
                 _wasActivatedOnce = false;
-            };
-            ParentCharacter.BeforeBeingDamaged += tryToActivateEffect;
-            OnRemove += () => ParentCharacter.BeforeBeingDamaged -= tryToActivateEffect;
+            }
+
+            ParentCharacter.BeforeBeingDamaged += TryToActivateEffect;
+            OnRemove += () => ParentCharacter.BeforeBeingDamaged -= TryToActivateEffect;
         }
 
         public override string GetDescription()

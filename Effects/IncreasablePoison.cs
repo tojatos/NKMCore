@@ -13,15 +13,17 @@ namespace NKMCore.Effects
             Damage = initialDamage;
             Type = EffectType.Negative;
             _increase = increase;
-            Delegates.Void tryToActivateEffect = () =>
+
+            void TryToActivateEffect()
             {
                 characterThatAttacks.Attack(this, ParentCharacter, Damage);
                 Damage.Value += _increase;
-            };
-            ParentCharacter.JustBeforeFirstAction += tryToActivateEffect;
-            OnRemove += () => ParentCharacter.JustBeforeFirstAction -= tryToActivateEffect;
+            }
+
+            ParentCharacter.JustBeforeFirstAction += TryToActivateEffect;
+            OnRemove += () => ParentCharacter.JustBeforeFirstAction -= TryToActivateEffect;
         }
-        public override string GetDescription() => 
+        public override string GetDescription() =>
 $@"Zadaje {Damage.Value} obrażeń co fazę, zwiększając się o {_increase} po każdym użyciu.
 Czas do zakończenia efektu: {CurrentCooldown}";
     }

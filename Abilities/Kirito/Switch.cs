@@ -48,28 +48,30 @@ Zasięg: {Range}    Czas odnowienia: {Cooldown}";
             }
 
             ParentCharacter.AfterBasicAttack += OnAttack;
-            Delegates.AbilityD onAbilityUse = null;
-            onAbilityUse += ability =>
+
+            void OnAbilityUse(Ability ability)
             {
                 ParentCharacter.HasFreeAttackUntilEndOfTheTurn = false;
-                ParentCharacter.AfterAbilityUse -= onAbilityUse;
-            };
-            ParentCharacter.AfterAbilityUse += onAbilityUse;
-            Delegates.CellList onMove = null;
-            onMove += cellList =>
+                ParentCharacter.AfterAbilityUse -= OnAbilityUse;
+            }
+
+            ParentCharacter.AfterAbilityUse += OnAbilityUse;
+
+            void OnMove(List<HexCell> cellList)
             {
                 ParentCharacter.HasFreeUltimatumAbilityUseUntilEndOfTheTurn = false;
                 ParentCharacter.HasFreeAttackUntilEndOfTheTurn = false;
-                ParentCharacter.AfterBasicMove -= onMove;
-            };
-            ParentCharacter.AfterBasicMove += onMove;
+                ParentCharacter.AfterBasicMove -= OnMove;
+            }
+
+            ParentCharacter.AfterBasicMove += OnMove;
 
             Active.Turn.TurnFinished += character1 =>
             {
                 if (character1 != ParentCharacter) return;
                 ParentCharacter.AfterBasicAttack -= OnAttack;
-                ParentCharacter.AfterAbilityUse -= onAbilityUse;
-                ParentCharacter.AfterBasicMove -= onMove;
+                ParentCharacter.AfterAbilityUse -= OnAbilityUse;
+                ParentCharacter.AfterBasicMove -= OnMove;
             };
             Finish();
         }

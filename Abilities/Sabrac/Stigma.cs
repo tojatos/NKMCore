@@ -12,17 +12,21 @@ namespace NKMCore.Abilities.Sabrac
         {
             OnAwake += () =>
             {
-                Action<Character> applyEffect = character =>
+                void ApplyEffect(Character character)
                 {
-                    character.Effects.OfType<IncreasablePoison>().Where(e => e.Name == Name).ToList().ForEach(e =>
-                    {
-                        e.Damage.Value = 1;
-                        e.CurrentCooldown = 2;
-                    });
+                    character.Effects.OfType<IncreasablePoison>()
+                             .Where(e => e.Name == Name)
+                             .ToList()
+                             .ForEach(e =>
+                             {
+                                 e.Damage.Value = 1;
+                                 e.CurrentCooldown = 2;
+                             });
                     character.Effects.Add(new IncreasablePoison(Game, ParentCharacter, new Damage(1, DamageType.True), 1, 2, character, Name));
-                };
-                ParentCharacter.AfterBasicAttack += (character, damage) => applyEffect(character);
-                ParentCharacter.AfterAbilityAttack += (ability, character, damage) => applyEffect(character);
+                }
+
+                ParentCharacter.AfterBasicAttack += (character, damage) => ApplyEffect(character);
+                ParentCharacter.AfterAbilityAttack += (ability, character, damage) => ApplyEffect(character);
             };
         }
 

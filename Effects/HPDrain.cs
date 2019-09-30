@@ -14,14 +14,15 @@ namespace NKMCore.Effects
             _damagePerTick = damagePerTick;
             _characterThatAttacks = characterThatAttacks;
             Type = EffectType.Negative;
-            Delegates.Void tryToActivateEffect = () =>
+
+            void TryToActivateEffect()
             {
                 _characterThatAttacks.Attack(this, ParentCharacter, _damagePerTick);
-                if (ParentCharacter.IsAlive && _characterThatAttacks.IsAlive)
-                    ParentCharacter.Heal(_characterThatAttacks, _damagePerTick.Value);
-            };
-            ParentCharacter.JustBeforeFirstAction += tryToActivateEffect;
-            OnRemove += () => ParentCharacter.JustBeforeFirstAction -= tryToActivateEffect;
+                if (ParentCharacter.IsAlive && _characterThatAttacks.IsAlive) ParentCharacter.Heal(_characterThatAttacks, _damagePerTick.Value);
+            }
+
+            ParentCharacter.JustBeforeFirstAction += TryToActivateEffect;
+            OnRemove += () => ParentCharacter.JustBeforeFirstAction -= TryToActivateEffect;
         }
         public override string GetDescription()
         {

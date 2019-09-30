@@ -11,9 +11,9 @@ namespace NKMCore.Effects
             Name = name ?? "Poison";
             _damagePerTick = damagePerTick;
             Type = EffectType.Negative;
-            Delegates.Void tryToActivateEffect = () => characterThatAttacks.Attack(this, ParentCharacter, damagePerTick);
-            ParentCharacter.JustBeforeFirstAction += tryToActivateEffect;
-            OnRemove += () => ParentCharacter.JustBeforeFirstAction -= tryToActivateEffect;
+            void TryToActivateEffect() => characterThatAttacks.Attack(this, ParentCharacter, damagePerTick);
+            ParentCharacter.JustBeforeFirstAction += TryToActivateEffect;
+            OnRemove += () => ParentCharacter.JustBeforeFirstAction -= TryToActivateEffect;
         }
         public override string GetDescription()
         {

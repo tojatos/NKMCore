@@ -5,19 +5,19 @@ namespace NKMCore.Effects
 {
     public class TakenDamageModifier : Effect
     {
-        public int Value;
+        private readonly int _value;
         //Increase taken damage by value
         public TakenDamageModifier(Game game, int cooldown, int value, Character parentCharacter, string name = null) : base(game, cooldown, parentCharacter, name)
         {
             Name = name ?? "Taken Damage Modifier";
-            Value = value;
+            _value = value;
             Type = value <= 0 ? EffectType.Positive : EffectType.Negative;
-            Delegates.DamageD d = damage => damage.Value += (int) (damage.Value * (Value / 100f));
-            parentCharacter.BeforeBeingDamaged += d;
-            OnRemove += () => parentCharacter.BeforeBeingDamaged -= d;
+            void DamageD(Damage damage) => damage.Value += (int) (damage.Value * (_value / 100f));
+            parentCharacter.BeforeBeingDamaged += DamageD;
+            OnRemove += () => parentCharacter.BeforeBeingDamaged -= DamageD;
         }
         public override string GetDescription() =>
-$@"{(Value > 0 ? "Zwiększa" : "Zmniejsza")} otrzymywane obrażenia o {Math.Abs(Value)}%
+$@"{(_value > 0 ? "Zwiększa" : "Zmniejsza")} otrzymywane obrażenia o {Math.Abs(_value)}%
 Czas do zakończenia efektu: {CurrentCooldown}";
     }
 }

@@ -11,9 +11,9 @@ namespace NKMCore.Effects
             Name = name ?? "Heal Over Time";
             _healPerTick = healPerTick;
             Type = EffectType.Positive;
-            Delegates.Void tryToActivateEffect = () => characterThatHeals.Heal(ParentCharacter, healPerTick);
-            ParentCharacter.JustBeforeFirstAction += tryToActivateEffect;
-            OnRemove += () => ParentCharacter.JustBeforeFirstAction -= tryToActivateEffect;
+            void TryToActivateEffect() => characterThatHeals.Heal(ParentCharacter, healPerTick);
+            ParentCharacter.JustBeforeFirstAction += TryToActivateEffect;
+            OnRemove += () => ParentCharacter.JustBeforeFirstAction -= TryToActivateEffect;
         }
         public override string GetDescription()
         {
