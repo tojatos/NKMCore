@@ -10,7 +10,7 @@ namespace NKMCore.Abilities.Yasaka_Mahiro
         private const int Damage = 5;
         private const float MissingHealthPercentDamage = 20;
         private const int Range = 7;
-        
+
         private int _numberOfUses;
 
         public SharpenedForks(Game game) : base(game, AbilityType.Normal, "Sharpened Forks", 3)
@@ -18,10 +18,10 @@ namespace NKMCore.Abilities.Yasaka_Mahiro
             OnAwake += () => Validator.ToCheck.Add(Validator.AreAnyTargetsInRange);
             AfterUseFinish += () => _numberOfUses = 0;
         }
-        
+
         public override List<HexCell> GetRangeCells() => GetNeighboursOfOwner(Range);
         public override List<HexCell> GetTargetsInRange() => GetRangeCells().WhereEnemiesOf(Owner);
-        
+
         public override string GetDescription() =>
 $@"{ParentCharacter.Name} rzuca 3 naostrzone widelce,
 zadając {Damage} + {MissingHealthPercentDamage}% brakującego zdrowia przewiwnika obrażeń fizycznych przy każdym trafieniu.
@@ -39,7 +39,7 @@ Zasięg: {Range}    Czas odnowienia: {Cooldown}";
         public void Use(Character targetCharacter)
         {
             ParentCharacter.TryToTakeTurn();
-            var damageValue = (int) (Damage + MissingHealthPercentDamage / 100 *
+            int damageValue = (int) (Damage + MissingHealthPercentDamage / 100 *
                              (targetCharacter.HealthPoints.BaseValue - targetCharacter.HealthPoints.Value));
 //          AnimationPlayer.Instance.StartCoroutine(
 //              AnimationPlayer.Instance.SharpenedForkEnumerator(ParentCharacter.CharacterObject.transform,

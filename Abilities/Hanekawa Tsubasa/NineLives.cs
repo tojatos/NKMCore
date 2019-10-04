@@ -13,13 +13,13 @@ namespace NKMCore.Abilities.Hanekawa_Tsubasa
                 ParentCharacter.AfterAttack += (character, damage) =>
                 {
                     if(!ParentCharacter.IsAlive) return;
-                    int modifier = (character.Effects.ContainsType(typeof(BloodKiss))) ? 2 : 1;
+                    int modifier = character.Effects.ContainsType(typeof(BloodKiss)) ? 2 : 1;
                     int amountToHeal = damage.Value * HealthRegainedPercent / 100 * modifier;
                     ParentCharacter.Heal(ParentCharacter, amountToHeal);
                 };
             };
         }
-        public override string GetDescription() => 
+        public override string GetDescription() =>
 $@"{ParentCharacter.Name} odzyskuje {HealthRegainedPercent}% wszystkich zadanych obrażeń przez w formie HP.
 Jeżeli zaatakowany przeciwnik posiada efekt Blood Kiss, ta premia jest przyznawana podwójnie.";
     }

@@ -104,7 +104,7 @@ namespace NKMCore.Hex
 
         public List<HexCell> GetLine(HexDirection direction, int depth)
         {
-            List<HexCell> visited = new List<HexCell>();
+            var visited = new List<HexCell>();
             HexCell lastCell = this;
             for (int i = 0; i < depth; i++)
             {
@@ -126,7 +126,7 @@ namespace NKMCore.Hex
             if (stopAtWalls) stopAt = stopAt.Or(IsWall);
             if (stopAtEnemyCharacters) stopAt = stopAt.Or(IsEnemyStanding(_map, friendlyPlayer));
             if (stopAtFriendlyCharacters) stopAt = stopAt.Or(IsFriendStanding(_map, friendlyPlayer));
-            List<HexCell> visited = new List<HexCell>();
+            var visited = new List<HexCell>();
             if (depth == 0) return visited;
 
             if (straightLine)
@@ -147,7 +147,7 @@ namespace NKMCore.Hex
                 return visited;
             }
 
-            List<List<HexCell>> fringes = new List<List<HexCell>>();
+            var fringes = new List<List<HexCell>>();
             fringes.Add(new List<HexCell>{this});
 
             for (int i = 1; i <= depth; i++)
@@ -180,10 +180,10 @@ namespace NKMCore.Hex
         {
             if (height < 1 || width < 1 || width % 2 == 0) throw new ArgumentOutOfRangeException();
 
-            List<HexCell> areaCells = new List<HexCell>();
+            var areaCells = new List<HexCell>();
 
             HexDirection[] nearbyDirections = direction.NearbyDirections();
-            List<HexCell> firstCells = new List<HexCell>();
+            var firstCells = new List<HexCell>();
             firstCells.Add(GetNeighbor(direction));
             foreach (HexDirection d in nearbyDirections)
             {

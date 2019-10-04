@@ -263,7 +263,7 @@ namespace NKMCore.Templates
         public List<HexCell> DefaultGetBasicAttackCells() => DefaultGetBasicAttackCells(ParentCell);
         public List<HexCell> DefaultGetBasicAttackCells(HexCell fromCell)
         {
-            List<HexCell> cellRange = new List<HexCell>();
+            var cellRange = new List<HexCell>();
             switch (Type)
             {
                 case FightType.Ranged:

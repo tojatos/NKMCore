@@ -24,7 +24,7 @@ Efekty Conflagration znikają po trafieniu tą umiejętnością.
 Czas odnowienia: {Cooldown}";
         public override List<HexCell> GetRangeCells()
         {
-            List<HexCell> cells = new List<HexCell>();
+            var cells = new List<HexCell>();
             foreach (HexDirection direction in Enum.GetValues(typeof(HexDirection)))
             {
                 cells.AddRange(GetDirectionRangeCells(direction));
@@ -35,7 +35,7 @@ Czas odnowienia: {Cooldown}";
 
         private List<HexCell> GetDirectionRangeCells(HexDirection direction)
         {
-            List<HexCell> cells = new List<HexCell>();
+            var cells = new List<HexCell>();
             HexCell lastCell = ParentCharacter.ParentCell;
             bool hitConflargation = false;
 

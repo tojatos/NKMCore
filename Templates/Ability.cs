@@ -59,7 +59,7 @@ namespace NKMCore.Templates
         {
             if (ParentCharacter.Abilities.ContainsType(typeof(AceInTheHole)))
             {
-                var ability = (ParentCharacter.Abilities.Single(a => a.GetType() == typeof(AceInTheHole)) as AceInTheHole);
+                var ability = ParentCharacter.Abilities.Single(a => a.GetType() == typeof(AceInTheHole)) as AceInTheHole;
                 if (ability != null && ability.HasFreeAbility) ability.HasFreeAbility = false;
                 else CurrentCooldown = cooldown;
 
