@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using NKMCore.Effects;
 using NKMCore.Extensions;
 using NKMCore.Templates;

@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace NKMCore
+﻿namespace NKMCore
 {
     public class GamePreparerDependenciesValidator
     {
