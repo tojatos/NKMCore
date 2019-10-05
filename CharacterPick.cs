@@ -38,9 +38,8 @@ namespace NKMCore
             }
         }
 
-        public virtual async Task BindCharactersToPlayers()
+        public virtual Task BindCharactersToPlayers()
         {
-            await Task.CompletedTask;
             throw new NotImplementedException();
         }
 

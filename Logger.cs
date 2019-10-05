@@ -20,7 +20,6 @@ namespace NKMCore
         {
             if (_logFilePath == null) return;
 
-
             File.AppendAllText(_logFilePath, $"{msg}\n");
         }
 
