@@ -7,7 +7,7 @@ namespace NKMCore
 {
     public class DraftPick : CharacterPick
     {
-        private readonly List<Character> _charactersToPick = Game.GetMockCharacters();
+        private readonly List<Character> _charactersToPick = NKMData.GetMockCharacters();
         public DraftPick(Game game, GamePreparerDependencies preparerDependencies) : base(game, preparerDependencies)
         {
         }

@@ -49,22 +49,6 @@ namespace NKMCore
             Action.AfterAction += (actionType, serializedContent) =>
                 Logger.Log(Action.Serialize(actionType, serializedContent));
         }
-        /// <summary>
-        /// Get a copy of every character in the game
-        /// </summary>
-        public static List<Character> GetMockCharacters()
-        {
-            List<string> names = NKMData.GetCharacterNames();
-            var toReturn = new List<Character>();
-            int len = names.Count;
-            for (int i = 1; i <= len; ++i)
-            {
-                toReturn.Add(CharacterFactory.Create(null, names[i-1], -i));
-            }
-
-            return toReturn;
-        }
-
         public event Delegates.AbilityD AfterAbilityCreation;
         public event Delegates.CharacterD AfterCharacterCreation;
         public event Delegates.AbilityD AfterAbilityInit;

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using NKMCore.Extensions;
+using NKMCore.Templates;
 
 namespace NKMCore
 {
@@ -27,5 +28,22 @@ WHERE Character.Name = '{characterName}';")
 $@"SELECT AttackPoints, HealthPoints, BasicAttackRange, Speed, PhysicalDefense, MagicalDefense, FightType, Description, Quote, Author.Name
 FROM Character INNER JOIN Author ON Character.AuthorID = Author.ID
 WHERE Character.Name = '{characterName}';")[0];
+
+        /// <summary>
+        /// Get a copy of every character in the game
+        /// </summary>
+        public static List<Character> GetMockCharacters()
+        {
+            List<string> names = NKMData.GetCharacterNames();
+            var toReturn = new List<Character>();
+            int len = names.Count;
+            for (int i = 1; i <= len; ++i)
+            {
+                toReturn.Add(CharacterFactory.Create(null, names[i-1], -i));
+            }
+
+            return toReturn;
+        }
+
     }
 }

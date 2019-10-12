@@ -14,7 +14,7 @@ namespace NKMCore
         {
             foreach (GamePlayer p in _game.Players)
             {
-                List<Character> allCharacters = Game.GetMockCharacters();
+                List<Character> allCharacters = NKMData.GetMockCharacters();
                 await PickCharacters(allCharacters, _preparerDependencies.NumberOfCharactersPerPlayer, p, _game);
             }
         }
