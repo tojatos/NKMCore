@@ -7,7 +7,7 @@ namespace NKMCore.Abilities.Monkey_D._Luffy
     {
         private const int SpeedIncrease = 3;
         private const int Duration = 2;
-        
+
         private int _currentDuration;
         public GearSecond(Game game) : base(game, AbilityType.Ultimatum, "Gear Second", 5)
         {
@@ -16,8 +16,9 @@ namespace NKMCore.Abilities.Monkey_D._Luffy
                 if (!IsEnabled) return;
                 _currentDuration++;
                 if (_currentDuration <= Duration) return;
-                    
+
                 IsEnabled = false;
+                //TODO: check if current duration should not be set to 0
                 Ability normalAbility = ParentCharacter.Abilities.Find(a => a.Type == AbilityType.Normal);
                 if (normalAbility is IEnchantable) ((IEnchantable) normalAbility).IsEnchanted = false;
             };
