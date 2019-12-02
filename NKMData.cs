@@ -34,7 +34,7 @@ WHERE Character.Name = '{characterName}';")[0];
         /// </summary>
         public static List<Character> GetMockCharacters()
         {
-            List<string> names = NKMData.GetCharacterNames();
+            List<string> names = GetCharacterNames();
             var toReturn = new List<Character>();
             int len = names.Count;
             for (int i = 1; i <= len; ++i)
@@ -44,6 +44,15 @@ WHERE Character.Name = '{characterName}';")[0];
 
             return toReturn;
         }
+
+        public static string GetInfos(IEnumerable<Character> characters) => string.Join(
+            "\n\n",
+            characters.Select(c => c.Name + '\n' +
+                                   string.Join(
+                                       "\n\n",
+                                       c.Abilities.Select(
+                                           a => a.Name + '\n' +
+                                                a.GetDescription()))));
 
     }
 }
