@@ -8,16 +8,20 @@ namespace NKMCore.Abilities.Hanekawa_Tsubasa
 {
     public class CurseOfTheBlackCat : Ability, IClickable, IUseableCharacter
     {
+        public override string Name { get; } = "Curse of The Black Cat";
+        protected override int Cooldown { get; } = 7;
+        public override AbilityType Type { get; } = AbilityType.Ultimatum;
+
         private const int AbilityRange = 5;
         private const int DoTDamage = 6;
         private const int DoTTime = 5;
         private const int AdditionalDamagePercent = 25;
 
-        public CurseOfTheBlackCat(Game game) : base(game, AbilityType.Ultimatum, "Curse of The Black Cat", 7)
+        public CurseOfTheBlackCat(Game game) : base(game)
         {
             OnAwake += () => Validator.ToCheck.Add(Validator.AreAnyTargetsInRange);
         }
-        
+
         public override List<HexCell> GetRangeCells() => GetNeighboursOfOwner(AbilityRange);
         public override List<HexCell> GetTargetsInRange() => GetRangeCells().WhereEnemiesOf(Owner);
 

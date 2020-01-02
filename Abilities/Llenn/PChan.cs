@@ -5,8 +5,12 @@ namespace NKMCore.Abilities.Llenn
 {
     public class PChan : Ability
     {
+        public override string Name { get; } = "P-Chan";
+        protected override int Cooldown { get; } = 0;
+        public override AbilityType Type { get; } = AbilityType.Passive;
+
         private const int SpeedIncrease = 2;
-        public PChan(Game game) : base(game, AbilityType.Passive, "P-Chan")
+        public PChan(Game game) : base(game)
         {
             OnAwake += () =>
             {

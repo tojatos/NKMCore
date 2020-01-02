@@ -4,9 +4,13 @@ namespace NKMCore.Abilities.Nibutani_Shinka
 {
     public class FairyOfLove : Ability, IClickable, IEnableable
     {
+        public override string Name { get; } = "Fairy of Love";
+        protected override int Cooldown { get; } = 6;
+        public override AbilityType Type { get; } = AbilityType.Ultimatum;
+
         private const int Duration = 3;
         private int _currentDuration;
-        public FairyOfLove(Game game) : base(game, AbilityType.Ultimatum, "Fairy of Love", 6)
+        public FairyOfLove(Game game) : base(game)
         {
             OnAwake += () => Active.Phase.PhaseFinished += () =>
             {

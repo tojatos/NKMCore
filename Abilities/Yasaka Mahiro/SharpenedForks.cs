@@ -7,13 +7,17 @@ namespace NKMCore.Abilities.Yasaka_Mahiro
 {
     public class SharpenedForks : Ability, IClickable, IUseableCharacter
     {
+        public override string Name { get; } = "Sharpened Forks";
+        protected override int Cooldown { get; } = 3;
+        public override AbilityType Type { get; } = AbilityType.Normal;
+
         private const int Damage = 5;
         private const float MissingHealthPercentDamage = 20;
         private const int Range = 7;
 
         private int _numberOfUses;
 
-        public SharpenedForks(Game game) : base(game, AbilityType.Normal, "Sharpened Forks", 3)
+        public SharpenedForks(Game game) : base(game)
         {
             OnAwake += () => Validator.ToCheck.Add(Validator.AreAnyTargetsInRange);
             AfterUseFinish += () => _numberOfUses = 0;

@@ -8,9 +8,13 @@ namespace NKMCore.Abilities.Kirito
 {
     public class Switch : Ability, IClickable, IUseableCharacter
     {
+        public override string Name { get; } = "Switch";
+        protected override int Cooldown { get; } = 3;
+        public override AbilityType Type { get; } = AbilityType.Normal;
+
         private const int Range = 7;
 
-        public Switch(Game game) : base(game, AbilityType.Normal, "Switch", 3)
+        public Switch(Game game) : base(game)
         {
             OnAwake += () => Validator.ToCheck.Add(Validator.AreAnyTargetsInRange);
             CanUseOnGround = false;

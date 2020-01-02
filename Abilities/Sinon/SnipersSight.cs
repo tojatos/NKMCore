@@ -8,7 +8,11 @@ namespace NKMCore.Abilities.Sinon
 {
     public class SnipersSight : Ability
     {
-        public SnipersSight(Game game) : base(game, AbilityType.Passive, "Sniper's Sight")
+        public override string Name { get; } = "Sniper's Sight";
+        protected override int Cooldown { get; } = 0;
+        public override AbilityType Type { get; } = AbilityType.Passive;
+
+        public SnipersSight(Game game) : base(game)
         {
             OnAwake += () =>
             {

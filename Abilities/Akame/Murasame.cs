@@ -7,9 +7,13 @@ namespace NKMCore.Abilities.Akame
 {
     public class Murasame : Ability
     {
+        public override string Name { get; } = "Murasame";
+        protected override int Cooldown { get; } = 0;
+        public override AbilityType Type { get; } = AbilityType.Passive;
+
         private const int PoisonDamage = 1;
         private const int NumberOfPoisonsToKill = 7;
-        public Murasame(Game game) : base(game, AbilityType.Passive, "Murasame")
+        public Murasame(Game game) : base(game)
         {
             OnAwake += () =>
             {

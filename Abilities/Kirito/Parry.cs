@@ -4,9 +4,13 @@ namespace NKMCore.Abilities.Kirito
 {
     public class Parry : Ability
     {
+        public override string Name { get; } = "Parry";
+        protected override int Cooldown { get; } = 0;
+        public override AbilityType Type { get; } = AbilityType.Passive;
+
         private const int DodgeChancePercent = 25;
 
-        public Parry(Game game) : base(game, AbilityType.Passive, "Parry")
+        public Parry(Game game) : base(game)
         {
             OnAwake += () => ParentCharacter.BeforeBeingBasicAttacked += (character, damage) =>
             {

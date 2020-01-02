@@ -8,6 +8,10 @@ namespace NKMCore.Abilities.Asuna
 {
     public class Dash : Ability, IClickable, IUseableCell
     {
+        public override string Name { get; } = "Dash";
+        protected override int Cooldown { get; } = 2;
+        public override AbilityType Type { get; } = AbilityType.Normal;
+
         private const int AbilityRange = 4;
         private const int AbilityHitRange = 4;
         private const int AbilityCriticalHitRange = 2;
@@ -15,22 +19,22 @@ namespace NKMCore.Abilities.Asuna
 
         private bool _hasDashed;
 
-        public Dash(Game game) : base(game, AbilityType.Normal, "Dash", 2)
+        public Dash(Game game) : base(game)
         {
             OnAwake += () => Validator.ToCheck.Add(IsThereACellToMove);
             AfterUseFinish += () => _hasDashed = false;
             CanUseOnGround = false;
         }
-        
+
         public override List<HexCell> GetRangeCells() => GetNeighboursOfOwner(AbilityRange, SearchFlags.StopAtEnemyCharacters | SearchFlags.StopAtWalls | SearchFlags.StraightLine);
         public override List<HexCell> GetTargetsInRange() => GetRangeCells().FindAll(c => c.IsFreeToStand);
-        
-        public override string GetDescription() => 
+
+        public override string GetDescription() =>
 $@"{ParentCharacter.Name} dashuje maksymalnie o {AbilityRange} pola w linii prostej.
 Jeżeli będzie w zasięgu {AbilityHitRange} od przeciwnika w linii prostej, może go zaatakować,
 a jeżeli będzie dodatkowo w zasięgu {AbilityCriticalHitRange} od przeciwnika, atak ten zada {AbilityCriticalHitModifier * 100}% obrażeń.
 Czas odnowienia: {Cooldown + 1} z atakiem, {Cooldown} bez ataku.";
-        
+
         private bool IsThereACellToMove() => GetRangeCells().Any(c => c.IsFreeToStand);
 
         public void Click() => Active.Prepare(this, GetTargetsInRange());
@@ -49,9 +53,9 @@ Czas odnowienia: {Cooldown + 1} z atakiem, {Cooldown} bez ataku.";
             if (GetNeighboursOfOwner(AbilityCriticalHitRange).Contains(targetCharacter.ParentCell)) modifier = AbilityCriticalHitModifier;
             int damageValue = ParentCharacter.AttackPoints.Value * modifier;
             var damage = new Damage(damageValue, DamageType.Physical);
-            
+
             ParentCharacter.Attack(this, targetCharacter, damage);
-            
+
             Finish(Cooldown+1);
         }
 

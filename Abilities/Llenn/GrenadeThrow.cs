@@ -7,13 +7,17 @@ namespace NKMCore.Abilities.Llenn
 {
     public class GrenadeThrow : Ability, IClickable, IUseableCellList
     {
+        public override string Name { get; } = "Grenade Throw";
+        protected override int Cooldown { get; } = 3;
+        public override AbilityType Type { get; } = AbilityType.Normal;
+
         private const int Damage = 16;
         private const int Range = 7;
         private const int Radius = 2;
-        public GrenadeThrow(Game game) : base(game, AbilityType.Normal, "Grenade Throw", 3){}
+        public GrenadeThrow(Game game) : base(game){}
         public override List<HexCell> GetRangeCells() => GetNeighboursOfOwner(Range);
 
-        public override string GetDescription() => 
+        public override string GetDescription() =>
 $@"{ParentCharacter.Name} rzuca granatem,
 zadając {Damage} obrażeń fizycznych wszystkim postaciom w promieniu {Radius}.
 

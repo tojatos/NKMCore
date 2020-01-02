@@ -8,13 +8,17 @@ namespace NKMCore.Abilities.Ononoki_Yotsugi
 {
     public class UrbCrunch : Ability, IClickable, IUseableCellList
     {
+        public override string Name { get; } = "URB - Crunch";
+        protected override int Cooldown { get; } = 3;
+        public override AbilityType Type { get; } = AbilityType.Normal;
+
         private const int Damage = 20;
         private const int Range = 5;
         private const int Radius = 3;
 
         public event Delegates.CellList AfterCrunch;
-        
-        public UrbCrunch(Game game) : base(game, AbilityType.Normal, "URB - Crunch", 3) { }
+
+        public UrbCrunch(Game game) : base(game) { }
 
         public override string GetDescription() =>
 $@"{ParentCharacter.FirstName()} uderza w wybrany obszar o promieniu {Radius},

@@ -7,12 +7,16 @@ namespace NKMCore.Abilities.Roronoa_Zoro
 {
     public class OniGiri : Ability, IClickable, IUseableCharacter
     {
+        public override string Name { get; } = "Oni Giri";
+        protected override int Cooldown { get; } = 4;
+        public override AbilityType Type { get; } = AbilityType.Normal;
+
         private const int Range = 4;
 
         public event Delegates.CellList AfterOniGiriPrepare;
         public event Delegates.Void AfterOniGiri;
 
-        public OniGiri(Game game) : base(game, AbilityType.Normal, "Oni Giri", 4)
+        public OniGiri(Game game) : base(game)
         {
             OnAwake += () => Validator.ToCheck.Add(Validator.AreAnyTargetsInRange);
             CanUseOnGround = false;

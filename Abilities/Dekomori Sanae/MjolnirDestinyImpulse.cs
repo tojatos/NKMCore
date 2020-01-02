@@ -7,10 +7,14 @@ namespace NKMCore.Abilities.Dekomori_Sanae
 {
     public class MjolnirDestinyImpulse : Ability, IClickable, IUseableCellList
     {
+        public override string Name { get; } = "Mjolnir Destiny Impulse";
+        protected override int Cooldown { get; } = 6;
+        public override AbilityType Type { get; } = AbilityType.Ultimatum;
+
         private const int Damage = 25;
         private const int Range = 8;
         private bool _wasUsedOnceThisTurn;
-        public MjolnirDestinyImpulse(Game game) : base(game, AbilityType.Ultimatum, "Mjolnir Destiny Impulse", 6)
+        public MjolnirDestinyImpulse(Game game) : base(game)
         {
             AfterUseFinish += () => _wasUsedOnceThisTurn = false;
         }

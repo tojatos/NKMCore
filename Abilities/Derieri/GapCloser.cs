@@ -8,9 +8,13 @@ namespace NKMCore.Abilities.Derieri
 {
     public class GapCloser : Ability, IClickable, IUseableCharacter, IUseableCell
     {
+        public override string Name { get; } = "Gap closer";
+        protected override int Cooldown { get; } = 4;
+        public override AbilityType Type { get; } = AbilityType.Ultimatum;
+
         private const int MaxDistanceFromTarget = 2;
         private const int Range = 9;
-        public GapCloser(Game game) : base(game, AbilityType.Ultimatum, "Gap closer", 4)
+        public GapCloser(Game game) : base(game)
         {
             OnAwake += () => Validator.ToCheck.Add(Validator.AreAnyTargetsInRange);
             CanUseOnGround = false;

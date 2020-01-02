@@ -9,11 +9,15 @@ namespace NKMCore.Abilities.Nibutani_Shinka
 {
     public class Mabinogion : Ability, IEnchantable, IRunnable
     {
+        public override string Name { get; } = "Mabinogion";
+        protected override int Cooldown { get; } = 0;
+        public override AbilityType Type { get; } = AbilityType.Passive;
+
         private int HealAmount => IsEnchanted ? 12 : 4;
         private int ShieldAmount => IsEnchanted ? 3 : 1;
         private const int EnchantedSpeedAmount = 3;
         private const int Radius = 4;
-        public Mabinogion(Game game) : base(game, AbilityType.Passive, "Mabinogion")
+        public Mabinogion(Game game) : base(game)
         {
             OnAwake += () => Active.Turn.TurnFinished += character =>
             {

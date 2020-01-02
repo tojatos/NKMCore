@@ -4,11 +4,15 @@ using NKMCore.Templates;
 
 namespace NKMCore.Abilities.Kurogane_Ikki
 {
-    public class SwordSteal : Ability, IClickable 
+    public class SwordSteal : Ability, IClickable
     {
+        public override string Name { get; } = "Sword Steal";
+        protected override int Cooldown { get; } = 3;
+        public override AbilityType Type { get; } = AbilityType.Normal;
+
         public Ability CopiedAbility;
-        
-        public SwordSteal(Game game) : base(game, AbilityType.Normal, "Sword Steal", 3)
+
+        public SwordSteal(Game game) : base(game)
         {
             OnAwake += () =>
             {
@@ -19,7 +23,7 @@ namespace NKMCore.Abilities.Kurogane_Ikki
                     Ability a = AbilityFactory.CreateAndInit(ability.GetType(), Game);
                     if(a==null) return;
                     a.AfterUseFinish += Finish;
-                    
+
                     CopiedAbility = a;
                 };
             };
@@ -30,7 +34,7 @@ namespace NKMCore.Abilities.Kurogane_Ikki
 
         public override string GetDescription()
         {
-            string desc = 
+            string desc =
 $@"{ParentCharacter.Name} kopiuje wrogą technikę, używając ostatnią umiejętność, która zadała mu obrażenia.
 Czas odnowienia: {Cooldown}";
             if (CopiedAbility != null) desc += $"\n<i>Ostatnia skradziona technika: \n<b>{CopiedAbility.Name}</b></i>\n" + CopiedAbility.GetDescription();

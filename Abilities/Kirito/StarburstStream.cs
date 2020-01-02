@@ -7,10 +7,14 @@ namespace NKMCore.Abilities.Kirito
 {
     public class StarburstStream : Ability, IClickable, IEnableable, IUseableCharacter
     {
+        public override string Name { get; } = "Starburst Stream";
+        protected override int Cooldown { get; } = 6;
+        public override AbilityType Type { get; } = AbilityType.Ultimatum;
+
         private const int Range = 3;
         private const int AttackTimes = 16;
         private const int Damage = 2;
-        public StarburstStream(Game game) : base(game, AbilityType.Ultimatum, "Starburst Stream", 6)
+        public StarburstStream(Game game) : base(game)
         {
             OnAwake += () =>
             {
@@ -43,7 +47,7 @@ Zasięg: {Range}    Czas odnowienia: {Cooldown}";
         public void Use(Character character)
         {
             ParentCharacter.TryToTakeTurn();
-            for (int i = 0; i < AttackTimes; i++) 
+            for (int i = 0; i < AttackTimes; i++)
                 ParentCharacter.Attack(this, character, new Damage(Damage, DamageType.True));
             if (!IsEnabled) IsEnabled = true;
             Finish();

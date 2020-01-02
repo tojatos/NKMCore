@@ -8,9 +8,13 @@ namespace NKMCore.Abilities.Derieri
 {
     public class ComboBuilder : Ability, IClickable, IUseableCharacter
     {
+        public override string Name { get; } = "Combo builder";
+        protected override int Cooldown { get; } = 2;
+        public override AbilityType Type { get; } = AbilityType.Normal;
+
         private const int ComboIncrease = 3;
         private const int Range = 2;
-        public ComboBuilder(Game game) : base(game, AbilityType.Normal, "Combo builder", 2)
+        public ComboBuilder(Game game) : base(game)
         {
             OnAwake += () => Validator.ToCheck.Add(Validator.AreAnyTargetsInRange);
         }

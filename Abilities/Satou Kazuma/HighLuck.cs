@@ -5,8 +5,12 @@ namespace NKMCore.Abilities.Satou_Kazuma
 {
     public class HighLuck : Ability
     {
+        public override string Name { get; } = "High luck";
+        protected override int Cooldown { get; } = 0;
+        public override AbilityType Type { get; } = AbilityType.Passive;
+
         private const int CriticalStrikePercentChance = 25;
-        public HighLuck(Game game) : base(game, AbilityType.Passive, "High luck")
+        public HighLuck(Game game) : base(game)
         {
             OnAwake += () => ParentCharacter.BeforeAttack += (character, damage) =>
             {
@@ -15,7 +19,7 @@ namespace NKMCore.Abilities.Satou_Kazuma
             };
         }
 
-        public override string GetDescription() => 
+        public override string GetDescription() =>
 $@"{ParentCharacter.FirstName()} ma {CriticalStrikePercentChance}% szans na trafienie krytyczne przy zadawaniu obrażeń,
 podwajając te obrażenia.";
     }

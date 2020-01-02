@@ -8,9 +8,13 @@ namespace NKMCore.Abilities.Crona
 {
     public class ScreechAlpha : Ability, IClickable
     {
+        public override string Name { get; } = "Screech Alpha";
+        protected override int Cooldown { get; } = 4;
+        public override AbilityType Type { get; } = AbilityType.Normal;
+
         private const int Radius = 3;
 
-        public ScreechAlpha(Game game) : base(game, AbilityType.Normal, "Screech Alpha", 4)
+        public ScreechAlpha(Game game) : base(game)
         {
             OnAwake += () => Validator.ToCheck.Add(Validator.AreAnyTargetsInRange);
         }

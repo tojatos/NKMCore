@@ -94,6 +94,7 @@ namespace NKMCore
         }
         private void Init(Ability a)
         {
+            a.ID = NKMID.GetNext("Ability");
             a.Awake();
             Console.AddTriggersToEvents(a);
             AfterAbilityInit?.Invoke(a);

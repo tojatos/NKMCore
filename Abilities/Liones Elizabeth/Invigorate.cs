@@ -8,10 +8,14 @@ namespace NKMCore.Abilities.Liones_Elizabeth
 {
     public class Invigorate : Ability, IClickable, IUseableCharacter
     {
+        public override string Name { get; } = "Invigorate";
+        protected override int Cooldown { get; } = 3;
+        public override AbilityType Type { get; } = AbilityType.Normal;
+
         private const int Range = 5;
         private const int Heal = 6;
         private const int Duration = 3;
-        public Invigorate(Game game) : base(game, AbilityType.Normal, "Invigorate", 3)
+        public Invigorate(Game game) : base(game)
         {
             OnAwake += () => Validator.ToCheck.Add(Validator.AreAnyTargetsInRange);
         }

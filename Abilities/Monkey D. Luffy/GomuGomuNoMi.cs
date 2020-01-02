@@ -8,6 +8,10 @@ namespace NKMCore.Abilities.Monkey_D._Luffy
 {
     public class GomuGomuNoMi : Ability, IClickable, IUseableCell, IEnchantable
     {
+        public override string Name { get; } = "Gomu Gomu no Mi";
+        protected override int Cooldown { get; } = 2;
+        public override AbilityType Type { get; } = AbilityType.Normal;
+
         private const int Range = 7;
         private const int BazookaRange = 3;
         private const int BazookaDamage = 17;
@@ -21,8 +25,8 @@ namespace NKMCore.Abilities.Monkey_D._Luffy
         public event Delegates.Void OnClick;
         public event Delegates.Void BeforePistol;
         public event Delegates.Void BeforeRocket;
-        
-        public GomuGomuNoMi(Game game) : base(game, AbilityType.Normal, "Gomu Gomu no Mi", 2)
+
+        public GomuGomuNoMi(Game game) : base(game)
         {
             OnAwake += () => Validator.ToCheck.Add(Validator.AreAnyTargetsInRange);
         }
@@ -93,13 +97,13 @@ Zasięg: {Range}    Czas odnowienia: {Cooldown} ({BazookaCooldown}, jeżeli uży
             ThrowCharacter(enemy, direction, IsEnchanted?JetBazookaKnockback:BazookaKnockback);
             Finish(BazookaCooldown);
         }
-        
+
         private void Rocket(HexCell cell)
         {
             HexDirection direction = ParentCharacter.ParentCell.GetDirection(cell);
             int distance = ParentCharacter.ParentCell.GetDistance(cell);
             if(distance<=0) return;
-            
+
             BeforeRocket?.Invoke();
             ThrowCharacter(ParentCharacter, direction, distance*2);
             Finish();

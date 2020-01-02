@@ -7,14 +7,18 @@ namespace NKMCore.Abilities.Ryuko_Matoi
 {
     public class FiberDecapitation : Ability, IClickable, IUseableCharacter
     {
+        public override string Name { get; } = "Fiber Decapitation";
+        protected override int Cooldown { get; } = 3;
+        public override AbilityType Type { get; } = AbilityType.Normal;
+
         private const int PhysicalDefenseDecrease = 15;
         public const int TargetCellOffset = 3;
         private const int Range = 6;
         private const int Damage = 20;
 
         public event Delegates.CellList AfterPrepare;
-        
-        public FiberDecapitation(Game game) : base(game, AbilityType.Normal, "Fiber Decapitation", 3)
+
+        public FiberDecapitation(Game game) : base(game)
         {
             OnAwake += () => Validator.ToCheck.Add(Validator.AreAnyTargetsInRange);
             CanUseOnGround = false;
@@ -31,7 +35,7 @@ namespace NKMCore.Abilities.Ryuko_Matoi
 $@"{ParentCharacter.Name} przecina się przez przeciwnika, zmniejszając mu obronę fizyczną na stałe o {PhysicalDefenseDecrease},
 a następnie zadjąc mu {Damage} obrażeń fizycznych i lądując {TargetCellOffset} pola za nim.
 Zasięg: {Range}    Czas odnowienia: {Cooldown}";
-        
+
         public void Click()
         {
             List<HexCell> targetCells = GetTargetsInRange();

@@ -7,9 +7,13 @@ namespace NKMCore.Abilities.Bezimienni
 {
     public class Castling : Ability, IClickable, IUseableCharacter
     {
+        public override string Name { get; } = "Castling";
+        protected override int Cooldown { get; } = 6;
+        public override AbilityType Type { get; } = AbilityType.Ultimatum;
+
         private Character _firstCharacterToSwap;
         private Character _secondCharacterToSwap;
-        public Castling(Game game) : base(game, AbilityType.Ultimatum, "Castling", 6)
+        public Castling(Game game) : base(game)
         {
             OnAwake += () => Validator.ToCheck.Add(() => GetRangeCells().GetCharacters().Count >= 2);
             AfterUseFinish += Cleanup;

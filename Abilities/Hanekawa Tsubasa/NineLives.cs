@@ -5,8 +5,12 @@ namespace NKMCore.Abilities.Hanekawa_Tsubasa
 {
     public class NineLives : Ability
     {
+        public override string Name { get; } = "Nine Lives";
+        protected override int Cooldown { get; } = 0;
+        public override AbilityType Type { get; } = AbilityType.Passive;
+
         private const int HealthRegainedPercent = 25;
-        public NineLives(Game game) : base(game, AbilityType.Passive, "Nine Lives")
+        public NineLives(Game game) : base(game)
         {
             OnAwake += () =>
             {

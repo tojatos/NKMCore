@@ -7,7 +7,11 @@ namespace NKMCore.Abilities.Aqua
 {
     public class NaturesBeauty : Ability
     {
-        public NaturesBeauty(Game game) : base(game, AbilityType.Passive, "Nature's Beauty")
+        public override string Name { get; } = "Nature's Beauty";
+        protected override int Cooldown { get; } = 0;
+        public override AbilityType Type { get; } = AbilityType.Passive;
+
+        public NaturesBeauty(Game game) : base(game)
         {
             OnAwake += () =>
             {

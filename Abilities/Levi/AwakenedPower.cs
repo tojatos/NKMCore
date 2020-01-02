@@ -5,10 +5,14 @@ namespace NKMCore.Abilities.Levi
 {
     public class AwakenedPower : Ability, IEnableable
     {
+        public override string Name { get; } = "Awakened Power";
+        protected override int Cooldown { get; } = 0;
+        public override AbilityType Type { get; } = AbilityType.Passive;
+
         private const int AttackBonus = 7;
         private const int SpeedBonus = 2;
         private const int HealthTresholdPercent = 25;
-        public AwakenedPower(Game game) : base(game, AbilityType.Passive, "Awakened Power")
+        public AwakenedPower(Game game) : base(game)
         {
             OnAwake += () =>
             {

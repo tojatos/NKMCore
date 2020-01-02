@@ -7,14 +7,20 @@ namespace NKMCore.Abilities.Akame
 {
     public class Eliminate : Ability, IClickable, IUseableCharacter
     {
+        public override string Name { get; } = "Eliminate";
+        protected override int Cooldown { get; } = 3;
+        public override AbilityType Type { get; } = AbilityType.Normal;
+
         private const int Range = 3;
-        public Eliminate(Game game) : base(game, AbilityType.Normal, "Eliminate", 3)
+
+        public Eliminate(Game game) : base(game)
         {
             OnAwake += () => Validator.ToCheck.Add(Validator.AreAnyTargetsInRange);
         }
 
         public override List<HexCell> GetRangeCells() => GetNeighboursOfOwner(Range);
         public override List<HexCell> GetTargetsInRange() => GetRangeCells().WhereEnemiesOf(Owner);
+
 
         public override string GetDescription() =>
 $@"{ParentCharacter.FirstName()} trafia krytycznie zadając podwójne obrażenia.

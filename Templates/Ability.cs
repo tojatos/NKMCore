@@ -10,19 +10,24 @@ namespace NKMCore.Templates
 {
     public abstract class Ability : NKMEntity
     {
-        protected readonly Game Game;
+        protected Game Game { get; }
+
+        public new abstract string Name { get; }
+        protected abstract int Cooldown { get; }
+        public int CurrentCooldown { get; set; }
+        public bool CanUseOnGround { get; protected set; } = true;
+        protected AbilityUseValidator Validator;
+        public abstract AbilityType Type { get; }
+        public abstract string GetDescription();
+
         public Active Active => Game.Active;
         protected NKMRandom Random => Game.Random;
         protected HexMap HexMap => Game.HexMap;
         protected GamePlayer Owner => Game.Players.FirstOrDefault(p => p.Characters.Contains(ParentCharacter));
-        protected Ability(Game game, AbilityType type, string name, int cooldown = 0) : this(game, type, name, cooldown, NKMID.GetNext("Ability")){}
-        private Ability(Game game, AbilityType type, string name, int cooldown, int id)
+        public bool CanBeUsed => Validator.AbilityCanBeUsed;
+        protected Ability(Game game)
         {
             Game = game;
-            ID = id;
-            Type = type;
-            Name = name;
-            Cooldown = cooldown;
             CurrentCooldown = 0;
             OnAwake += () =>
             {
@@ -31,27 +36,16 @@ namespace NKMCore.Templates
                 {
                     if (CurrentCooldown > 0) CurrentCooldown--;
                 };
-                //Owner = ParentCharacter.Owner;
                 AfterUseFinish += () => ParentCharacter.InvokeAfterAbilityUse(this);
             };
         }
 
         protected List<HexCell> GetNeighboursOfOwner(int depth, SearchFlags searchFlags = SearchFlags.None, Predicate<HexCell> stopAt = null) =>
             ParentCharacter.ParentCell.GetNeighbors(Owner, depth, searchFlags, stopAt);
-        public bool CanUseOnGround { get; protected set; } = true;
-        protected AbilityUseValidator Validator;
-        public AbilityType Type { get; }
-        public abstract string GetDescription();
         public virtual List<HexCell> GetRangeCells() => new List<HexCell>();
         public virtual List<HexCell> GetTargetsInRange() => new List<HexCell>();
 
-        protected readonly int Cooldown;
-
-        public int CurrentCooldown { get; set; }
-
         public Character ParentCharacter => Game.Characters.FirstOrDefault(c => c.Abilities.Contains(this) || c.Abilities.OfType<SwordSteal>().FirstOrDefault()?.CopiedAbility == this);
-
-        public bool CanBeUsed => Validator.AbilityCanBeUsed;
 
         protected void Finish() => Finish(Cooldown);
 

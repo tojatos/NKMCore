@@ -5,13 +5,17 @@ namespace NKMCore.Abilities.Akame
 {
     public class LittleWarHorn : Ability, IClickable, IEnableable
     {
+        public override string Name { get; } = "Little War Horn";
+        protected override int Cooldown { get; } = 7;
+        public override AbilityType Type { get; } = AbilityType.Ultimatum;
+
         private const int SpeedIncrease = 4;
         private const int AttackIncrease = 10;
         private const int Duration = 5;
         private const int DefaultSpeed = 5;
 
         private int _currentDuration;
-        public LittleWarHorn(Game game) : base(game, AbilityType.Ultimatum, "Little War Horn", 7)
+        public LittleWarHorn(Game game) : base(game)
         {
             OnAwake += () => Active.Phase.PhaseFinished += () =>
             {

@@ -7,7 +7,11 @@ namespace NKMCore.Abilities.Sabrac
 {
     public class Stigma : Ability
     {
-        public Stigma(Game game) : base(game, AbilityType.Passive, "Stigma")
+        public override string Name { get; } = "Stigma";
+        protected override int Cooldown { get; } = 0;
+        public override AbilityType Type { get; } = AbilityType.Passive;
+
+        public Stigma(Game game) : base(game)
         {
             OnAwake += () =>
             {

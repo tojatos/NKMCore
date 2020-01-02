@@ -5,8 +5,12 @@ namespace NKMCore.Abilities.Kurogane_Ikki
 {
     public class RakudaiKishi : Ability
     {
+        public override string Name { get; } = "Rakudai Kishi";
+        protected override int Cooldown { get; } = 0;
+        public override AbilityType Type { get; } = AbilityType.Passive;
+
         private const int HealAmount = 15;
-        public RakudaiKishi(Game game) : base(game, AbilityType.Passive, "Rakudai Kishi")
+        public RakudaiKishi(Game game) : base(game)
         {
             OnAwake += () =>
             {

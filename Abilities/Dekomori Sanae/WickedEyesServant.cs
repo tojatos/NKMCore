@@ -5,9 +5,13 @@ namespace NKMCore.Abilities.Dekomori_Sanae
 {
     public class WickedEyesServant : Ability, IEnableable
     {
+        public override string Name { get; } = "Wicked Eye's Servant";
+        protected override int Cooldown { get; } = 0;
+        public override AbilityType Type { get; } = AbilityType.Passive;
+
         private int _additionalDamage = 3;
         private bool _isBeingUsed;
-        public WickedEyesServant(Game game) : base(game, AbilityType.Passive, "Wicked Eye's Servant")
+        public WickedEyesServant(Game game) : base(game)
         {
             OnAwake += () =>
             {
@@ -27,7 +31,7 @@ namespace NKMCore.Abilities.Dekomori_Sanae
 jeżeli na polu gry znajduje się chociaż jedna postać z atakiem większym od {0} lub Rikka Takanashi.
 Zabicie wroga dodaje dodatkowy punkt obrażeń nieuchronnych tej umiejętności na stałe."
             ,ParentCharacter.Name, _additionalDamage);
-        
+
         public bool IsEnabled => Game.Players.Any(p => p.Characters.Any(c => c.IsOnMap && (c.AttackPoints.Value > ParentCharacter.AttackPoints.Value || c.Name == "Takanashi Rikka")));
     }
 }

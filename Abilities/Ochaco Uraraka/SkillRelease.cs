@@ -9,8 +9,12 @@ namespace NKMCore.Abilities.Ochaco_Uraraka
 {
     public class SkillRelease : Ability, IClickable
     {
+        public override string Name { get; } = "Skill Release";
+        protected override int Cooldown { get; } = 4;
+        public override AbilityType Type { get; } = AbilityType.Ultimatum;
+
         private const int Duration = 2;
-        public SkillRelease(Game game) : base(game, AbilityType.Ultimatum, "Skill Release", 4)
+        public SkillRelease(Game game) : base(game)
         {
             OnAwake += () => Validator.ToCheck.Add(Validator.AreAnyTargetsInRange);
         }
@@ -29,7 +33,7 @@ a przeciwnicy, którzy stracili ten efekt zostają ogłuszeni na {Duration} fazy
             List<Character> targets = GetTargetsInRange().GetCharacters();
             targets.ForEach(c => c.Effects.FindAll(e => e.Name == "Zero Gravity").ForEach(ef => ef.RemoveFromParent()));
             targets.FindAll(t => t.IsEnemyFor(Owner)).ToList().ForEach(c => c.Effects.Add(new Stun(Game, Duration, c, Name)));
-            
+
             Finish();
         }
 

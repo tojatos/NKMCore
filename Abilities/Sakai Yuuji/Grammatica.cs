@@ -7,13 +7,17 @@ namespace NKMCore.Abilities.Sakai_Yuuji
 {
     public class Grammatica : Ability, IClickable, IUseableCell, IUseableCharacter
     {
+        public override string Name { get; } = "Grammatica";
+        protected override int Cooldown { get; } = 5;
+        public override AbilityType Type { get; } = AbilityType.Ultimatum;
+
         private const int HealthPercentDamage = 25;
         private const int Range = 7;
 
         public event Delegates.CharacterCharacter BeforeGrammatica;
         public event Delegates.CharacterCharacterCell AfterGrammatica;
 
-        public Grammatica(Game game) : base(game, AbilityType.Ultimatum, "Grammatica", 5)
+        public Grammatica(Game game) : base(game)
         {
             OnAwake += () => Validator.ToCheck.Add(Validator.AreAnyTargetsInRange);
             OnAwake += () => Validator.ToCheck.Add(() => GetMoveCells().Count > 0);

@@ -7,9 +7,13 @@ namespace NKMCore.Abilities.Carmel_Wilhelmina
 {
     public class ManipulatorOfObjects : Ability
     {
+        public override string Name { get; } = "Manipulator of Objects";
+        protected override int Cooldown { get; } = 0;
+        public override AbilityType Type { get; } = AbilityType.Passive;
+
         private const int EffectTimeout = 2;
         private const int Duration = 1;
-        public ManipulatorOfObjects(Game game) : base(game, AbilityType.Passive, "Manipulator of Objects")
+        public ManipulatorOfObjects(Game game) : base(game)
         {
             OnAwake += () => ParentCharacter.BeforeBasicAttack += (character, damage) =>
             {

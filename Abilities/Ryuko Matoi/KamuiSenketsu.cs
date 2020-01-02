@@ -6,10 +6,14 @@ namespace NKMCore.Abilities.Ryuko_Matoi
 {
     public class KamuiSenketsu : Ability, IClickable, IEnableable
     {
+        public override string Name { get; } = "Kamui Senketsu";
+        protected override int Cooldown { get; } = 5;
+        public override AbilityType Type { get; } = AbilityType.Ultimatum;
+
         private const int InitialADBonus = 5;
         private const int BonusADPerTurn = 2;
         private const int Damage = 5;
-        public KamuiSenketsu(Game game) : base(game, AbilityType.Ultimatum, "Kamui Senketsu", 5)
+        public KamuiSenketsu(Game game) : base(game)
         {
             OnAwake += () =>
             {
@@ -53,7 +57,7 @@ Po użyciu tej umiejętności {ParentCharacter.Name} może się poruszyć.";
 //              ParentCharacter.Select();
                 Active.Select(ParentCharacter);
             }
-            
+
         }
 
         public bool IsEnabled { get; private set; }

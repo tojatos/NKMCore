@@ -4,17 +4,21 @@ namespace NKMCore.Abilities.Asuna
 {
     public class SwordDance : Ability, IClickable, IEnableable
     {
+        public override string Name { get; } = "Sword Dance";
+        protected override int Cooldown { get; } = 4;
+        public override AbilityType Type { get; } = AbilityType.Ultimatum;
+
         private const int AbilityMaxDuration = 3;
         private const int AbilityMaxHits = 3;
         private const int AbilityBonusAttackGain = 2;
 
         public event Delegates.CharacterD OnBlock;
-        
+
         private int _attacksToBlock = 3;
         private int _phasesRemain = 3;
         private int _currentBonusAttack;
 
-        public SwordDance(Game game) : base(game, AbilityType.Ultimatum, "Sword Dance", 4)
+        public SwordDance(Game game) : base(game)
         {
             OnAwake += () =>
             {

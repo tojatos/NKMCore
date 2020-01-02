@@ -8,10 +8,14 @@ namespace NKMCore.Abilities.Crona
 {
     public class BlackBlood : Ability
     {
+        public override string Name { get; } = "Black Blood";
+        protected override int Cooldown { get; } = 0;
+        public override AbilityType Type { get; } = AbilityType.Passive;
+
         public const int Damage = 10;
         public const int Range = 2;
 
-        public BlackBlood(Game game) : base(game, AbilityType.Passive, "Black Blood")
+        public BlackBlood(Game game) : base(game)
         {
             OnAwake += AddBlackBloodEffect;
         }

@@ -9,11 +9,15 @@ namespace NKMCore.Abilities.Aqua
 {
     public class Resurrection : Ability, IClickable, IUseableCell
     {
+        public override string Name { get; } = "Resurrection";
+        protected override int Cooldown { get; } = 8;
+        public override AbilityType Type { get; } = AbilityType.Ultimatum;
+
         private Character _characterToResurrect;
         private readonly Func<Character, bool> _isResurrectable = c => !c.IsAlive && c.DeathTimer <= 1;
         public override List<HexCell> GetRangeCells() => Active.GamePlayer.GetSpawnPoints(Game).Where(sp => sp.IsFreeToStand).ToList();
 
-        public Resurrection(Game game) : base(game, AbilityType.Ultimatum, "Resurrection", 8)
+        public Resurrection(Game game) : base(game)
         {
             OnAwake += () =>
             {

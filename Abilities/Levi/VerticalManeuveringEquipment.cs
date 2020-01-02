@@ -7,12 +7,16 @@ namespace NKMCore.Abilities.Levi
 {
     public class VerticalManeuveringEquipment : Ability, IClickable, IUseableCell
     {
+        public override string Name { get; } = "Vertical Maneuvering Equipment";
+        protected override int Cooldown { get; } = 2;
+        public override AbilityType Type { get; } = AbilityType.Normal;
+
         private const int Range = 7;
         private const int MoveTargetRange = 7;
-        
+
         public event Delegates.CharacterCell OnSwing;
-        
-        public VerticalManeuveringEquipment(Game game) : base(game, AbilityType.Normal, "Vertical Maneuvering Equipment", 2)
+
+        public VerticalManeuveringEquipment(Game game) : base(game)
         {
             OnAwake += () => Validator.ToCheck.Add(Validator.AreAnyTargetsInRange);
         }

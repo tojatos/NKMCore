@@ -5,6 +5,10 @@ namespace NKMCore.Abilities.Hecate
 {
     public class ItadakiNoKura : Ability
     {
+        public override string Name { get; } = "Itadaki no Kura";
+        protected override int Cooldown { get; } = 0;
+        public override AbilityType Type { get; } = AbilityType.Passive;
+
         private const int HealthPercent = 40;
         public List<Character> CollectedEnergyCharacters { get; } = new List<Character>();
         public event Delegates.CharacterCharacter AfterCollectingEnergy;
@@ -13,7 +17,7 @@ namespace NKMCore.Abilities.Hecate
             CollectedEnergyCharacters.ForEach(c => energy += c.HealthPoints.BaseValue * ((float) HealthPercent /100));
             return (int) energy;
         } }
-        public ItadakiNoKura(Game game) : base(game, AbilityType.Passive, "Itadaki no Kura")
+        public ItadakiNoKura(Game game) : base(game)
         {
             OnAwake += () => ParentCharacter.AfterAttack += (character, damage) => TryCollectingEnergy(character);
         }

@@ -5,12 +5,16 @@ namespace NKMCore.Abilities.Derieri
 {
     public class ComboStar : Ability
     {
+        public override string Name { get; } = "Combo star";
+        protected override int Cooldown { get; } = 0;
+        public override AbilityType Type { get; } = AbilityType.Passive;
+
         private const int DamagePerCombo = 4;
-        
+
         public int Combo;
         public Character ComboCharacter { get; private set; }
         private bool _wasCharacterAttackedThisPhase;
-        public ComboStar(Game game) : base(game, AbilityType.Passive, "Combo star")
+        public ComboStar(Game game) : base(game)
         {
             OnAwake += () =>
             {

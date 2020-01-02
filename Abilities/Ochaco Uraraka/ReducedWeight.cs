@@ -9,7 +9,11 @@ namespace NKMCore.Abilities.Ochaco_Uraraka
 {
     public class ReducedWeight : Ability, IClickable, IUseableCharacter
     {
-        public ReducedWeight(Game game) : base(game, AbilityType.Normal, "Reduced Weight", 3)
+        public override string Name { get; } = "Reduced Weight";
+        protected override int Cooldown { get; } = 3;
+        public override AbilityType Type { get; } = AbilityType.Normal;
+
+        public ReducedWeight(Game game) : base(game)
         {
             OnAwake += () => Validator.ToCheck.Add(Validator.AreAnyTargetsInRange);
         }

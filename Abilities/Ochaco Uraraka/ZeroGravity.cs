@@ -6,8 +6,12 @@ namespace NKMCore.Abilities.Ochaco_Uraraka
 {
     public class ZeroGravity : Ability
     {
+        public override string Name { get; } = "Zero Gravity";
+        protected override int Cooldown { get; } = 0;
+        public override AbilityType Type { get; } = AbilityType.Passive;
+
         private const int FlyingDuration = 4;
-        public ZeroGravity(Game game) : base(game, AbilityType.Passive, "Zero Gravity")
+        public ZeroGravity(Game game) : base(game)
         {
             OnAwake += () =>
             {

@@ -7,10 +7,14 @@ namespace NKMCore.Abilities.Gilgamesh
 {
     public class GateOfBabylon : Ability, IClickable, IUseableCellList
     {
+        public override string Name { get; } = "Gate Of Babylon";
+        protected override int Cooldown { get; } = 5;
+        public override AbilityType Type { get; } = AbilityType.Ultimatum;
+
         private const int Damage = 25;
         private const int Range = 6;
         private const int Radius = 6;
-        public GateOfBabylon(Game game) : base(game, AbilityType.Ultimatum, "Gate Of Babylon", 5) {}
+        public GateOfBabylon(Game game) : base(game) {}
 
         public override string GetDescription() =>
 $@"{ParentCharacter.Name} otwiera wrota Babilonu, zsyłając deszcz mieczy na wskazanym obszarze w promieniu {Radius},

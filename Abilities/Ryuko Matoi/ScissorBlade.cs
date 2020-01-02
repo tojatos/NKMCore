@@ -5,9 +5,13 @@ namespace NKMCore.Abilities.Ryuko_Matoi
 {
     public class ScissorBlade : Ability
     {
+        public override string Name { get; } = "Scissor Blade";
+        protected override int Cooldown { get; } = 0;
+        public override AbilityType Type { get; } = AbilityType.Passive;
+
         private const int PhysicalDefenseDecrease = 5;
         private const int Duration = 2;
-        public ScissorBlade(Game game) : base(game, AbilityType.Passive, "Scissor Blade")
+        public ScissorBlade(Game game) : base(game)
         {
             OnAwake += () => ParentCharacter.BeforeBasicAttack += (character, damage) =>
                 character.Effects.Add(new StatModifier(Game, Duration, -PhysicalDefenseDecrease, character,StatType.PhysicalDefense, Name));

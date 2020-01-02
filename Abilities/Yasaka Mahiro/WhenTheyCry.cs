@@ -5,9 +5,13 @@ namespace NKMCore.Abilities.Yasaka_Mahiro
 {
     public class WhenTheyCry : Ability
     {
+        public override string Name { get; } = "When They Cry";
+        protected override int Cooldown { get; } = 0;
+        public override AbilityType Type { get; } = AbilityType.Passive;
+
         private const int AdditionalDamagePercent = 25;
         private readonly List<Character> _damagedCharacters = new List<Character>();
-        public WhenTheyCry(Game game) : base(game, AbilityType.Passive, "When They Cry")
+        public WhenTheyCry(Game game) : base(game)
         {
             OnAwake += () =>
             {
@@ -26,7 +30,7 @@ namespace NKMCore.Abilities.Yasaka_Mahiro
                 };
             };
         }
-        public override string GetDescription() => 
+        public override string GetDescription() =>
 $"{ParentCharacter.Name} zadaje dodatkowe {AdditionalDamagePercent}% obrażeń zranionym wcześniej wrogom.";
     }
 }

@@ -8,10 +8,14 @@ namespace NKMCore.Abilities.Gilgamesh
 {
     public class Enkidu : Ability, IClickable, IUseableCharacter
     {
+        public override string Name { get; } = "Enkidu";
+        protected override int Cooldown { get; } = 4;
+        public override AbilityType Type { get; } = AbilityType.Normal;
+
         private const int AbilityRange = 8;
         private const int SnarDuration = 2;
 
-        public Enkidu(Game game) : base(game, AbilityType.Normal, "Enkidu", 4)
+        public Enkidu(Game game) : base(game)
         {
             OnAwake += () => Validator.ToCheck.Add(Validator.AreAnyTargetsInRange);
         }

@@ -4,7 +4,11 @@ namespace NKMCore.Abilities.Kurogane_Ikki
 {
     public class IttoShura : Ability, IClickable, IEnableable
     {
-        public IttoShura(Game game) : base(game, AbilityType.Ultimatum, "Itto Shura")
+        public override string Name { get; } = "Itto Shura";
+        protected override int Cooldown { get; } = 0;
+        public override AbilityType Type { get; } = AbilityType.Ultimatum;
+
+        public IttoShura(Game game) : base(game)
         {
             OnAwake += () => Validator.ToCheck.Add(() => !IsEnabled);
         }

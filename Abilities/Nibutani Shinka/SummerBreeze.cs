@@ -8,11 +8,15 @@ namespace NKMCore.Abilities.Nibutani_Shinka
 {
     public class SummerBreeze : Ability, IClickable, IUseableCharacter
     {
+        public override string Name { get; } = "Summer Breeze";
+        protected override int Cooldown { get; } = 3;
+        public override AbilityType Type { get; } = AbilityType.Normal;
+
         private const int Range = 6;
         private const int Damage = 15;
         private const int KnockbackAmount = 4;
         private const int StunDuration = 1;
-        public SummerBreeze(Game game) : base(game, AbilityType.Normal, "Summer Breeze", 3)
+        public SummerBreeze(Game game) : base(game)
         {
             OnAwake += () => Validator.ToCheck.Add(Validator.AreAnyTargetsInRange);
         }

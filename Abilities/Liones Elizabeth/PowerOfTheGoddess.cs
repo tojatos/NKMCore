@@ -7,10 +7,12 @@ namespace NKMCore.Abilities.Liones_Elizabeth
 {
     public class PowerOfTheGoddess : Ability, IClickable
     {
+        public override string Name { get; } = "Power of the goddess";
+        protected override int Cooldown { get; } = 6;
+        public override AbilityType Type { get; } = AbilityType.Ultimatum;
+
         private const int Heal = 20;
-        public PowerOfTheGoddess(Game game) : base(game, AbilityType.Ultimatum, "Power of the goddess", 6)
-        {
-        }
+        public PowerOfTheGoddess(Game game) : base(game){}
 
         public override List<HexCell> GetRangeCells() => HexMap.Cells;
         public override List<HexCell> GetTargetsInRange() => GetRangeCells().WhereFriendsOf(Owner);

@@ -8,11 +8,15 @@ namespace NKMCore.Abilities.Carmel_Wilhelmina
 {
     public class TiamatsIntervention : Ability, IClickable, IUseableCell, IUseableCharacter
     {
+        public override string Name { get; } = "Tiamat's Intervention";
+        protected override int Cooldown { get; } = 6;
+        public override AbilityType Type { get; } = AbilityType.Ultimatum;
+
         private const int Range = 8;
         private const int MoveTargetRange = 3;
         private const int Shield = 10;
         private const int StunDuration = 1;
-        public TiamatsIntervention(Game game) : base(game, AbilityType.Ultimatum, "Tiamat's Intervention", 6)
+        public TiamatsIntervention(Game game) : base(game)
         {
             OnAwake += () => Validator.ToCheck.Add(()=>GetMoveTargets().Count > 0);
         }

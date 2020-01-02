@@ -4,9 +4,13 @@ namespace NKMCore.Abilities.Llenn
 {
     public class RunItDown : Ability, IClickable, IEnableable
     {
+        public override string Name { get; } = "Run It Down";
+        protected override int Cooldown { get; } = 6;
+        public override AbilityType Type { get; } = AbilityType.Ultimatum;
+
         private const int TimesToRun = 3;
         private int _timesRun;
-        public RunItDown(Game game) : base(game, AbilityType.Ultimatum, "Run It Down", 6)
+        public RunItDown(Game game) : base(game)
         {
             OnAwake += () =>
             {

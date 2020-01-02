@@ -8,6 +8,10 @@ namespace NKMCore.Abilities.Shana
 {
     public class KessenOgi : Ability, IClickable, IUseableCharacter
     {
+        public override string Name { get; } = "Kessen Ōgi";
+        protected override int Cooldown { get; } = 4;
+        public override AbilityType Type { get; } = AbilityType.Ultimatum;
+
         private const int FlameDamage = 15;
         private const int Range = 5;
         private const int ShinkuKnockback = 2;
@@ -15,15 +19,15 @@ namespace NKMCore.Abilities.Shana
         private const int ShinpanAndDanzaiRange = 6;
         private const int FlameWidth = 3;
 
-        public KessenOgi(Game game) : base(game, AbilityType.Ultimatum, "Kessen Ōgi", 4)
+        public KessenOgi(Game game) : base(game)
         {
             OnAwake += () => Validator.ToCheck.Add(Validator.AreAnyTargetsInRange);
         }
-            
+
         public override List<HexCell> GetRangeCells() => GetNeighboursOfOwner(Range, SearchFlags.StopAtWalls | SearchFlags.StraightLine);
         public override List<HexCell> GetTargetsInRange() => GetRangeCells().WhereEnemiesOf(Owner);
 
-        public override string GetDescription() => 
+        public override string GetDescription() =>
 $@"{ParentCharacter.Name} używa kolejno po sobie występujących umiejętności:
 
 <b>Shinku:</b>

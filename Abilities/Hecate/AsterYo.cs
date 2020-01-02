@@ -9,23 +9,27 @@ namespace NKMCore.Abilities.Hecate
 {
     public class AsterYo : Ability, IClickable, IUseableCellList
     {
+        public override string Name { get; } = "Aster Yo";
+        protected override int Cooldown { get; } = 3;
+        public override AbilityType Type { get; } = AbilityType.Normal;
+
         private const int Damage = 12;
         private const int Range = 10;
         private const int Radius = 6;
 
         public event Delegates.CharacterCharacterList BeforeAsterBlaster;
-        
-        public AsterYo(Game game) : base(game, AbilityType.Normal, "Aster Yo", 3){}
-        
+
+        public AsterYo(Game game) : base(game){}
+
         public override List<HexCell> GetRangeCells() => GetNeighboursOfOwner(Range);
-        
-        public override string GetDescription() => 
+
+        public override string GetDescription() =>
 $@"{ParentCharacter.Name} wystrzeliwuje promienie energii z Astera,
 zadając {Damage} obrażeń magicznych
 na wskazanym obszarze w promieniu {Radius}.
 
 Zasięg: {Range}    Czas odnowienia: {Cooldown}";
-        
+
 
         public void Click() => Active.PrepareAirSelection(this, GetRangeCells(), AirSelection.SelectionShape.Circle, Radius);
 

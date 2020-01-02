@@ -5,11 +5,15 @@ namespace NKMCore.Abilities.Monkey_D._Luffy
 {
     public class GearSecond : Ability, IClickable, IEnableable
     {
+        public override string Name { get; } = "Gear Second";
+        protected override int Cooldown { get; } = 5;
+        public override AbilityType Type { get; } = AbilityType.Ultimatum;
+
         private const int SpeedIncrease = 3;
         private const int Duration = 2;
 
         private int _currentDuration;
-        public GearSecond(Game game) : base(game, AbilityType.Ultimatum, "Gear Second", 5)
+        public GearSecond(Game game) : base(game)
         {
             OnAwake += () => Active.Phase.PhaseFinished += () =>
             {

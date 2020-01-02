@@ -5,7 +5,11 @@ namespace NKMCore.Abilities.Liones_Elizabeth
 {
     public class ImmenseHealingPowers : Ability
     {
-        public ImmenseHealingPowers(Game game) : base(game, AbilityType.Passive, "Immense Healing Powers")
+        public override string Name { get; } = "Immense Healing Powers";
+        protected override int Cooldown { get; } = 0;
+        public override AbilityType Type { get; } = AbilityType.Passive;
+
+        public ImmenseHealingPowers(Game game) : base(game)
         {
 
             OnAwake += () => ParentCharacter.BeforeHeal += (Character character, ref int value) =>

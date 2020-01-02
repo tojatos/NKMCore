@@ -8,21 +8,25 @@ namespace NKMCore.Abilities.Roronoa_Zoro
 {
     public class LackOfOrientation : Ability
     {
+        public override string Name { get; } = "Lack Of Orientation";
+        protected override int Cooldown { get; } = 0;
+        public override AbilityType Type { get; } = AbilityType.Passive;
+
         private int _moveCounter;
         private int _lostCounter;
-        
+
         public event Delegates.Void AfterGettingLost;
-        
-        public LackOfOrientation(Game game) : base(game, AbilityType.Passive, "Lack Of Orientation")
+
+        public LackOfOrientation(Game game) : base(game)
         {
             OnAwake += () => ParentCharacter.BasicMove = MoveOverride;
         }
-        
-        public override string GetDescription() => 
+
+        public override string GetDescription() =>
 $@"{ParentCharacter.Name} ma 50% szansy na pójście w losowe miejsce podczas wykonania ruchu.
 
 Ilość zgubień się na ruchy: {_lostCounter}/{_moveCounter}";
-        
+
         private void MoveOverride(List<HexCell> moveCells)
         {
             ++_moveCounter;
@@ -43,7 +47,7 @@ Ilość zgubień się na ruchy: {_lostCounter}/{_moveCounter}";
                 }
                 ParentCharacter.DefaultBasicMove(Active.MoveCells);
                 ++_lostCounter;
-                
+
                 AfterGettingLost?.Invoke();
             }
         }

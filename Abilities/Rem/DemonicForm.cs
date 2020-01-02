@@ -6,11 +6,15 @@ namespace NKMCore.Abilities.Rem
 {
     public class DemonicForm : Ability, IEnableable
     {
+        public override string Name { get; } = "Demonic Form";
+        protected override int Cooldown { get; } = 0;
+        public override AbilityType Type { get; } = AbilityType.Passive;
+
         private const int HpPercent = 40;
         private const int AdditionalAttack = 9;
         private const int AdditionalSpeed = 4;
 
-        public DemonicForm(Game game) : base(game, AbilityType.Passive, "Demonic Form")
+        public DemonicForm(Game game) : base(game)
         {
             OnAwake += () => ParentCharacter.HealthPoints.StatChanged += (int1, int2) => TryToActivateDemonicForm();
         }

@@ -8,12 +8,16 @@ namespace NKMCore.Abilities.Levi
 {
     public class SwordVieldingTechnique : Ability, IClickable, IUseableCell
     {
+        public override string Name { get; } = "Sword-Vielding Technique";
+        protected override int Cooldown { get; } = 5;
+        public override AbilityType Type { get; } = AbilityType.Ultimatum;
+
         private const int Range = 7;
         private const int MoveTargetRange = 7;
 
         public event Delegates.CharacterCell OnSwing;
-        
-        public SwordVieldingTechnique(Game game) : base(game, AbilityType.Ultimatum, "Sword-Vielding Technique", 5)
+
+        public SwordVieldingTechnique(Game game) : base(game)
         {
             OnAwake += () => Validator.ToCheck.Add(Validator.AreAnyTargetsInRange);
         }
@@ -43,7 +47,7 @@ W trakcie przemieszczenia się zadaje podstawowe obrażenia osobom w zasięgu at
                 ParentCharacter.TryToTakeTurn();
                 ParentCharacter.MoveTo(cell);
                 List<HexCell> realMoveCells = _theWall.GetLine(_theWall.GetDirection(cell), _theWall.GetDistance(cell));
-                
+
                 List<Character> targets = realMoveCells.SelectMany(c => ParentCharacter.DefaultGetBasicAttackCells(c))
                     .ToList().WhereEnemiesOf(Owner).GetCharacters().Distinct().ToList();
                 targets.ForEach(t => ParentCharacter.Attack(this, t, new Damage(ParentCharacter.AttackPoints.Value, DamageType.Physical)));

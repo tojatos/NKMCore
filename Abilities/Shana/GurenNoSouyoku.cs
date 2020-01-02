@@ -6,9 +6,13 @@ namespace NKMCore.Abilities.Shana
 {
     public class GurenNoSouyoku : Ability, IEnableable
     {
+        public override string Name { get; } = "Guren no Souyoku";
+        protected override int Cooldown { get; } = 0;
+        public override AbilityType Type { get; } = AbilityType.Passive;
+
         private const int Duration = 4;
         private const int SpeedBonus = 3;
-        public GurenNoSouyoku(Game game) : base(game, AbilityType.Passive, "Guren no Souyoku")
+        public GurenNoSouyoku(Game game) : base(game)
         {
             OnAwake += () =>
             {

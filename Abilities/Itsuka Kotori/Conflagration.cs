@@ -8,11 +8,15 @@ namespace NKMCore.Abilities.Itsuka_Kotori
 {
     public class Conflagration : Ability, IClickable, IUseableCellList
     {
+        public override string Name { get; } = "Conflagration";
+        protected override int Cooldown { get; } = 2;
+        public override AbilityType Type { get; } = AbilityType.Normal;
+
         private const int Range = 10;
         private const int Radius = 3;
         private const int DamagePercent = 50;
 
-        public Conflagration(Game game) : base(game, AbilityType.Normal, "Conflagration", 2)
+        public Conflagration(Game game) : base(game)
         {
             OnAwake += () =>
             {
@@ -33,9 +37,9 @@ namespace NKMCore.Abilities.Itsuka_Kotori
                 };
             };
         }
-       
+
         public override string GetDescription() => string.Format(
-@"{0} wywołuje Pożar na wskazanym obszarze o promieniu {3}.
+@"{0} wywołuje Pożar na wskazanym obszarze o public {3}.
 {0} może atakować wrogów znajdujących się na terenie Pożaru podstawowymi atakami, zadając 50% zwykłych obrażeń, niezależnie od tego gdzie sama się znajduje.
 
 Zasięg: {1}    Czas odnowienia: {2}",

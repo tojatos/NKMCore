@@ -7,14 +7,18 @@ namespace NKMCore.Abilities.Yoshino
 {
     public class Zadkiel : Ability, IEnableable, IClickable
     {
+        public override string Name { get; } = "Zadkiel";
+        protected override int Cooldown { get; } = 3;
+        public override AbilityType Type { get; } = AbilityType.Normal;
+
         private const int StunDuration = 1;
         private const int HitDurability = 3;
         private const int TimeDurability = 5;
 
         private int _currentHitRemains;
         private int _currentTimeDurability;
-        
-        public Zadkiel(Game game) : base(game, AbilityType.Normal, "Zadkiel", 3)
+
+        public Zadkiel(Game game) : base(game)
         {
             OnAwake += () =>
             {
@@ -67,7 +71,7 @@ Pozostały czas trwania: {_currentTimeDurability}";
         private void Disable()
         {
             IsEnabled = false;
-            
+
             var runablePassive = ParentCharacter.Abilities.SingleOrDefault(a => a.Type == AbilityType.Passive && a is IRunnable) as IRunnable;
             runablePassive?.Run();
 

@@ -7,10 +7,14 @@ namespace NKMCore.Abilities.Crona
 {
     public class Infection : Ability, IClickable, IUseableCharacter
     {
+        public override string Name { get; } = "Infection";
+        protected override int Cooldown { get; } = 5;
+        public override AbilityType Type { get; } = AbilityType.Ultimatum;
+
         private const int Range = 6;
         private const int EffectCooldown = 3;
 
-        public Infection(Game game) : base(game, AbilityType.Ultimatum, "Infection", 5)
+        public Infection(Game game) : base(game)
         {
             OnAwake += () => Validator.ToCheck.Add(Validator.AreAnyTargetsInRange);
         }

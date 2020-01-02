@@ -7,9 +7,13 @@ namespace NKMCore.Abilities.Satou_Kazuma
 {
     public class DrainTouch : Ability, IClickable, IUseableCharacter
     {
+        public override string Name { get; } = "Drain Touch";
+        protected override int Cooldown { get; } = 3;
+        public override AbilityType Type { get; } = AbilityType.Normal;
+
         private const int Damage = 18;
         private const int Range = 6;
-        public DrainTouch(Game game) : base(game, AbilityType.Normal, "Drain Touch", 3)
+        public DrainTouch(Game game) : base(game)
         {
             OnAwake += () => Validator.ToCheck.Add(Validator.AreAnyTargetsInRange);
         }

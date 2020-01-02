@@ -8,12 +8,16 @@ namespace NKMCore.Abilities.Carmel_Wilhelmina
 {
     public class BindingRibbons : Ability, IClickable, IUseableCellList
     {
+        public override string Name { get; } = "Binding Ribbons";
+        protected override int Cooldown { get; } = 4;
+        public override AbilityType Type { get; } = AbilityType.Normal;
+
         private const int Range = 4;
         private const int Radius = 3;
         private const int EnemiesToHitToActivateSnare = 3;
         private const int RootDuration = 1;
         private const int SilentDuration = 1;
-        public BindingRibbons(Game game) : base(game, AbilityType.Normal, "Binding Ribbons", 4){}
+        public BindingRibbons(Game game) : base(game){}
 
         public override string GetDescription() =>
 $@"{ParentCharacter.Name} rzuca zaklęcie w obszar o promieniu {Radius},

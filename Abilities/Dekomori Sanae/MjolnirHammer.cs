@@ -7,12 +7,16 @@ namespace NKMCore.Abilities.Dekomori_Sanae
 {
     public class MjolnirHammer : Ability, IClickable, IUseableCharacter
     {
+        public override string Name { get; } = "Mjolnir Hammer";
+        protected override int Cooldown { get; } = 4;
+        public override AbilityType Type { get; } = AbilityType.Normal;
+
         private const int Damage = 18;
         private const int Range = 7;
         private bool _wasUsedOnceThisTurn;
         private Character _firstAbilityTarget;
 
-        public MjolnirHammer(Game game) : base(game, AbilityType.Normal, "Mjolnir Hammer", 4)
+        public MjolnirHammer(Game game) : base(game)
         {
             OnAwake += () => Validator.ToCheck.Add(Validator.AreAnyTargetsInRange);
             AfterUseFinish += () =>

@@ -8,11 +8,15 @@ namespace NKMCore.Abilities.Ononoki_Yotsugi
 {
     public class UrbRefuge : Ability, IClickable, IUseableCell
     {
+        public override string Name { get; } = "URB - Refuge";
+        protected override int Cooldown { get; } = 7;
+        public override AbilityType Type { get; } = AbilityType.Ultimatum;
+
         private const int Damage = 20;
         private const int CharacterGrabRange = 5;
         private const int Range = 14;
         private const int Radius = 4;
-        public UrbRefuge(Game game) : base(game, AbilityType.Ultimatum, "URB - Refuge", 7)
+        public UrbRefuge(Game game) : base(game)
         {
             OnAwake += () => Validator.ToCheck.Add(Validator.AreAnyTargetsInRange);
         }

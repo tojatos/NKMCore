@@ -9,8 +9,12 @@ namespace NKMCore.Abilities.Bezimienni
 {
     public class Check : Ability, IClickable, IUseableCharacter
     {
+        public override string Name { get; } = "Check";
+        protected override int Cooldown { get; } = 2;
+        public override AbilityType Type { get; } = AbilityType.Normal;
+
         public event Delegates.CharacterD AfterCheck;
-        public Check(Game game) : base(game, AbilityType.Normal, "Check", 2)
+        public Check(Game game) : base(game)
         {
             OnAwake += () => Validator.ToCheck.Add(Validator.AreAnyTargetsInRange);
         }

@@ -8,11 +8,15 @@ namespace NKMCore.Abilities.Yasaka_Mahiro
 {
     public class TerrorOfTheUniverse : Ability, IClickable, IUseableCellList
     {
+        public override string Name { get; } = "Terror Of The Universe";
+        protected override int Cooldown { get; } = 6;
+        public override AbilityType Type { get; } = AbilityType.Ultimatum;
+
         private const float CurrentHealthPercentDamage = 40f;
         private const int Range = 6;
         private const int Radius = 5;
         private const int SlowDuration = 2;
-        public TerrorOfTheUniverse(Game game) : base(game, AbilityType.Ultimatum, "Terror Of The Universe", 6){}
+        public TerrorOfTheUniverse(Game game) : base(game){}
         public override string GetDescription() =>
 $@"{ParentCharacter.Name} wbija wielki widelec w ziemie,
 zadając obrażenia fizyczne równe {CurrentHealthPercentDamage}% obecnego HP celu wszystkim wrogom w promieniu {Radius}.

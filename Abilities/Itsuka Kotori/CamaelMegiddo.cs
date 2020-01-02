@@ -9,12 +9,16 @@ namespace NKMCore.Abilities.Itsuka_Kotori
 {
     public class CamaelMegiddo : Ability, IClickable, IUseableCell
     {
+        public override string Name { get; } = "Camael - Megiddo";
+        protected override int Cooldown { get; } = 6;
+        public override AbilityType Type { get; } = AbilityType.Ultimatum;
+
         private const int LineDamage = 40;
         private const int ConflargationDamage = 20;
 
         public event Delegates.CellListCellList BeforeFlamewave;
 
-        public CamaelMegiddo(Game game) : base(game, AbilityType.Ultimatum, "Camael - Megiddo", 6) { }
+        public CamaelMegiddo(Game game) : base(game) { }
 
         public override string GetDescription() =>
 $@"{ParentCharacter.Name} wystrzeliwuje falę płomieni w wybranym kierunku zadając {LineDamage} obrażeń magicznych wszystkim trafionym wrogom.

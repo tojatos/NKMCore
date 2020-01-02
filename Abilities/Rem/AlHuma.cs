@@ -8,10 +8,14 @@ namespace NKMCore.Abilities.Rem
 {
     public class AlHuma : Ability, IClickable, IUseableCharacter
     {
+        public override string Name { get; } = "Al Huma";
+        protected override int Cooldown { get; } = 4;
+        public override AbilityType Type { get; } = AbilityType.Normal;
+
         private const int Damage = 10;
         private const int Range = 7;
 
-        public AlHuma(Game game) : base(game, AbilityType.Normal, "Al Huma", 4)
+        public AlHuma(Game game) : base(game)
         {
             OnAwake += () => Validator.ToCheck.Add(Validator.AreAnyTargetsInRange);
         }

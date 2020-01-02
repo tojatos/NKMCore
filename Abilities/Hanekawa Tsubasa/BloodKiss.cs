@@ -8,11 +8,15 @@ namespace NKMCore.Abilities.Hanekawa_Tsubasa
 {
     public class BloodKiss : Ability, IClickable, IUseableCharacter
     {
+        public override string Name { get; } = "Blood Kiss";
+        protected override int Cooldown { get; } = 4;
+        public override AbilityType Type { get; } = AbilityType.Normal;
+
         private const int Range = 3;
         private const int DoTDamage = 8;
         private const int DoTTime = 4;
 
-        public BloodKiss(Game game) : base(game, AbilityType.Normal, "Blood Kiss", 4)
+        public BloodKiss(Game game) : base(game)
         {
             OnAwake += () => Validator.ToCheck.Add(Validator.AreAnyTargetsInRange);
         }

@@ -8,11 +8,15 @@ namespace NKMCore.Abilities.Sabrac
 {
     public class Fuiuchi : Ability, IClickable, IRunnable
     {
+        public override string Name { get; } = "Fuiuchi";
+        protected override int Cooldown { get; } = 3;
+        public override AbilityType Type { get; } = AbilityType.Normal;
+
         private const int Range = 3;
         private const int Damage = 15;
         private const int SlowDuration = 2;
         private const int SlowTo = 3;
-        public Fuiuchi(Game game) : base(game, AbilityType.Normal, "Fuiuchi", 3)
+        public Fuiuchi(Game game) : base(game)
         {
             OnAwake += () => Validator.ToCheck.Add(Validator.AreAnyTargetsInRange);
         }

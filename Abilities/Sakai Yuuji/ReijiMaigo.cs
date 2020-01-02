@@ -4,8 +4,12 @@ namespace NKMCore.Abilities.Sakai_Yuuji
 {
     public class ReijiMaigo : Ability
     {
+        public override string Name { get; } = "Reiji Maigo";
+        protected override int Cooldown { get; } = 0;
+        public override AbilityType Type { get; } = AbilityType.Passive;
+
         private int _toNextUse = 5;
-        public ReijiMaigo(Game game) : base(game, AbilityType.Passive, "Reiji Maigo")
+        public ReijiMaigo(Game game) : base(game)
         {
             OnAwake += () => Active.Phase.PhaseFinished += () =>
             {

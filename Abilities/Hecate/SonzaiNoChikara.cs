@@ -8,12 +8,16 @@ namespace NKMCore.Abilities.Hecate
 {
     public class SonzaiNoChikara : Ability, IClickable, IUseableCellList
     {
-        public SonzaiNoChikara(Game game) : base(game, AbilityType.Ultimatum, "Sonzai no Chikara", 8){}
+        public override string Name { get; } = "Sonzai no Chikara";
+        protected override int Cooldown { get; } = 8;
+        public override AbilityType Type { get; } = AbilityType.Ultimatum;
+
+        public SonzaiNoChikara(Game game) : base(game){}
 
         public override List<HexCell> GetRangeCells() => HexMap.Cells;
         public override List<HexCell> GetTargetsInRange() => GetRangeCells().WhereEnemiesOf(Owner);
 
-        public override string GetDescription() => 
+        public override string GetDescription() =>
 $@"{ParentCharacter.Name} uwalnia zgromadzoną Energię Życiową, raniąc każdego wroga na mapie.
 Ilość HP, jakie zgromadziła w postaci Energii Życiowej jest równo rozdzielana pomiędzy wszystkich przeciwników w postaci obrażeń magicznych.";
 

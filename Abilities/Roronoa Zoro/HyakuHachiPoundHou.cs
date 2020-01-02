@@ -8,16 +8,20 @@ namespace NKMCore.Abilities.Roronoa_Zoro
 {
     public class HyakuHachiPoundHou : Ability, IClickable, IUseableCharacter
     {
+        public override string Name { get; } = "Hyaku Hachi Pound Hou";
+        protected override int Cooldown { get; } = 6;
+        public override AbilityType Type { get; } = AbilityType.Ultimatum;
+
         private const int Damage = 18;
         private const int Range = 6;
 
         public event Delegates.Void BeforeUse;
 
-        public HyakuHachiPoundHou(Game game) : base(game, AbilityType.Ultimatum, "Hyaku Hachi Pound Hou", 6)
+        public HyakuHachiPoundHou(Game game) : base(game)
         {
             OnAwake += () => Validator.ToCheck.Add(Validator.AreAnyTargetsInRange);
         }
-        
+
         public override List<HexCell> GetRangeCells() => GetNeighboursOfOwner(Range, SearchFlags.StopAtWalls | SearchFlags.StraightLine);
         public override List<HexCell> GetTargetsInRange() => GetRangeCells().WhereEnemiesOf(Owner);
 

@@ -5,17 +5,15 @@ namespace NKMCore.Abilities.Shana
 {
     public class GurenNoOodachi : Ability, IClickable
     {
+        public override string Name { get; } = "Guren no Oodachi";
+        protected override int Cooldown { get; } = 5;
+        public override AbilityType Type { get; } = AbilityType.Normal;
+
         private const int AttackIncrease = 5;
         private const int BasicAttackRangeIncrease = 4;
         private const int Duration = 3;
 
-        public GurenNoOodachi(Game game) : base(game, AbilityType.Normal, "Guren no Oodachi", 5)
-        {
-//          Name = "Guren no Oodachi";
-//          Cooldown = 5;
-//          CurrentCooldown = 0;
-//          Type = AbilityType.Normal;
-        }
+        public GurenNoOodachi(Game game) : base(game){}
         public override string GetDescription()
         {
             return $@"Zwiększa atak o {AttackIncrease}, oraz zasięg ataków o {BasicAttackRangeIncrease}

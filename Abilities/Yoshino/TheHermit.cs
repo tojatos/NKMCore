@@ -8,12 +8,16 @@ namespace NKMCore.Abilities.Yoshino
 {
     public class TheHermit : Ability, IRunnable
     {
+        public override string Name { get; } = "The Hermit";
+        protected override int Cooldown { get; } = 0;
+        public override AbilityType Type { get; } = AbilityType.Passive;
+
         private const int Range = 2;
         private const int EffectDuration = 2;
         private const int AfterLosingHP = 15;
 
         private int _lastTreshold;
-        public TheHermit(Game game) : base(game, AbilityType.Passive, "The Hermit")
+        public TheHermit(Game game) : base(game)
         {
             OnAwake += () =>
             {

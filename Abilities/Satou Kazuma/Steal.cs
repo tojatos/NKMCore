@@ -7,9 +7,13 @@ namespace NKMCore.Abilities.Satou_Kazuma
 {
     public class Steal : Ability, IClickable, IUseableCharacter, IEnableable
     {
+        public override string Name { get; } = "Steal";
+        protected override int Cooldown { get; } = 6;
+        public override AbilityType Type { get; } = AbilityType.Ultimatum;
+
         private const int Duration = 4;
         private const int Range = 6;
-        public Steal(Game game) : base(game, AbilityType.Ultimatum, "Steal", 6)
+        public Steal(Game game) : base(game)
         {
             OnAwake += () =>
             {
@@ -25,7 +29,7 @@ namespace NKMCore.Abilities.Satou_Kazuma
 
         public override List<HexCell> GetRangeCells() => GetNeighboursOfOwner(Range);
         public override List<HexCell> GetTargetsInRange() => GetRangeCells().WhereEnemiesOf(Owner);
-        
+
         public override string GetDescription()
         {
             string desc = $@"{ParentCharacter.FirstName()} kradnie zbroję przeciwnikowi, 
@@ -41,7 +45,7 @@ Umiejętność jest włączona od {_currentDuration} faz.";
 
         private Character _lastTargetCharacter;
         private int _currentDuration;
-        
+
         public void Use(Character character)
         {
             ParentCharacter.TryToTakeTurn();
@@ -64,7 +68,7 @@ Umiejętność jest włączona od {_currentDuration} faz.";
             ParentCharacter.MagicalDefense.Value -= _lastTargetCharacter.MagicalDefense.BaseValue;
             _lastTargetCharacter.MagicalDefense.Value += _lastTargetCharacter.MagicalDefense.BaseValue;
         }
-        
+
 
         public bool IsEnabled { get; private set; }
     }

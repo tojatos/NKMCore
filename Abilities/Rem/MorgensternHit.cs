@@ -7,18 +7,22 @@ namespace NKMCore.Abilities.Rem
 {
     public class MorgensternHit : Ability, IClickable
     {
+        public override string Name { get; } = "Morgenstern Hit";
+        protected override int Cooldown { get; } = 4;
+        public override AbilityType Type { get; } = AbilityType.Normal;
+
         private const int AbilityDamage = 15;
         private const int AbilityRange = 4;
 
-        public MorgensternHit(Game game) : base(game, AbilityType.Normal, "Morgenstern Hit", 4)
+        public MorgensternHit(Game game) : base(game)
         {
             OnAwake += () => Validator.ToCheck.Add(Validator.AreAnyTargetsInRange);
         }
-        
+
         public override List<HexCell> GetRangeCells() => GetNeighboursOfOwner(AbilityRange);
         public override List<HexCell> GetTargetsInRange() => GetRangeCells().WhereEnemiesOf(Owner);
 
-        public override string GetDescription() => 
+        public override string GetDescription() =>
 $@"{ParentCharacter.Name} wymachuje morgenszternem wokół własnej osi,
 zadając wszystkim przeciwnikom w promieniu {AbilityRange} {AbilityDamage} obrażeń fizycznych.
 Czas odnowienia: {Cooldown}";

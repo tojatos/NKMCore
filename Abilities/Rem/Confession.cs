@@ -7,9 +7,13 @@ namespace NKMCore.Abilities.Rem
 {
     public class Confession : Ability, IClickable, IUseableCharacter
     {
+        public override string Name { get; } = "Confession";
+        protected override int Cooldown { get; } = 4;
+        public override AbilityType Type { get; } = AbilityType.Ultimatum;
+
         private const int Range = 6;
 
-        public Confession(Game game) : base(game, AbilityType.Ultimatum, "Confession", 4)
+        public Confession(Game game) : base(game)
         {
             OnAwake += () => Validator.ToCheck.Add(Validator.AreAnyTargetsInRange);
         }
