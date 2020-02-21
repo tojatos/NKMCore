@@ -32,7 +32,7 @@ namespace NKMCore.Hex
         public Character FirstCharacter => CharactersOnCell[0];
         public List<Character> CharactersOnCell => _map.GetCharacters(this);
 
-        public bool IsSpawnFor(GamePlayer player, Game game) => Type == _map.SpawnPoints[player.GetIndex(game)];
+        public bool IsSpawnFor(GamePlayer player, IGame game) => Type == _map.SpawnPoints[player.GetIndex(game)];
 
         public HexDirection GetDirection(HexCell hexCell) => GetDirection(hexCell.Coordinates);
         public HexDirection GetDirection(HexCoordinates targetCoordinates)

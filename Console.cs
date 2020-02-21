@@ -16,7 +16,7 @@ namespace NKMCore
         public delegate void StringBoolD(string text, bool isDebug);
         public event StringBoolD AfterAddLog;
 
-        public Console(Game game)
+        public Console(IGame game)
         {
             _commandExecutor = new CommandExecutor(game);
             _commandExecutor.OnLog += Log;

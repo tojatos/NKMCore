@@ -4,11 +4,11 @@ namespace NKMCore
 {
     public class Turn
     {
-        private readonly Game _game;
+        private readonly IGame _game;
         public bool IsDone { get; private set; }
         public Character CharacterThatTookActionInTurn { get; set; }
 
-        public Turn(Game game)
+        public Turn(IGame game)
         {
             _game = game;
             IsDone = false;

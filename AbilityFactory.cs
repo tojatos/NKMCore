@@ -7,7 +7,7 @@ namespace NKMCore
 {
     public static class AbilityFactory
     {
-        public static List<Ability> CreateAndInitiateAbilitiesFromDatabase(string name, Game game)
+        public static List<Ability> CreateAndInitiateAbilitiesFromDatabase(string name, IGame game)
         {
             IEnumerable<string> abilityClassNames = NKMData.GetAbilityClassNames(name);
             List<Ability> abilities = SpawnAbilities(name, abilityClassNames, game);
@@ -16,14 +16,14 @@ namespace NKMCore
             return abilities;
         }
 
-        public static Ability CreateAndInit(Type type, Game game)
+        public static Ability CreateAndInit(Type type, IGame game)
         {
             var a = Instantiator.Create<Ability>(type, game);
             game?.InvokeAfterAbilityCreation(a);
             return a;
         }
 
-        private static List<Ability> SpawnAbilities(string name, IEnumerable<string> abilityClassNames, Game game)
+        private static List<Ability> SpawnAbilities(string name, IEnumerable<string> abilityClassNames, IGame game)
         {
             string abilityNamespaceName = "Abilities." + name.Replace(' ', '_');
             List<Ability> abilities = Instantiator.Create<Ability>(abilityNamespaceName, abilityClassNames, game).ToList();

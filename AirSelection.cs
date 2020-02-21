@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using NKMCore.Hex;
+using NKMCore.Templates;
 
 namespace NKMCore
 {
     public class AirSelection
     {
-        private readonly Game _game;
+        private readonly IGame _game;
 
         public event Delegates.CellHashSet AfterEnable;
         public event Delegates.CellHashSet AfterCellsSet;
@@ -17,7 +18,7 @@ namespace NKMCore
             None,
             Circle
         }
-        public AirSelection(Game game)
+        public AirSelection(IGame game)
         {
             _game = game;
             IsEnabled = false;

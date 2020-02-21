@@ -11,8 +11,8 @@ namespace NKMCore
     /// </summary>
     public class Active
     {
-        private readonly Game _game;
-        public Active(Game game)
+        private readonly IGame _game;
+        public Active(IGame game)
         {
             _game = game;
             Phase = new Phase();

@@ -1,14 +1,15 @@
 using System.Linq;
+using NKMCore.Templates;
 
 namespace NKMCore
 {
     public class CommandExecutor
     {
-        private readonly Game _game;
+        private readonly IGame _game;
         private Active Active => _game.Active;
 
         public event Delegates.String OnLog;
-        public CommandExecutor(Game game)
+        public CommandExecutor(IGame game)
         {
             _game = game;
         }

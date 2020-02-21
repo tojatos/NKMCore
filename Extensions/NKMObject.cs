@@ -39,7 +39,7 @@ namespace NKMCore.Extensions
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
         }
-        public static int GetIndex(this GamePlayer gamePlayer, Game game) => game.Players.FindIndex(p => p == gamePlayer);
+        public static int GetIndex(this GamePlayer gamePlayer, IGame game) => game.Players.FindIndex(p => p == gamePlayer);
         public static FightType ToFightType(this string typeName)
         {
             switch (typeName)

@@ -12,8 +12,8 @@ namespace NKMCore
     /// </summary>
     public class Action
     {
-        private readonly Game _game;
-        public Action(Game game)
+        private readonly IGame _game;
+        public Action(IGame game)
         {
             _game = game;
         }
