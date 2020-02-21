@@ -17,7 +17,7 @@ namespace NKMCore.Templates
         public readonly Console Console;
         public readonly NKMRandom Random;
         public SelectableAction SelectableAction;
-        private Logger Logger;
+        private ILogger Logger;
 
         public IGame(GameDependencies gameDependencies)
         {

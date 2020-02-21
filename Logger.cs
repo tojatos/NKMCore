@@ -2,7 +2,7 @@ using System.IO;
 
 namespace NKMCore
 {
-    public class Logger
+    public class Logger : ILogger
     {
         private readonly string _logFilePath;
         public Logger(string logFilePath)
@@ -22,7 +22,5 @@ namespace NKMCore
 
             File.AppendAllText(_logFilePath, $"{msg}\n");
         }
-
-
     }
 }

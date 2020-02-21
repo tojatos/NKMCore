@@ -12,7 +12,7 @@ namespace NKMCore
         public ISelectable Selectable { get; set; }
         public SelectableManager SelectableManager { get; set; }
         public SelectableAction SelectableAction { get; set; }
-        public Logger Logger { get; set; }
+        public ILogger Logger { get; set; }
     }
 
     public enum GameType
