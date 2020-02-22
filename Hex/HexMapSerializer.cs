@@ -14,17 +14,18 @@ namespace NKMCore
                 map.Cells.Select(c => $"{c.Coordinates.X}:{c.Coordinates.Z};{c.Type}"));
             string spawnPoints = string.Join(";", map.SpawnPoints.Select(s => s.ToString()));
 
-            return string.Join("\n\n", coords, spawnPoints);
+            return string.Join("\n\n", map.Name, coords, spawnPoints);
         }
 
         public static HexMap Deserialize(string mapString)
         {
             string[] sc = mapString.Split(new [] {"\n\n"}, StringSplitOptions.None);
-            string[] cellsInfo = sc[0].Split('\n');
-            string spawnPointInfo = sc[1];
+            string name = sc[0];
+            string[] cellsInfo = sc[1].Split('\n');
+            string spawnPointInfo = sc[2];
             List<HexCell.TileType> spawnPoints = spawnPointInfo.Split(';').Select(s => s.ToEnum<HexCell.TileType>()).ToList();
 
-            var map = new HexMap(new List<HexCell>(), spawnPoints);
+            var map = new HexMap(name, new List<HexCell>(), spawnPoints);
             cellsInfo.ToList().ForEach(i =>
             {
                 string[] s = i.Split(';');

@@ -9,6 +9,18 @@ namespace NKMCore.Hex
     {
         public readonly List<HexCell> Cells;
         public readonly List<HexCell.TileType> SpawnPoints;
+        public readonly string Name;
+
+        public HexMap (string name, List<HexCell> cells, List<HexCell.TileType> spawnPoints)
+        {
+            Name = name;
+            Cells = cells;
+            SpawnPoints = spawnPoints;
+        }
+
+        public int MaxCharactersPerPlayer => Cells.Count(c => c.Type == SpawnPoints[0]);
+        public int MaxPlayers => SpawnPoints.Count;
+
         private readonly Dictionary<Character, HexCell> _charactersOnCells = new Dictionary<Character, HexCell>();
 
         public void Place(Character character, HexCell cell)
@@ -46,11 +58,5 @@ namespace NKMCore.Hex
 
         public List<Character> GetCharacters(HexCell cell) =>
             _charactersOnCells.Where(pair => pair.Value == cell).Select(pair => pair.Key).ToList();
-
-        public HexMap (List<HexCell> cells, List<HexCell.TileType> spawnPoints)
-        {
-            Cells = cells;
-            SpawnPoints = spawnPoints;
-        }
     }
 }
