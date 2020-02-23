@@ -18,7 +18,7 @@ namespace NKMCore.Hex
             SpawnPoints = spawnPoints;
         }
 
-        public HexMap Clone() => new HexMap(Name, Cells, SpawnPoints);
+        public HexMap Clone() => new HexMap(Name, new List<HexCell>(Cells), new List<HexCell.TileType>(SpawnPoints));
 
         public int MaxCharactersPerPlayer => Cells.Count(c => c.Type == SpawnPoints[0]);
         public int MaxPlayers => SpawnPoints.Count;
