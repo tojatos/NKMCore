@@ -16,7 +16,7 @@ namespace NKMCore
         public event Delegates.CharacterD AfterCharacterInit;
         public event Delegates.Void OnFinish;
 
-        public override void Start()
+        public void Start()
         {
             //This needs to be checked before TakeTurns(), because we attach to TurnStarted event
             if (!Dependencies.PlaceAllCharactersRandomlyAtStart)
@@ -125,7 +125,7 @@ namespace NKMCore
             HexCell spawnPoint = p.GetSpawnPoints(this).FindAll(cell => Active.CanPlace(c, cell)).GetNKMRandom(Random);
             if (spawnPoint == null) return;
 
-            HexMap.Place(c, spawnPoint);
+            Action.PlaceCharacter(c, spawnPoint);
         }
 
         private void AddTriggersToEvents(Character character)

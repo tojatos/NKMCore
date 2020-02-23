@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NKMCore.Extensions;
 using NKMCore.Templates;
@@ -18,7 +19,22 @@ namespace NKMCore.Hex
             SpawnPoints = spawnPoints;
         }
 
-        public HexMap Clone() => new HexMap(Name, new List<HexCell>(Cells), new List<HexCell.TileType>(SpawnPoints));
+        public HexMap Clone()
+        {
+            var newCells = new List<HexCell>();
+            var newMap = new HexMap(Name, newCells, new List<HexCell.TileType>(SpawnPoints));
+            Cells.ForEach(c => newMap.Cells.Add(new HexCell(newMap, c.Coordinates, c.Type)));
+            newMap.Cells.ForEach(c =>
+            {
+                newMap.Cells.FindAll(w =>
+                        Math.Abs(w.Coordinates.X - c.Coordinates.X) <= 1 &&
+                        Math.Abs(w.Coordinates.Y - c.Coordinates.Y) <= 1 &&
+                        Math.Abs(w.Coordinates.Z - c.Coordinates.Z) <= 1 &&
+                        w != c)
+                    .ForEach(w => c.SetNeighbor(c.GetDirection(w), w));
+            });
+            return newMap;
+        }
 
         public int MaxCharactersPerPlayer => Cells.Count(c => c.Type == SpawnPoints[0]);
         public int MaxPlayers => SpawnPoints.Count;

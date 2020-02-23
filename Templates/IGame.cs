@@ -12,19 +12,21 @@ namespace NKMCore.Templates
         public List<Character> Characters => Players.SelectMany(p => p.Characters).ToList();
         public List<Ability> Abilities => Characters.SelectMany(c => c.Abilities).ToList();
         public readonly Active Active;
-        public HexMap HexMap;
+        public readonly HexMap HexMap;
         public readonly Action Action;
         public readonly Console Console;
         public readonly NKMRandom Random;
+        private readonly ILogger _logger;
         public SelectableAction SelectableAction;
-        private ILogger Logger;
 
-        public IGame(GameDependencies gameDependencies)
+        protected IGame(GameDependencies gameDependencies)
         {
             Active = new Active(this);
             Action = new Action(this);
             Console = new Console(this);
             Random = new NKMRandom();
+            _logger = gameDependencies.Logger;
+            HexMap = gameDependencies.HexMap;
             Init(gameDependencies);
         }
 
@@ -32,10 +34,8 @@ namespace NKMCore.Templates
         {
             Dependencies = gameDependencies;
             SelectableAction = gameDependencies.SelectableAction;
-            Logger = gameDependencies.Logger;
 
             Players = new List<GamePlayer>(gameDependencies.Players);
-            HexMap = gameDependencies.HexMap;
 
             Action.AfterAction += (type, _) =>
             {
@@ -43,10 +43,8 @@ namespace NKMCore.Templates
                     Active.Select(Active.Character);
             };
             Action.AfterAction += (actionType, serializedContent) =>
-                Logger.Log(Action.Serialize(actionType, serializedContent));
+                _logger.Log(Action.Serialize(actionType, serializedContent));
         }
-
-        public abstract void Start();
 
         public event Delegates.AbilityD AfterAbilityCreation;
         public event Delegates.CharacterD AfterCharacterCreation;
