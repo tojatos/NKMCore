@@ -18,12 +18,6 @@
             _z = z;
         }
 
-        public static HexCoordinates FromOffsetCoordinates(int x, int z)
-        {
-            return new HexCoordinates(x - z / 2, z);
-        }
-
-
         public override string ToString() => $"({X}, {Y}, {Z})";
         public static bool operator ==(HexCoordinates c1, HexCoordinates c2) => c1.Equals(c2);
         public static bool operator !=(HexCoordinates c1, HexCoordinates c2) => !(c1 == c2);
