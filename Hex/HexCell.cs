@@ -203,12 +203,13 @@ namespace NKMCore.Hex
         }
         public enum TileType
         {
+            Transparent,
             Normal,
             Wall,
             SpawnPoint1,
             SpawnPoint2,
             SpawnPoint3,
-            SpawnPoint4
+            SpawnPoint4,
         }
     }
 }

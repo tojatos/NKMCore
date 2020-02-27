@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NKMCore.Hex;
 using NKMCore.Templates;
 
 namespace NKMCore.Extensions

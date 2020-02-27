@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using NKMCore.Extensions;
-using NKMCore.Hex;
 
-namespace NKMCore
+namespace NKMCore.Hex
 {
     public static class HexMapSerializer
     {
         public static string Serialize(HexMap map)
         {
             string coords = string.Join("\n",
-                map.Cells.Select(c => $"{c.Coordinates.X}:{c.Coordinates.Z};{c.Type}"));
+                map.Cells.Where(c => c.Type != HexCell.TileType.Transparent).Select(c => $"{c.Coordinates.X}:{c.Coordinates.Z};{c.Type}"));
             string spawnPoints = string.Join(";", map.SpawnPoints.Select(s => s.ToString()));
 
             return string.Join("\n\n", map.Name, coords, spawnPoints);
