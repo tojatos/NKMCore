@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace NKMCore.Extensions
 {
@@ -47,6 +48,11 @@ namespace NKMCore.Extensions
         /// </summary>
         public static T ToEnum<T>(this string value) =>
             (T) Enum.Parse(typeof(T), value, true);
+
+        /// <summary>
+        /// Returns values from enum to iterate
+        /// </summary>
+        public static List<T> EnumValues<T>() => ((T[]) Enum.GetValues(typeof(T))).ToList();
 
         public static TV GetValueOrDefault<TK, TV>(this IDictionary<TK, TV> dict, TK key, TV defaultValue = default) =>
             dict.TryGetValue(key, out TV value) ? value : defaultValue;
