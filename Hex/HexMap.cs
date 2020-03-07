@@ -9,21 +9,21 @@ namespace NKMCore.Hex
     public class HexMap
     {
         public readonly List<HexCell> Cells;
-        public readonly List<HexCell.TileType> SpawnPoints;
         public readonly string Name;
+        public int MaxPlayers => Cells.Where(c => c.Type == HexCell.TileType.SpawnPoint).Select(c => c.SpawnNumber).ToList().Distinct().Count();
+        public int MaxCharactersPerPlayer => Cells.Where(c => c.Type == HexCell.TileType.SpawnPoint).Select(c => c.SpawnNumber).GroupBy(n => n).Select(n => n.Count()).Min();
 
-        public HexMap (string name, List<HexCell> cells, List<HexCell.TileType> spawnPoints)
+        public HexMap (string name, List<HexCell> cells)
         {
             Name = name;
             Cells = cells;
-            SpawnPoints = spawnPoints;
         }
 
         public HexMap Clone()
         {
             var newCells = new List<HexCell>();
-            var newMap = new HexMap(Name, newCells, new List<HexCell.TileType>(SpawnPoints));
-            Cells.ForEach(c => newMap.Cells.Add(new HexCell(newMap, c.Coordinates, c.Type)));
+            var newMap = new HexMap(Name, newCells);
+            Cells.ForEach(c => newMap.Cells.Add(new HexCell(newMap, c.Coordinates, c.Type, c.SpawnNumber)));
             newMap.Cells.ForEach(c =>
             {
                 newMap.Cells.FindAll(w =>
@@ -35,9 +35,6 @@ namespace NKMCore.Hex
             });
             return newMap;
         }
-
-        public int MaxCharactersPerPlayer => Cells.Count(c => c.Type == SpawnPoints[0]);
-        public int MaxPlayers => SpawnPoints.Count;
 
         private readonly Dictionary<Character, HexCell> _charactersOnCells = new Dictionary<Character, HexCell>();
 

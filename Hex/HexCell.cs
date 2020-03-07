@@ -10,21 +10,23 @@ namespace NKMCore.Hex
     {
         public readonly HexCoordinates Coordinates;
         private readonly HexMap _map;
+        public int? SpawnNumber;
         public TileType Type;
         public readonly List<HexCellEffect> Effects = new List<HexCellEffect>();
         private readonly HexCell[] _neighbors = new HexCell[6];
-        public HexCell GetNeighbor(HexDirection direction) => _neighbors[(int) direction];
+        private HexCell GetNeighbor(HexDirection direction) => _neighbors[(int) direction];
         public void SetNeighbor(HexDirection direction, HexCell cell)
         {
             _neighbors[(int) direction] = cell;
             cell._neighbors[(int) direction.Opposite()] = this;
         }
 
-        public HexCell(HexMap map, HexCoordinates coords, TileType type)
+        public HexCell(HexMap map, HexCoordinates coords, TileType type, int? spawnNumber)
         {
             _map = map;
             Coordinates = coords;
             Type = type;
+            SpawnNumber = spawnNumber;
         }
 
         public bool IsFreeToStand => IsEmpty && Type != TileType.Wall;
@@ -32,10 +34,11 @@ namespace NKMCore.Hex
         public Character FirstCharacter => CharactersOnCell[0];
         public List<Character> CharactersOnCell => _map.GetCharacters(this);
 
-        public bool IsSpawnFor(GamePlayer player, IGame game) => Type == _map.SpawnPoints[player.GetIndex(game)];
+        public bool IsSpawnFor(GamePlayer player, IGame game) => SpawnNumber == player.GetIndex(game);
 
         public HexDirection GetDirection(HexCell hexCell) => GetDirection(hexCell.Coordinates);
-        public HexDirection GetDirection(HexCoordinates targetCoordinates)
+
+        private HexDirection GetDirection(HexCoordinates targetCoordinates)
         {
             if (Coordinates.X == targetCoordinates.X && Coordinates.Y == targetCoordinates.Y && Coordinates.Z == targetCoordinates.Z)
             {
@@ -96,11 +99,13 @@ namespace NKMCore.Hex
             return distance;
         }
 
-        public static Predicate<HexCell> IsEnemyStanding(HexMap map, GamePlayer friendlyPlayer) => cell =>
+        private static Predicate<HexCell> IsEnemyStanding(HexMap map, GamePlayer friendlyPlayer) => cell =>
             cell.CharactersOnCell.Any(c => c.IsEnemyFor(friendlyPlayer));
-        public static Predicate<HexCell> IsFriendStanding(HexMap map, GamePlayer friendlyPlayer) => cell =>
+
+        private static Predicate<HexCell> IsFriendStanding(HexMap map, GamePlayer friendlyPlayer) => cell =>
             cell.CharactersOnCell.Any(c => !c.IsEnemyFor(friendlyPlayer));
-        public static Predicate<HexCell> IsWall => cell => cell.Type == TileType.Wall;
+
+        private static Predicate<HexCell> IsWall => cell => cell.Type == TileType.Wall;
 
         public List<HexCell> GetLine(HexDirection direction, int depth)
         {
@@ -206,10 +211,7 @@ namespace NKMCore.Hex
             Transparent,
             Normal,
             Wall,
-            SpawnPoint1,
-            SpawnPoint2,
-            SpawnPoint3,
-            SpawnPoint4,
+            SpawnPoint,
         }
     }
 }

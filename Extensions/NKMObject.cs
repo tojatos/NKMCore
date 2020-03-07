@@ -52,8 +52,7 @@ namespace NKMCore.Extensions
                     throw new ArgumentOutOfRangeException();
             }
         }
-        private static HexCell.TileType GetSpawnPointType(this GamePlayer gamePlayer, Game game) => game.HexMap.SpawnPoints[gamePlayer.GetIndex(game)];
-        public static List<HexCell> GetSpawnPoints(this GamePlayer gamePlayer, Game game) => game.HexMap.Cells.FindAll(c => c.Type == gamePlayer.GetSpawnPointType(game));
+        public static List<HexCell> GetSpawnPoints(this GamePlayer gamePlayer, Game game) => game.HexMap.Cells.FindAll(c => c.SpawnNumber == gamePlayer.GetIndex(game));
         public static List<Character> GetCharacters(this IEnumerable<HexCell> cells) => cells.SelectMany(c => c.CharactersOnCell).ToList();
 
         public static bool ContainsType(this IEnumerable<object> objects, Type type) => objects.Any(o => o.GetType() == type);

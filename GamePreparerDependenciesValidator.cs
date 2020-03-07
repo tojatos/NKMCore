@@ -12,7 +12,7 @@
         private bool IsHexMapSet =>
             _gamePreparerDependencies.HexMap != null;
         private bool NumberOfPlayersCorrect =>
-            _gamePreparerDependencies.NumberOfPlayers <= _gamePreparerDependencies.HexMap.SpawnPoints.Count;
+            _gamePreparerDependencies.NumberOfPlayers <= _gamePreparerDependencies.HexMap.MaxPlayers;
 
         public bool AreOptionsValid =>
             IsHexMapSet &&
