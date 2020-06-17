@@ -17,9 +17,9 @@ namespace NKMCore.Hex
 
         public static HexMap Deserialize(string mapString)
         {
-            string[] sc = mapString.Trim().Split(new [] {"\n\n"}, StringSplitOptions.None);
+            string[] sc = mapString.Trim().Split(new [] {$"{Environment.NewLine}{Environment.NewLine}"}, StringSplitOptions.None);
             string name = sc[0];
-            string[] cellsInfo = sc[1].Split('\n');
+            string[] cellsInfo = sc[1].Split(new [] {$"{Environment.NewLine}"}, StringSplitOptions.None);
 
             var map = new HexMap(name, new List<HexCell>());
             cellsInfo.ToList().ForEach(i =>
