@@ -99,10 +99,10 @@ namespace NKMCore.Hex
             return distance;
         }
 
-        private static Predicate<HexCell> IsEnemyStanding(HexMap map, GamePlayer friendlyPlayer) => cell =>
+        private static Predicate<HexCell> IsEnemyStanding(GamePlayer friendlyPlayer) => cell =>
             cell.CharactersOnCell.Any(c => c.IsEnemyFor(friendlyPlayer));
 
-        private static Predicate<HexCell> IsFriendStanding(HexMap map, GamePlayer friendlyPlayer) => cell =>
+        private static Predicate<HexCell> IsFriendStanding(GamePlayer friendlyPlayer) => cell =>
             cell.CharactersOnCell.Any(c => !c.IsEnemyFor(friendlyPlayer));
 
         private static Predicate<HexCell> IsWall => cell => cell.Type == TileType.Wall;
@@ -129,8 +129,8 @@ namespace NKMCore.Hex
             bool stopAtFriendlyCharacters = searchFlags.HasFlag(SearchFlags.StopAtFriendlyCharacters);
             bool straightLine = searchFlags.HasFlag(SearchFlags.StraightLine);
             if (stopAtWalls) stopAt = stopAt.Or(IsWall);
-            if (stopAtEnemyCharacters) stopAt = stopAt.Or(IsEnemyStanding(_map, friendlyPlayer));
-            if (stopAtFriendlyCharacters) stopAt = stopAt.Or(IsFriendStanding(_map, friendlyPlayer));
+            if (stopAtEnemyCharacters) stopAt = stopAt.Or(IsEnemyStanding(friendlyPlayer));
+            if (stopAtFriendlyCharacters) stopAt = stopAt.Or(IsFriendStanding(friendlyPlayer));
             var visited = new List<HexCell>();
             if (depth == 0) return visited;
 
